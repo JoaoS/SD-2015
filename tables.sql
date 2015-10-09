@@ -24,10 +24,11 @@ constraint check_tg_value check (target_value >=1)
 );
 
 create table project_has_user
-(id_project int8 primary key,
-id_user int8 primary key,
+(id_project int8,
+id_user int8,
 constraint fk_project_user foreign key(id_project) references project(id_project) on delete cascade on update cascade,
 constraint fk_user_project foreign key(id_user) references user(id_user) on delete cascade on update cascade
+constraint pk_project_user primary key(id_project,id_user)
 );
 
 create table reward 
