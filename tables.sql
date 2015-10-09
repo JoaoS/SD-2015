@@ -23,6 +23,7 @@ constraint fk_admin foreign key(id_user) references user(id_user) on delete casc
 constraint check_tg_value check (target_value >=1)
 );
 
+
 create table project_has_user
 (id_project int8,
 id_user int8,
