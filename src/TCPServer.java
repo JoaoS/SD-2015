@@ -135,7 +135,7 @@ public class TCPServer {
             // System.out.println(" "+request);
             while (tries > 0) {
                 aSocket.send(request);
-                aSocket.setSoTimeout(WAIT * 2);
+                aSocket.setSoTimeout(WAIT * 2); //timeout between each request
                 //waits to receive
                 try {
                     byte[] buffer = new byte[1000];
@@ -247,8 +247,9 @@ public class TCPServer {
                 }
                 try
                 {
-                    System.getProperties().put("java.security.policy", "security.policy");
+                    /*System.getProperties().put("java.security.policy", "security.policy");
                     System.setSecurityManager(new RMISecurityManager());
+                    */
                     DataServer_Interface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
                     if(DataServer_Interface.dummyMethod()==0)
                     {
@@ -260,7 +261,6 @@ public class TCPServer {
                         e.printStackTrace();
 
                     System.out.println("Exception in restartRmi, dataserver not online yet...");
-                    //e.printStackTrace();
                 }
                 tries--;
             }
@@ -276,16 +276,20 @@ public class TCPServer {
 
 
         try {
-            out.writeUTF("menu inicial");
 
-            while (true){
-                System.out.println(in.readUTF());
+            try {
+                Message m=(Message)objIn.readObject();
+                System.out.println(m.getMensagem());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
+
+
+
 
         } catch (IOException e) {
             if(DEBUG)
                 e.printStackTrace();
-            e.printStackTrace();
         }
     }
 

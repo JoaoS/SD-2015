@@ -8,6 +8,9 @@ import java.util.*;
 
 public class Client {
 
+    public static boolean DEBUG=true;
+
+
     public static   int clientPort;
     public static 	int reconnection;
     public static 	String firstIP;
@@ -15,23 +18,25 @@ public class Client {
     public static 	Socket s = null;
     public static   ReadFromServer th;
 
+    public static ObjectOutputStream objOut=null;
+    public static ObjectInputStream  objIn=null;
+
 
     public static void main(String args[]) {
         
-        Client client= new Client();
         //read properties file
         Properties prop = new Properties();
         InputStream input = null;
         try {
             input = new FileInputStream("tcpProp.properties");
             prop.load(input);
-            client.firstIP=prop.getProperty("firstIP");
-            client.secondIP=prop.getProperty("secondIP");
-            client.reconnection =Integer.parseInt(prop.getProperty("reconnection"));
-            client.clientPort=Integer.parseInt(prop.getProperty("clientPort"));
+            firstIP=prop.getProperty("firstIP");
+            secondIP=prop.getProperty("secondIP");
+            reconnection =Integer.parseInt(prop.getProperty("reconnection"));
+            clientPort=Integer.parseInt(prop.getProperty("clientPort"));
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Error readin properties file Client.java");
+            System.out.println("Error reading properties file Client.java");
         } finally {
             if (input != null) {
                 try {
@@ -43,20 +48,19 @@ public class Client {
         }
 
 
-        
+
+
         System.out.println("Possible connections:"+reconnection);
         int tries=reconnection;
-        while(reconnection !=0){
+        while(tries !=0){
 
             try{
                 
-                if(reconnection>=tries/2){
-                    client.createChannels(new Socket(firstIP, clientPort), client);
-
+                if(tries>=reconnection/2){
+                    createChannels(new Socket(firstIP, clientPort));
                 }
                 else{
-                    client.createChannels(new Socket(secondIP, clientPort), client);
-
+                    createChannels(new Socket(secondIP, clientPort));
                 }
 
             }catch(Exception ex) {
@@ -70,31 +74,32 @@ public class Client {
                     }
                 }
 
-
                 try {
                     Thread.sleep(1000);
                 }catch(InterruptedException threadex) {
                     System.out.println("Program error(thread), restart please");
                 }
 
-
-                reconnection--;
+                tries--;
             }
+
         }
 
-        if(reconnection == 0){
+        if(tries == 0){
             System.out.println("Server not found, try again later");
             System.exit(0);
         }
 
 
     }
-    public void createChannels(Socket s, Client client) throws Exception {
+    public static void createChannels(Socket s) throws Exception {
 
         DataInputStream in = new DataInputStream(s.getInputStream());
-        client.th=new ReadFromServer();
-        client.th.setSocket(s);
-        client.th.start();
+        objIn = new ObjectInputStream(in);
+
+        th=new ReadFromServer();
+        th.setSocket(s);
+        th.start();
         
         while (true) {
             String data = in.readUTF();
@@ -111,8 +116,11 @@ public class Client {
 
 class ReadFromServer extends Thread{
 
-    public Socket s;
-    
+    public static ObjectOutputStream objOut=null;
+    public static Socket s;
+
+
+
     ReadFromServer(){}
     public void setSocket(Socket s) { this.s = s; }
     public void closeSocket() throws IOException { this.s.close();  }
@@ -123,6 +131,8 @@ class ReadFromServer extends Thread{
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
         DataOutputStream out = null;
+
+
         try {
             out = new DataOutputStream(s.getOutputStream());
         } catch (IOException e) {
