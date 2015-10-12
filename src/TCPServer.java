@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.*;
+import java.rmi.RMISecurityManager;
+import java.rmi.registry.LocateRegistry;
 import java.util.Properties;
 import  java.util.ArrayList;
 /**
@@ -7,15 +9,21 @@ import  java.util.ArrayList;
  */
 public class TCPServer {
 
-    private static int maxDropHeartbeats = 5;
-    public  static int WAIT = 500; //milisseconds response thread wait
+    private static  boolean DEBUG = true ;
+    public static 	DataServer_I DataServer_Interface;
+
+    public static 	int reconnection;
+    private static int maxDropHeartbeats;
+    public  static int WAIT; //milisseconds response thread wait
     private static int udpPort;
     private static int clientPort;
+    private static int rmiPort;
 
+    private static String rmiName;
+    private static String rmiIp;
     private static String firstIP;
     private static String secondIP;
 
-    public static ArrayList<Connection> lista = new ArrayList<Connection>();
 
 
     public static void main(String args[]) {
@@ -30,32 +38,57 @@ public class TCPServer {
             input = new FileInputStream("tcpProp.properties");
             // load a properties file
             prop.load(input);
-
             // get the property value and print it out
-            clientPort=Integer.parseInt(prop.getProperty("clientPort"));
-
-            /*rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
+            reconnection =Integer.parseInt(prop.getProperty("reconnection"));
+            rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
             rmiName=prop.getProperty("rmiName");
-            rmiIp=prop.getProperty("rmiIp");*/
+            rmiIp=prop.getProperty("rmiIp");
+            clientPort=Integer.parseInt(prop.getProperty("clientPort"));
+            WAIT=Integer.parseInt(prop.getProperty("WAIT"));
+            maxDropHeartbeats=Integer.parseInt(prop.getProperty("maxDropHeartbeats"));
             udpPort = Integer.parseInt(prop.getProperty("udpPort"));
             firstIP = prop.getProperty("firstIP");
             secondIP = prop.getProperty("secondIP");
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("Error reading properties file");
+        } catch (Exception ex) {
+            if(DEBUG)
+                ex.printStackTrace();
+
+            System.out.println("Error reading properties file, default values will be set");
+            rmiPort=5000;
+            rmiName= "DataServer";
+            rmiIp= "localhost";
+            clientPort = 6000;
+            WAIT = 500;
+            maxDropHeartbeats = 10;
+            firstIP= "169.254.15.178";
+            secondIP= "169.254.107.114";
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    if(DEBUG)
+                        e.printStackTrace();
                 }
             }
         }
+        //-----------------establish connection with RMI-----------------
+        try
+        {
+            System.getProperties().put("java.security.policy", "security.policy");
+            System.setSecurityManager(new RMISecurityManager());
+            DataServer_Interface = (DataServer_I)LocateRegistry.getRegistry(rmiPort).lookup(rmiName);
+        } catch (Exception e){
+            if(DEBUG)
+                e.printStackTrace();
+            System.out.println("Error establishing connection with RMI.");
+
+        }
+        //---------------------------------------------------------------------------
 
 
-        //attempt
+        //attempt to connect to primary if it exists
         secundaryServer();
         //if not create thread to be primary and respond
         new PrimaryThread(udpPort).start();
@@ -71,10 +104,12 @@ public class TCPServer {
                 Socket clientSocket = listenSocket.accept(); // BLOQUEANTE
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 connectedUsers++;
-                lista.add(new Connection(clientSocket, connectedUsers));
+                new Connection(clientSocket, connectedUsers,DataServer_Interface);
             }
         } catch (Exception e) {
-            System.out.println("Listen:" + e.getMessage());
+            if(DEBUG)
+                e.printStackTrace();
+            System.out.println("Error connecting new client:" + e.getMessage());
         }
 
     }
@@ -152,8 +187,13 @@ public class TCPServer {
                     aSocket.send(reply);
                 }
             } catch (SocketException e) {
+                if(DEBUG)
+                    e.printStackTrace();
                 System.out.println("Socket: " + e.getMessage());
+
             } catch (IOException e) {
+                if(DEBUG)
+                    e.printStackTrace();
                 System.out.println("IO: " + e.getMessage());
             } finally {
                 if (aSocket != null) aSocket.close();
@@ -162,28 +202,76 @@ public class TCPServer {
     }
 
 
-
+//--------------Class to handle each client-------------------------------------------------------
     static class Connection extends Thread {
 
+    public static 	DataServer_I DataServer_Interface;
     public DataInputStream in;
     public DataOutputStream out;
     public Socket clientSocket;
-    public int thread_number;
+    public int thread_number;//number of currently connected client
+    public ObjectInputStream objIn;
+    public ObjectOutputStream objOut;
 
 
-    public Connection(Socket aClientSocket, int numero) {
+    public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
         thread_number = numero;
+        DataServer_Interface=ds;
         try {
             clientSocket = aClientSocket;
             in = new DataInputStream(clientSocket.getInputStream());
             out = new DataOutputStream(clientSocket.getOutputStream());
+            objIn = new ObjectInputStream(in);
+            objOut = new ObjectOutputStream(out);
             this.start();
         } catch (IOException e) {
+            if(DEBUG)
+                e.printStackTrace();
             System.out.println("Connection:" + e.getMessage());
         }
     }
 
+
+
+     public void restartRmi() throws IOException
+        {
+            int tries = TCPServer.reconnection;
+            while(tries!=0)
+            {
+                try
+                {
+                    Thread.sleep(TCPServer.WAIT);
+                }catch (InterruptedException e){
+                    if(DEBUG)
+                        e.printStackTrace();
+                }
+                try
+                {
+                    System.getProperties().put("java.security.policy", "security.policy");
+                    System.setSecurityManager(new RMISecurityManager());
+                    DataServer_Interface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
+                    if(DataServer_Interface.dummyMethod()==0)
+                    {
+                        System.out.println("RMI back online....");
+                        break;
+                    }
+                }catch (Exception e){
+                    if(DEBUG)
+                        e.printStackTrace();
+
+                    System.out.println("Exception in restartRmi, dataserver not online yet...");
+                    //e.printStackTrace();
+                }
+                tries--;
+            }
+            if(tries==0){
+                // out.writeUTF("EXIT");//shuts down client   <----------------------------------------------------------
+                System.out.println("RMI disconnected, shuting down...");
+                System.exit(0);
+            }
+        }
     //=============================
+
     public void run() {
 
 
@@ -195,39 +283,14 @@ public class TCPServer {
             }
 
         } catch (IOException e) {
+            if(DEBUG)
+                e.printStackTrace();
             e.printStackTrace();
         }
-
-
-        /*
-        try {
-            while (true) {
-               // menuInicial();
-                System.out.println("menu inicial");
-
-            }
-        } catch (EOFException e) {
-            System.out.println("Client disconnected :");
-        } catch (IOException e) {
-            System.out.println("IO:" + e);
-        } catch (Exception e) {
-            System.out.println("some sort of error");
-            e.printStackTrace();
-        }
-
-
-        */
     }
 
 
 
-
-        public void menuInicial() throws IOException
-        {
-
-            System.out.println("menu inicial");
-
-        }
 
     }
 
