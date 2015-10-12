@@ -1,0 +1,14 @@
+/CallableStatementWrapper.class
+/ConnectionWrapper.class
+/MysqlConnectionPoolDataSource.class
+/MysqlDataSource.class
+/MysqlDataSourceFactory.class
+/MysqlPooledConnection.class
+/MysqlXAConnection.class
+/MysqlXADataSource.class
+/MysqlXAException.class
+/MysqlXid.class
+/PreparedStatementWrapper.class
+/StatementWrapper.class
+/SuspendableXAConnection.class
+/WrapperBase.class

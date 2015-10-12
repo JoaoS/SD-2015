@@ -1,0 +1,10 @@
+/MySQLDataException.class
+/MySQLIntegrityConstraintViolationException.class
+/MySQLInvalidAuthorizationSpecException.class
+/MySQLNonTransientConnectionException.class
+/MySQLNonTransientException.class
+/MySQLSyntaxErrorException.class
+/MySQLTimeoutException.class
+/MySQLTransactionRollbackException.class
+/MySQLTransientConnectionException.class
+/MySQLTransientException.class

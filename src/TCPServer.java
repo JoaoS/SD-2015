@@ -121,7 +121,7 @@ class Connection extends Thread
     public void restartRmi() throws IOException
     {
     	int tries = TCPServer.tries;
-        while(TCPServer.tries!=0)
+        while(tries!=0)
         {
                try
                {
