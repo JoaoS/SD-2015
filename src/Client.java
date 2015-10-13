@@ -2,9 +2,9 @@
  * Created by joaosubtil on 09/10/15.
  */
 
-import java.net.*;
 import java.io.*;
-import java.util.*;
+import java.net.Socket;
+import java.util.Properties;
 
 public class Client {
 
@@ -13,16 +13,17 @@ public class Client {
 
     public static   int clientPort;
     public static 	int reconnection;
+    public static   int threadWait =1000;
     public static 	String firstIP;
     public static 	String secondIP;
-    public static 	Socket s = null;
-    public static   ReadFromServer th;
+    public static   SendToServer th;
+    public static   DataInputStream in;
+    public static   DataOutputStream out;
 
-    public static ObjectOutputStream objOut=null;
-    public static ObjectInputStream  objIn=null;
+    //public static   ObjectInputStream  objIn;
 
 
-    public static void main(String args[]) {
+    public static void main(String args[]){
         
         //read properties file
         Properties prop = new Properties();
@@ -47,81 +48,117 @@ public class Client {
             }
         }
 
+        /*/
 
 
-
+        try {
+            System.out.println("ligado");
+            s = new Socket(firstIP,clientPort);
+        } catch (IOException e) {
+            tries--;
+        }
+    /*/
         System.out.println("Possible connections:"+reconnection);
-        int tries=reconnection;
+        int tries=reconnection*2;
         while(tries !=0){
 
-            try{
-                
-                if(tries>=reconnection/2){
-                    createChannels(new Socket(firstIP, clientPort));
-                }
-                else{
-                    createChannels(new Socket(secondIP, clientPort));
-                }
+            System.out.println("tries="+tries);
+            Socket sock=null;
 
-            }catch(Exception ex) {
 
-                if(s!=null){
+                if (sock==null){
                     try {
-                        s.close();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        System.out.println("cannot close socket");
+                        sock = new Socket(firstIP,clientPort);
+                        tries=reconnection;
+                    } catch (IOException e) {
+                        tries--;
+                    }
+
+                }
+                else if(sock==null){
+                    try {
+                        sock = new Socket(secondIP,clientPort);
+                        tries=reconnection;
+                    } catch (IOException e) {
+                        tries--;
                     }
                 }
+                if (sock!=null){
+                    try {
+                        createChannels(sock);
 
-                try {
-                    Thread.sleep(1000);
-                }catch(InterruptedException threadex) {
-                    System.out.println("Program error(thread), restart please");
+                    }catch (Exception e){
+
+                        try {
+                            System.out.println("waiting for thread");
+                            th.join();
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+                        if(sock!=null){
+                            try {
+                                sock.close();
+                            } catch (Exception e2){
+                                e2.printStackTrace();
+                                System.out.println("cannot close socket");
+                            }
+                        }
+                        try {
+                            Thread.sleep(threadWait);
+                        }catch(InterruptedException threadex) {
+                            System.out.println("Program error(thread), restart please");
+                        }
+                        tries--;
+                    }
+
+                }
+                else{
+                    try {
+                        Thread.sleep(threadWait);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
-                tries--;
-            }
+
+
 
         }
 
         if(tries == 0){
             System.out.println("Server not found, try again later");
             System.exit(0);
+
         }
 
+/**/
 
     }
-    public static void createChannels(Socket s) throws Exception {
 
-        DataInputStream in = new DataInputStream(s.getInputStream());
-        objIn = new ObjectInputStream(in);
+    public static void createChannels(Socket sock) throws Exception {
 
-        th=new ReadFromServer();
-        th.setSocket(s);
+
+        DataInputStream inS=new DataInputStream(sock.getInputStream());
+        th=new SendToServer();
+        th.setSocket(sock);
         th.start();
-        
-        while (true) {
-            String data = in.readUTF();
 
-            if(data.equals("EXIT")){
-                System.out.println("Connection issues, try again later");
-                System.exit(-1);
-            }
+        while (true) {
+
+            String data = inS.readUTF();
             System.out.println("->"+data);
 
         }
     }
 }
 
-class ReadFromServer extends Thread{
+class SendToServer extends Thread{
 
-    public static ObjectOutputStream objOut=null;
     public static Socket s;
+    public static ObjectOutputStream objOut=null;
 
-
-
-    ReadFromServer(){}
+    SendToServer(){}
     public void setSocket(Socket s) { this.s = s; }
     public void closeSocket() throws IOException { this.s.close();  }
 
@@ -135,28 +172,30 @@ class ReadFromServer extends Thread{
 
         try {
             out = new DataOutputStream(s.getOutputStream());
+            //objOut = new ObjectOutputStream(out);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
         while(true){
 
             String texto;
-
             try {
                 texto = reader.readLine();
                 out.writeUTF(texto);
                 System.out.println("texto lido:"+texto);
 
             }catch(Exception e)	{
-                //assumir que o server foi abaixo e matar esta thread
-                //comer a excepção
+
+                System.out.println("Excepção ao enviar");
+                e.printStackTrace();
 
                 try {
                     s.close();
                     reader.close();
                     input.close();
+                    break;
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     System.out.println("erro ao fechar o socket");

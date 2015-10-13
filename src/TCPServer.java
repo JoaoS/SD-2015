@@ -3,13 +3,13 @@ import java.net.*;
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.util.Properties;
-import  java.util.ArrayList;
+
 /**
  * Created by joaosubtil on 07/10/15.
  */
 public class TCPServer {
 
-    private static  boolean DEBUG = true ;
+    private static  boolean DEBUG = false ;
     public static 	DataServer_I DataServer_Interface;
 
     public static 	int reconnection;
@@ -215,14 +215,17 @@ public class TCPServer {
 
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
+
         thread_number = numero;
         DataServer_Interface=ds;
         try {
             clientSocket = aClientSocket;
             in = new DataInputStream(clientSocket.getInputStream());
             out = new DataOutputStream(clientSocket.getOutputStream());
-            objIn = new ObjectInputStream(in);
-            objOut = new ObjectOutputStream(out);
+
+           // objIn = new ObjectInputStream(in);
+            //objOut = new ObjectOutputStream(out);
+
             this.start();
         } catch (IOException e) {
             if(DEBUG)
@@ -277,19 +280,20 @@ public class TCPServer {
 
         try {
 
-            try {
-                Message m=(Message)objIn.readObject();
-                System.out.println(m.getMensagem());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            int i=0;
+            while (true){
+
+               out.writeUTF("teste nr "+i);
+    i++;
+
+
+                System.out.println(""+in.readUTF());
+
             }
-
-
-
-
         } catch (IOException e) {
             if(DEBUG)
                 e.printStackTrace();
+            System.out.println("client disconnected");
         }
     }
 

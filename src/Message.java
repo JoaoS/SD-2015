@@ -33,4 +33,8 @@ public class Message implements Serializable {
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
+
+    public String toString(){
+        return "msg="+mensagem;
+    }
 }

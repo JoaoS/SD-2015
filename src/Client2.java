@@ -1,20 +1,20 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 /**
  * Created by joaosubtil on 12/10/15.
  */
-public class Client2 {
+public class Client2 implements Serializable {
 
     public static boolean DEBUG=true;
     public static int clientPort;
     public static int reconnection;
     public static String firstIP;
     public static String secondIP;
-    public static Socket s = null;
-    public static ObjectOutputStream objOut=null;
-    public static ObjectInputStream  objIn=null;
+    public static int tries=0;
 
     public static void main(String args[])  {
 
@@ -41,37 +41,92 @@ public class Client2 {
             }
         }
 
+        /*/
 
+        tries=reconnection;
+
+        while (tries>0){
+            tries--;
+        }
+
+        createconnections();
+
+        /*/
         try{
+            Socket s=null;
             //create connections
             s = new Socket(firstIP, clientPort);
             System.out.println("Listenning for clients on port:" + clientPort +" to ip="+clientPort);
-
             DataInputStream in = new DataInputStream( s.getInputStream());
             DataOutputStream out = new DataOutputStream( s.getOutputStream());
             // Criar ObjecOutputStream e ObjectInputStream
-            objOut = new ObjectOutputStream(out);
-            objIn = new ObjectInputStream(in);
+            ObjectOutputStream objOut = new ObjectOutputStream(out);
+            ObjectInputStream objIn = new ObjectInputStream(in);
 
-        }catch (Exception e){
+            Message m=new Message();
+            m.setMensagem("teste2");
+            objOut.writeObject(m);
+        }
+
+        catch (Exception e){
                 if(DEBUG)
                     e.printStackTrace();
         }
 
+        /**/
+    }
 
 
-        Message m=new Message();
-        m.setMensagem("vai tomar um banho seu viado");
+    public  static void createconnections(){
+
+
+        //read from  server
+
         try {
+            Socket  s = new Socket(firstIP, clientPort);
+            System.out.println("aqui");
+
+            /*/
+            DataOutputStream out = new DataOutputStream( s.getOutputStream());
+            ObjectOutputStream objOut = new ObjectOutputStream(out);
+
+            Message m=new Message();
+            m.setMensagem("teste ao socket de envio");
             objOut.writeObject(m);
+           /*/
+
+            //o object input stream precisa sempre que exista um output stream antes porque faz um teste de envio de um byte
+            DataInputStream in = new DataInputStream(s.getInputStream());
+            ObjectInputStream objIn = new ObjectInputStream(in);
+            System.out.println("aqui2");
+
+
+            while (true){
+
+                try {
+                    System.out.println(""+(Message)objIn.readObject());
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            /**/
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
+
+
+
+
+
+
+
     }
-
-
 
 
 
