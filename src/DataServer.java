@@ -14,11 +14,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     private static final long serialVersionUID = 1L;
     public static int rmiPort;
     public static String remoteName;
-    public static String url = "jdbc:mysql://localhost:8889/";
-	public static String dbName = "SD";
-	public static String driver = "com.mysql.jdbc.Driver";
-	public static String userName = "root";
-	public static String password = "root";
+    public static String url;
+	public static String dbName;
+	public static String driver;
+	public static String userName ;
+	public static String password;
 	public static java.sql.Connection connection = null;
 
     public DataServer()  throws RemoteException
@@ -64,18 +64,15 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
      {
         try
         {
-        	//-----------------connect to database-----------------
-          DataServer ds = new DataServer();
-          ds.connectDb();
         
           //-----------------load properties-----------------
           Properties prop = new Properties();
           InputStream input = null; 
           try {
-              input = new FileInputStream("DataServer.properties");
+              input = new FileInputStream("TCPprop.properties");
               prop.load(input);
               rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
-              remoteName=prop.getProperty("remoteName");  
+              remoteName=prop.getProperty("rmiName");  
               url = prop.getProperty("url"); 
               dbName = prop.getProperty("dbName"); 
               driver = prop.getProperty("driver"); 
@@ -101,6 +98,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                   }
           }
           
+      	//-----------------connect to database-----------------
+          DataServer ds = new DataServer();
+          ds.connectDb();
+          
+          
         //-----------------bind remote object-----------------
           Registry r = LocateRegistry.createRegistry(rmiPort);
           r.rebind(remoteName,ds);
@@ -119,7 +121,3 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         }
      }
 }
-
-
-
-
