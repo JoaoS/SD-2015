@@ -124,7 +124,7 @@ public class Client2 implements Serializable {
 
 
 
-
+    //todo criar objectos no servidor
 
 
     }
