@@ -61,6 +61,7 @@ public class Client2 implements Serializable {
             DataOutputStream out = new DataOutputStream( s.getOutputStream());
             // Criar ObjecOutputStream e ObjectInputStream
             ObjectOutputStream objOut = new ObjectOutputStream(out);
+            objOut.flush();
             ObjectInputStream objIn = new ObjectInputStream(in);
 
             Message m=new Message();

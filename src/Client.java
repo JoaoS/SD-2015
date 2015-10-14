@@ -96,14 +96,12 @@ public class Client {
 
                         System.out.println("ligação perdida");
                         try {
-                            th.closeSocket();
+                            th.interrupt();
                             th.join();
                             System.out.println("thread killed");
 
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
                         }
                         //fechar o socket actual
                         if(sock!=null){
@@ -145,17 +143,24 @@ public class Client {
     public static void createChannels(Socket sock) throws IOException {
 
         teste++;
-        System.out.println("valor de teste="+teste);
-        //System.out.println("connected to "+sock);
-        DataInputStream inS=new DataInputStream(sock.getInputStream());
+        System.out.println("->>>>>>>teste="+teste+" sock"+sock);
+
+        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
+        DataInputStream in = new DataInputStream(sock.getInputStream());
+        ObjectOutputStream objOut = new ObjectOutputStream(out);
+        objOut.flush();
+        ObjectInputStream objIn = new ObjectInputStream(in);
+
+        System.out.println("yoyoyo");
+
         th=null;
         th=new SendToServer();
-        th.setSocket(sock);
+        th.setObjOut(objOut);
         th.start();
 
-        while (true) {
+        while (true){
             System.out.println("estou a ler do socket");
-            String data = inS.readUTF();
+            String data = objIn.readUTF();
             System.out.println("->"+data);
 
         }
@@ -164,62 +169,50 @@ public class Client {
 
 class SendToServer extends Thread{
 
-    public static Socket sock;
     public static ObjectOutputStream objOut=null;
 
-    SendToServer(){}
-    public void setSocket(Socket s) { this.sock = s; }
-    public void closeSocket() throws IOException { this.sock.close();  }
 
-    public void run()
-    {
+    SendToServer(){}
+    public static void setObjOut(ObjectOutputStream objOut) {
+        SendToServer.objOut = objOut;
+    }
+
+    public void run(){
 
         InputStreamReader input = null;
         BufferedReader reader = null;
-        DataOutputStream out = null;
-        String texto="";
 
-
-        try {
-            out = new DataOutputStream(sock.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("connected to "+sock);
-
-        while(true){
+        while(!Thread.interrupted()){
 
             //isto não está a apanhar as excepções
-
             try {
                 input = new InputStreamReader(System.in);
                 reader = new BufferedReader(input);
-                out.writeUTF(reader.readLine());
+                String texto=reader.readLine();
+                objOut.writeUTF(texto);
 
             } catch (IOException e){
+                e.printStackTrace();
                 try {
-                    sock.close();
                     reader.close();
                     input.close();
-                    break;
-
-                } catch (IOException e1) {
+                } catch (Exception e1) {
                     e1.printStackTrace();
                     System.out.println("erro ao fechar o socket");
                 }
 
             }
         }
-
         try {
-            sock.close();
-            reader.close();
-            input.close();
+            if (reader!=null && input!= null){
+                reader.close();
+                input.close();
+            }
         } catch (IOException e1) {
             e1.printStackTrace();
             System.out.println("erro ao fechar o socket");
         }
+
         System.out.println("Stoping send thread");
 
     }
