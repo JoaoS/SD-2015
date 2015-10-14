@@ -284,7 +284,7 @@ public class TCPServer {
             while (true){
 
                out.writeUTF("teste nr "+i);
-    i++;
+                i++;
 
 
                 System.out.println(""+in.readUTF());

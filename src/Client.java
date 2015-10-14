@@ -4,12 +4,12 @@
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Properties;
 
 public class Client {
 
     public static boolean DEBUG=true;
-
 
     public static   int clientPort;
     public static 	int reconnection;
@@ -19,6 +19,8 @@ public class Client {
     public static   SendToServer th;
     public static   DataInputStream in;
     public static   DataOutputStream out;
+
+    public static int teste=0;
 
     //public static   ObjectInputStream  objIn;
 
@@ -58,7 +60,6 @@ public class Client {
             tries--;
         }
     /*/
-        System.out.println("Possible connections:"+reconnection);
         int tries=reconnection*2;
         while(tries !=0){
 
@@ -68,6 +69,7 @@ public class Client {
 
                 if (sock==null){
                     try {
+                        System.out.println("connecting to 1");
                         sock = new Socket(firstIP,clientPort);
                         tries=reconnection;
                     } catch (IOException e) {
@@ -75,26 +77,35 @@ public class Client {
                     }
 
                 }
+                /*
                 else if(sock==null){
                     try {
-                        sock = new Socket(secondIP,clientPort);
+                        sock = new Socket("192.168.1.254",clientPort);
                         tries=reconnection;
                     } catch (IOException e) {
                         tries--;
                     }
                 }
+                */
                 if (sock!=null){
                     try {
+                        System.out.println("channels");
                         createChannels(sock);
 
-                    }catch (Exception e){
+                    }catch (IOException e){
 
+                        System.out.println("ligação perdida");
                         try {
-                            System.out.println("waiting for thread");
+                            th.closeSocket();
                             th.join();
+                            System.out.println("thread killed");
+
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
                         }
+                        //fechar o socket actual
                         if(sock!=null){
                             try {
                                 sock.close();
@@ -120,12 +131,7 @@ public class Client {
                     }
 
                 }
-
-
-
-
         }
-
         if(tries == 0){
             System.out.println("Server not found, try again later");
             System.exit(0);
@@ -136,16 +142,19 @@ public class Client {
 
     }
 
-    public static void createChannels(Socket sock) throws Exception {
+    public static void createChannels(Socket sock) throws IOException {
 
-
+        teste++;
+        System.out.println("valor de teste="+teste);
+        //System.out.println("connected to "+sock);
         DataInputStream inS=new DataInputStream(sock.getInputStream());
+        th=null;
         th=new SendToServer();
         th.setSocket(sock);
         th.start();
 
         while (true) {
-
+            System.out.println("estou a ler do socket");
             String data = inS.readUTF();
             System.out.println("->"+data);
 
@@ -155,53 +164,64 @@ public class Client {
 
 class SendToServer extends Thread{
 
-    public static Socket s;
+    public static Socket sock;
     public static ObjectOutputStream objOut=null;
 
     SendToServer(){}
-    public void setSocket(Socket s) { this.s = s; }
-    public void closeSocket() throws IOException { this.s.close();  }
+    public void setSocket(Socket s) { this.sock = s; }
+    public void closeSocket() throws IOException { this.sock.close();  }
 
     public void run()
     {
 
-        InputStreamReader input = new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input);
+        InputStreamReader input = null;
+        BufferedReader reader = null;
         DataOutputStream out = null;
+        String texto="";
 
 
         try {
-            out = new DataOutputStream(s.getOutputStream());
-            //objOut = new ObjectOutputStream(out);
-
+            out = new DataOutputStream(sock.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        System.out.println("connected to "+sock);
+
         while(true){
 
-            String texto;
+            //isto não está a apanhar as excepções
+
             try {
-                texto = reader.readLine();
-                out.writeUTF(texto);
-                System.out.println("texto lido:"+texto);
+                input = new InputStreamReader(System.in);
+                reader = new BufferedReader(input);
+                out.writeUTF(reader.readLine());
 
-            }catch(Exception e)	{
-
-                System.out.println("Excepção ao enviar");
-                e.printStackTrace();
-
+            } catch (IOException e){
                 try {
-                    s.close();
+                    sock.close();
                     reader.close();
                     input.close();
                     break;
+
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     System.out.println("erro ao fechar o socket");
                 }
+
             }
         }
+
+        try {
+            sock.close();
+            reader.close();
+            input.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            System.out.println("erro ao fechar o socket");
+        }
+        System.out.println("Stoping send thread");
+
     }
 
 
