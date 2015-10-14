@@ -44,6 +44,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         try
         {
         	connection = DriverManager.getConnection(url+dbName,userName,password);
+        	connection.setAutoCommit(false);
         }catch(SQLException e)
         {
           System.out.println("[DATABASE] Connection Failed! Check output console!");
