@@ -70,7 +70,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
           Properties prop = new Properties();
           InputStream input = null; 
           try {
-              input = new FileInputStream("TCPprop.properties");
+              input = new FileInputStream("tcpProp.properties");
               prop.load(input);
               rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
               remoteName=prop.getProperty("rmiName");  

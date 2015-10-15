@@ -9,7 +9,7 @@ import  java.util.ArrayList;
  */
 public class TCPServer {
 
-    private static  boolean DEBUG = true ;
+    private static  boolean DEBUG = false;
     public static 	DataServer_I dataServerInterface;
 
     public static 	int reconnection;
@@ -101,7 +101,7 @@ public class TCPServer {
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
             while (true) {
-                Socket clientSocket = listenSocket.accept(); // BLOQUEANTE
+                Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 connectedUsers++;
                 new Connection(clientSocket, connectedUsers,dataServerInterface);

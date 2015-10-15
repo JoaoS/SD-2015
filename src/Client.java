@@ -15,11 +15,11 @@ public class Client {
     public static 	int reconnection;
     public static 	String firstIP;
     public static 	String secondIP;
-    public static 	Socket s = null;
+    public static 	Socket sock = null;
     public static   SendToServer th;
-
-    public static ObjectOutputStream objOut=null;
-    public static ObjectInputStream  objIn=null;
+    public static   int threadWait;
+    public static   ObjectOutputStream objOut=null;
+    public static   ObjectInputStream  objIn=null;
 
 
     public static void main(String args[]) {
@@ -34,9 +34,10 @@ public class Client {
             secondIP=prop.getProperty("secondIP");
             reconnection =Integer.parseInt(prop.getProperty("reconnection"));
             clientPort=Integer.parseInt(prop.getProperty("clientPort"));
+            threadWait = Integer.parseInt(prop.getProperty("threadWait"));
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Error reading properties file Client.java");
+            System.out.println("Error reading properties file at Client.");
         } finally {
             if (input != null) {
                 try {
@@ -47,63 +48,98 @@ public class Client {
             }
         }
 
-        int tries=reconnection;
-        while(tries !=0)
-        {
-            try{
-                
-                if(tries>=reconnection/2){
-                    createChannels(new Socket(firstIP, clientPort));
-                }
-                else{
-                    createChannels(new Socket(secondIP, clientPort));
-                }
-            }catch(Exception ex) {
+        int tries=reconnection*2;
+        while(tries !=0){
 
-                if(s!=null){
-                    try {
-                        s.close();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        System.out.println("cannot close socket");
-                    }
-                }
-
+            if (sock==null){
                 try {
-                    Thread.sleep(1000);
-                }catch(InterruptedException threadex) {
-                    System.out.println("Program error(thread), restart please");
+                    sock = new Socket(firstIP,clientPort);
+                    tries=reconnection;
+                } catch (IOException e) {
+                    tries-=2;
+                }
+
+            }
+            else if(sock==null){
+                try {
+                    sock = new Socket(secondIP,clientPort);
+                    tries=reconnection;
+                } catch (IOException e) {
+                    tries-=2;
                 }
             }
-            tries--;
-        }
 
+            if (sock!=null){
+                try {
+                    System.out.println("channels");
+                    createChannels(sock);
+
+                }catch (IOException e){
+
+                    System.out.println("ligação perdida");
+                    try {
+                        //th.interrupt();
+                        th.join();
+                        System.out.println("thread killed");
+
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    //fechar o socket actual
+                    if(sock!=null){
+                        try {
+                            sock.close();
+                        } catch (Exception e2){
+                            e2.printStackTrace();
+                            System.out.println("cannot close socket");
+                        }
+                    }
+                    try {
+                        Thread.sleep(threadWait);
+                    }catch(InterruptedException threadex) {
+                        System.out.println("Program error(thread), restart please");
+                    }
+                    tries--;
+                }
+
+            }
+            else{
+                try {
+                    Thread.sleep(threadWait);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
         if(tries == 0){
             System.out.println("Server not found, try again later");
             System.exit(0);
+
         }
 
 
     }
-    public static void createChannels(Socket s) throws Exception 
+    public static void createChannels(Socket sock) throws IOException
     {
-        objOut = new ObjectOutputStream(s.getOutputStream());
-        objIn = new ObjectInputStream(s.getInputStream());
+        objOut = new ObjectOutputStream(sock.getOutputStream());
+        objIn = new ObjectInputStream(sock.getInputStream());
         Guide g = new Guide();
-        th=new SendToServer(s,g,objIn,objOut);
+        th=new SendToServer(sock,g,objIn,objOut);
         th.start();
         
         //reading from server
         while (true) {
-            Message reply = (Message )objIn.readObject();
+            Message reply = null;
+            try {
+                reply = (Message )objIn.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             synchronized(g)
             {
             	g.getOperations().add(reply.getOperation());
             }
-            /*if(reply.getMessage().equals("EXIT")){
-                System.out.println("Connection issues, try again later");
-                System.exit(-1);
-            }*/
             System.out.println("->"+ reply.getMessage());
         }
     }
@@ -111,21 +147,21 @@ public class Client {
 
 class SendToServer extends Thread{
 
-    public static Socket s;
+    public static Socket sock;
     public static ObjectOutputStream objOut;
     public static ObjectInputStream objIn;
     public static Guide g;
    
-    SendToServer(Socket s,Guide g,ObjectInputStream objIn,ObjectOutputStream objOut) 
+    SendToServer(Socket sock,Guide g,ObjectInputStream objIn,ObjectOutputStream objOut) 
     {
-    	this.s = s;
+    	this.sock = sock;
     	this.g = g;
     	this.objOut = objOut;
     	this.objIn = objIn;
     }
      
-    public void setSocket(Socket s) { this.s = s; }
-    public void closeSocket() throws IOException { this.s.close();  }
+    public void setSocket(Socket sock) { this.sock = sock; }
+    public void closeSocket() throws IOException { this.sock.close();  }
 
     public void run()
     {
@@ -162,7 +198,7 @@ class SendToServer extends Thread{
                 System.out.println("Error in the sender thread.");
                 e.printStackTrace();
             	try {
-                    s.close();
+                    sock.close();
                     reader.close();
                     input.close();
                 } catch (IOException e1) {
@@ -202,6 +238,7 @@ class SendToServer extends Thread{
     	try
     	{
     		objOut.writeObject(reply);
+            objOut.flush();
     	}catch(IOException ioe)
     	{
     		System.out.println("Error sending object to server at login.");
