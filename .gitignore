@@ -4,9 +4,7 @@ profiles_settings.xml
 workspace.xml
 vcs.xml
 modules.xml
-misc.xml
 compiler.xml
 out
 uiDesigner.xml
-.idea/
 mysql-connector-java-5.0.8/

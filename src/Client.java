@@ -168,30 +168,35 @@ class SendToServer extends Thread{
     	String currentOp = "";
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
-        while(true)
-        {
+
+
+
             try 
             {
-            	int check = 0;
-                synchronized(g)
+                while(true)
                 {
-                	if(!g.getOperations().isEmpty())
-                	{
-                		currentOp = g.getOperations().poll();
-                		check = 1;
-                	}
+                    int check = 0;
+                    synchronized(g)
+                    {
+                        if(!g.getOperations().isEmpty())
+                        {
+                            currentOp = g.getOperations().poll();
+                            check = 1;
+                        }
+                    }
+                    if(check != 0)
+                    {
+                        switch(currentOp)
+                        {
+                            case "initial menu":
+                                initialMenu();
+                                break;
+                            default:
+                                continue;
+                        }
+                    }
                 }
-                if(check != 0)
-                {
-                	switch(currentOp)
-                	{
-                		case "initial menu":
-                			initialMenu();
-                			break;
-                		default:
-                			continue;
-                	}
-                }
+
             }catch(Exception e)	{
                 //assumir que o server foi abaixo e matar esta thread
                 //comer a excepção
@@ -205,8 +210,13 @@ class SendToServer extends Thread{
                     e1.printStackTrace();
                     System.out.println("erro ao fechar o socket");
                 }
-            }
         }
+
+
+
+
+
+
     }
     
     
