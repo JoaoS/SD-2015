@@ -8,3 +8,5 @@ misc.xml
 compiler.xml
 out
 uiDesigner.xml
+.idea/
+mysql-connector-java-5.0.8/
