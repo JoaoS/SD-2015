@@ -292,7 +292,7 @@ public class TCPServer {
     
     public void initialMenu() throws IOException,ClassNotFoundException
     {
-        String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
+            String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
         	request.setOperation("initial menu");
         	request.setMessage(ini);
@@ -311,10 +311,10 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
-            if(reply.getOperation().equals("sign up"))
+            else if(reply.getOperation().equals("sign up"))
             {
                 String signUpresult = dataServerInterface.checkSignUp(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail());
-                if(signUpresult == null || dataServerInterface.addUser(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail()) == true)
+                if(signUpresult == null && dataServerInterface.addUser(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail()) == true)
                 {
                     request= new Message();
                     request.setOperation("sign up sucessful");
