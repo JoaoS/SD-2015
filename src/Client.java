@@ -157,7 +157,8 @@ public class Client {
             System.out.println("Aqui->Reader thread");
 
         //reading from server
-        while (true) {
+        while (true)
+        {
             Message reply = null;
             try {
                 reply = (Message )objIn.readObject();
@@ -232,7 +233,7 @@ class SendToServer extends Thread{
             }
 
         if (Client.DEBUG)
-            System.out.println("thread dead");
+            System.out.println("thread is dead");
         }
 
     

@@ -114,7 +114,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         try
         {
-            ps = connection.prepareStatement("INSERT INTO USER(username,password,bi,age,email) VALUES(?,?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO USER(name,password,bi,age,email) VALUES(?,?,?,?,?)");
             ps.setString(1,username);
             ps.setString(2,password);
             ps.setString(3,bi);
