@@ -26,6 +26,8 @@ public class TCPServer {
 
 
 
+
+
     public static void main(String args[]) {
 
 
@@ -291,16 +293,16 @@ public class TCPServer {
     
     
     public void initialMenu() throws IOException, ClassNotFoundException {
+
         String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
 
-
-        	Message request = new Message();
-        	request.setOperation("initial menu");
-        	request.setMessage(ini);
-        	objOut.writeObject(request);
-        	Message reply = new Message();
-        	reply = (Message) objIn.readObject();
-        	System.out.println("Username : " + reply.getUsername() + " Password: " + reply.getPassword());
+        Message request = new Message();
+        request.setOperation("initial menu");
+        request.setMessage(ini);
+        objOut.writeObject(request);
+        Message reply = new Message();
+        reply = (Message) objIn.readObject();
+        System.out.println("Username : " + reply.getUsername() + " Password: " + reply.getPassword());
 
         
     }

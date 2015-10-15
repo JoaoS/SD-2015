@@ -2,73 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c711e35-2cfc-46ce-ae40-b59d22648c83" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/mysql_connector_java_5_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.classpath" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.lock" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.mylyn/repositories.xml.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.resources/.root/2.tree" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.core.resources.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.egit.core.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.context.core.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.monitor.ui.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.mylyn.tasks.ui.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.team.ui.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.ide.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.workbench.prefs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.fdt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.fdx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.fnm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.frq" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.nrm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.tii" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.tis" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/segments.gen" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/segments_1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.fdt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.fdx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.fnm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.frq" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.nrm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.prx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.tii" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_1.tis" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/segments.gen" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/segments_2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.epp.logging.aeri.ui/server-config.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.m2e.logback.configuration/logback.1.6.2.20150902-0002.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.oomph.setup/workspace.setup" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.metadata/version.ini" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Trabalhos/.project" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Client.java" afterPath="$PROJECT_DIR$/src/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TCPServer.java" afterPath="$PROJECT_DIR$/src/TCPServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tcpProp.properties" afterPath="$PROJECT_DIR$/tcpProp.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SD-2015.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,8 +29,10 @@
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="300" column="30" selection-start-line="300" selection-start-column="30" selection-end-line="300" selection-end-column="30" />
+              <caret line="303" column="43" selection-start-line="303" selection-start-column="43" selection-end-line="303" selection-end-column="43" />
               <folding>
+                <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
               </folding>
@@ -106,8 +43,8 @@
       <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.2111554">
-              <caret line="219" column="53" selection-start-line="219" selection-start-column="53" selection-end-line="219" selection-end-column="53" />
+            <state vertical-scroll-proportion="-0.17943548">
+              <caret line="240" column="20" selection-start-line="240" selection-start-column="20" selection-end-line="240" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -117,10 +54,11 @@
         <entry file="file://$PROJECT_DIR$/src/Message.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+              <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
               <folding>
                 <element signature="e#730#731#0" expanded="true" />
                 <element signature="e#753#754#0" expanded="true" />
+                <element signature="e#959#960#0" expanded="true" />
                 <element signature="e#989#990#0" expanded="true" />
               </folding>
             </state>
@@ -455,7 +393,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -465,7 +403,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13304721" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -512,7 +450,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="12" />
+      <option name="time" value="13" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -525,17 +463,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="300" column="30" selection-start-line="300" selection-start-column="30" selection-end-line="300" selection-end-column="30" />
-          <folding>
-            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tcpProp.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -602,26 +529,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19521913">
-          <caret line="1319" column="0" selection-start-line="1319" selection-start-column="0" selection-end-line="1319" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding>
-            <element signature="e#730#731#0" expanded="true" />
-            <element signature="e#753#754#0" expanded="true" />
-            <element signature="e#989#990#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Guide.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -632,10 +539,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/lang/Runnable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7580645">
+          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5060484">
+          <caret line="742" column="16" selection-start-line="742" selection-start-column="16" selection-end-line="742" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+          <folding>
+            <element signature="e#730#731#0" expanded="true" />
+            <element signature="e#753#754#0" expanded="true" />
+            <element signature="e#959#960#0" expanded="true" />
+            <element signature="e#989#990#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="303" column="43" selection-start-line="303" selection-start-column="43" selection-end-line="303" selection-end-column="43" />
+          <folding>
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.2111554">
-          <caret line="219" column="53" selection-start-line="219" selection-start-column="53" selection-end-line="219" selection-end-column="53" />
+        <state vertical-scroll-proportion="-0.17943548">
+          <caret line="240" column="20" selection-start-line="240" selection-start-column="20" selection-end-line="240" selection-end-column="20" />
           <folding />
         </state>
       </provider>

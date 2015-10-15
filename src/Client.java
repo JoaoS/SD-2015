@@ -21,6 +21,7 @@ public class Client {
     public static   ObjectOutputStream objOut=null;
     public static   ObjectInputStream  objIn=null;
     public static   Guide guide;
+    public static   Message loginData=null;
 
 
 
@@ -38,6 +39,7 @@ public class Client {
             clientPort=Integer.parseInt(prop.getProperty("clientPort"));
             threadWait = Integer.parseInt(prop.getProperty("threadWait"));
         } catch (IOException ex) {
+
             ex.printStackTrace();
             System.out.println("Error reading properties file at Client.");
         } finally {
@@ -74,17 +76,21 @@ public class Client {
 
             if (sock!=null){
                 try {
-                    System.out.println("channels");
                     createChannels(sock);
 
                 }catch (IOException e){
 
-                    System.out.println("ligação perdida");
+                    if (DEBUG){
+                        System.out.println("Connection lost");
+                    }
+
                     try {
 
                         //th.interrupt();
                         th.join();
-                        System.out.println("thread killed");
+                        if(DEBUG){
+                            System.out.println("thread killed");
+                        }
 
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
@@ -94,29 +100,39 @@ public class Client {
                         try {
                             sock.close();
                             sock=null;
-                            System.out.println("closed socket");
+
+                            if(DEBUG){
+                                System.out.println("closed socket");
+                            }
+
                         } catch (Exception e2){
-                            e2.printStackTrace();
-                            System.out.println("cannot close socket");
+                            if(DEBUG){
+                                e2.printStackTrace();
+                                System.out.println("cannot close socket");
+                            }
                         }
                     }
 
                     try {
                         Thread.sleep(threadWait);
-                    }catch(InterruptedException threadex) {
-                        System.out.println("Program error(thread), restart please");
+                    }catch(InterruptedException e2) {
+                        if (DEBUG){
+                            e2.printStackTrace();
+                            System.out.println("Program error(thread), restart please");
+                        }
                     }
                     tries--;
                 }
 
             }
-            else{
-                try {
-                    Thread.sleep(threadWait);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            //
+            try {
+                Thread.sleep(threadWait);
+            }catch(InterruptedException e2) {
+                if (DEBUG){
+                    e2.printStackTrace();
+                    System.out.println("Program error(thread), restart please");
                 }
-
             }
         }
         if(tries == 0){
@@ -134,9 +150,11 @@ public class Client {
         objIn = new ObjectInputStream(sock.getInputStream());
         th=null;
         th=new SendToServer(sock,objOut);
-
-        System.out.println("Aqui->Reader thread");
         th.start();
+
+
+        if(DEBUG)
+             System.out.println("Aqui->Reader thread");
 
         //reading from server
         while (true) {
@@ -150,7 +168,8 @@ public class Client {
             {
                 guide.getOperations().add(reply.getOperation());
             }
-            System.out.println("->"+ reply.getMessage());
+            if(!reply.getMessage().equalsIgnoreCase(""))
+                System.out.println("Server->"+ reply.getMessage());
         }
     }
 }
@@ -166,7 +185,6 @@ class SendToServer extends Thread{
     	this.sock = sock;
     	this.objOut = objOut;
     }
-     
     public void setSocket(Socket sock) { this.sock = sock; }
     public void closeSocket() throws IOException { this.sock.close();  }
 
@@ -201,16 +219,15 @@ class SendToServer extends Thread{
                     }
                 }
             }
-
         }catch (Exception e){
-            if (Client.DEBUG)
+            if (Client.DEBUG) {
                 e.printStackTrace();
-            System.out.println("exiting");
-
+                System.out.println("exiting");
+            }
         }
 
-
-        System.out.println("thread dead");
+        if (Client.DEBUG)
+            System.out.println("thread dead");
 
 
     }
@@ -219,7 +236,7 @@ class SendToServer extends Thread{
     public void initialMenu() throws IOException {
     	int op = Integer.parseInt(reader.readLine());
         System.out.println("op="+op);
-        if(op  ==1)
+        if(op  == 1)//todo testar aqui se a sessao já foi iniciada
     	{
     		login();
     	}
@@ -232,14 +249,22 @@ class SendToServer extends Thread{
     public void login() throws IOException {
 
         Message reply = new Message();
-    	Scanner sc = new Scanner(System.in);
-    	System.out.println("Username : ");
-    	String username = sc.nextLine();
-    	reply.setUsername(username);
-    	System.out.println("Password : ");
-    	String password = sc.nextLine();
-    	reply.setPassword(password);
-    	reply.setOperation("login");
+
+        if(Client.loginData!=null){
+            reply=Client.loginData;
+        }
+        else {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Username : ");
+            String username = sc.nextLine();
+            reply.setUsername(username);
+            System.out.println("Password : ");
+            String password = sc.nextLine();
+            reply.setPassword(password);
+            reply.setOperation("login");
+            Client.loginData=reply;
+        }
+
     	objOut.writeObject(reply);
         objOut.flush();
 
