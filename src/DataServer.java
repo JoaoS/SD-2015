@@ -1,3 +1,4 @@
+import javax.print.DocFlavor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +8,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataServer extends UnicastRemoteObject implements DataServer_I
 {
@@ -30,7 +33,108 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     {
         return 0;
     }
-    
+
+
+    public int checkLogin(String username,String password) throws RemoteException
+    {
+        ResultSet rt = null;
+        try
+        {
+
+            String s="SELECT ID_USER FROM USER WHERE name = '" + username + "'AND password = '" + password + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                return rt.getInt(1);
+            }
+        }
+        catch(SQLException e)
+        {
+            try {
+                System.out.println("\nException at checkUserPass.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return -1;
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return 0;
+    }
+
+
+    public String checkSignUp(String username,String password,String bi, int age, String email) throws RemoteException
+    {
+        ResultSet rt = null;
+        try
+        {
+            // check username
+            String s="SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                return "Already exists one user with that name.";
+            }
+            //check bi
+            s="SELECT ID_USER FROM USER WHERE bi = '" + bi + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                return "Already exists one user with that BI";
+            }
+            //check email
+            s="SELECT ID_USER FROM USER WHERE email = '" + email + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                return "Already exists one user with that email";
+            }
+        }
+        catch(SQLException e)
+        {
+            try {
+                System.out.println("\nException at checkUserPass.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred while signing up.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+
+    public boolean addUser(String username,String password,String bi,int age, String email) throws RemoteException
+    {
+        PreparedStatement ps;
+        ResultSet rt = null;
+        try
+        {
+            ps = connection.prepareStatement("INSERT INTO USER(username,password,bi,age,email) VALUES(?,?,?,?,?)");
+            ps.setString(1,username);
+            ps.setString(2,password);
+            ps.setString(3,bi);
+            ps.setInt(4,age);
+            ps.setString(5,email);
+            ps.execute();
+            connection.commit();
+        }catch(SQLException e){
+            try {
+                System.out.println("\nException at addUser.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return false;
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return true;
+    }
+
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
         try

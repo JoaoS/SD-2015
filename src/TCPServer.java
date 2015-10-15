@@ -272,47 +272,69 @@ public class TCPServer {
         }
     //=============================
 
-    public void run() 
+    public void run()
     {
         try
         {
             while(true)
-            {	
-                 initialMenu();
-             }
-         /*}catch(EOFException e){System.out.println("Client disconnected :");
-         }catch(IOException e){System.out.println("IO:" + e);    <-----------------------------*/
-         }catch(Exception e){
-             System.out.println("Error starting the initial menu.");
-             //e.printStackTrace();
-         }
+            {
+                initialMenu();
+            }
+        }catch(EOFException e){System.out.println("Client disconnected :");
+        }catch(IOException e){System.out.println("IO:" + e);
+        }catch(Exception e){
+            System.out.println("Error starting the initial menu.");
+            if (DEBUG)
+                e.printStackTrace();
+        }
     }
     
     
-    public void initialMenu()
+    public void initialMenu() throws IOException,ClassNotFoundException
     {
         String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
-        try
-        {
         	Message request = new Message();
         	request.setOperation("initial menu");
         	request.setMessage(ini);
         	objOut.writeObject(request);
+            objOut.flush();
         	Message reply = new Message();
         	reply = (Message) objIn.readObject();
-        	System.out.println("Username : " + reply.getUsername() + " Password: " + reply.getPassword());
-        }catch(IOException ioe)
-        {
-        	System.out.println("Client disconnected.");
-        }
-        catch(ClassNotFoundException e)
-        {
-        	System.out.println("Class Message not found at initialMenu.");
-        }
-        
+        	if(reply.getOperation().equals("login"))
+            {
+                if(dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0)
+                {
+                    request= new Message();
+                    request.setOperation("login sucessful");
+                    request.setMessage("Login made with success.");
+                    objOut.writeObject(request);
+                    objOut.flush();
+                }
+            }
+            if(reply.getOperation().equals("sign up"))
+            {
+                String signUpresult = dataServerInterface.checkSignUp(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail());
+                if(signUpresult == null || dataServerInterface.addUser(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail()) == true)
+                {
+                    request= new Message();
+                    request.setOperation("sign up sucessful");
+                    request.setMessage("Sign up made with success. You have a reward of 100 dollars in your account.");
+                    objOut.writeObject(request);
+                    objOut.flush();
+                }
+                else
+                {
+                    request= new Message();
+                    request.setOperation("sign up unsucessful");
+                    request.setMessage(signUpresult);
+                    objOut.writeObject(request);
+                    objOut.flush();
+                }
+            }
     }
 
   }
+    
 }
 
 
