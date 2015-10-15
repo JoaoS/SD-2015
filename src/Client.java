@@ -168,7 +168,7 @@ public class Client {
             {
                 guide.getOperations().add(reply.getOperation());
             }
-            if(!reply.getMessage().equalsIgnoreCase(""))
+            if (reply.getMessage()!=null)
                 System.out.println("Server->"+ reply.getMessage());
         }
     }

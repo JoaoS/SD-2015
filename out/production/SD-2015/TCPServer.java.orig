@@ -9,7 +9,7 @@ import  java.util.ArrayList;
  */
 public class TCPServer {
 
-    private static  boolean DEBUG = true;
+    private static  boolean DEBUG = false;
     public static 	DataServer_I dataServerInterface;
 
     public static 	int reconnection;
@@ -208,12 +208,12 @@ public class TCPServer {
     static class Connection extends Thread {
 
     public static 	DataServer_I DataServer_Interface;
-    public static DataInputStream in;
-    public static DataOutputStream out;
-    public static Socket clientSocket;
-    public static int thread_number;//number of currently connected client
-    public static ObjectInputStream objIn;
-    public static ObjectOutputStream objOut;
+    public DataInputStream in;
+    public DataOutputStream out;
+    public Socket clientSocket;
+    public int thread_number;//number of currently connected client
+    public ObjectInputStream objIn;
+    public ObjectOutputStream objOut;
 
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
@@ -279,7 +279,8 @@ public class TCPServer {
         try
         {
             while(true)
-            {
+<<<<<<< HEAD
+            {	
                  initialMenu();
              }
          }catch(EOFException e){System.out.println("Client disconnected :");
@@ -292,7 +293,34 @@ public class TCPServer {
     }
     
     
-    public static void initialMenu() throws IOException,ClassNotFoundException
+    public void initialMenu() throws IOException, ClassNotFoundException {
+
+        String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
+
+        Message request = new Message();
+        request.setOperation("initial menu");
+        request.setMessage(ini);
+        objOut.writeObject(request);
+        Message reply = new Message();
+        reply = (Message) objIn.readObject();
+        System.out.println("Username : " + reply.getUsername() + " Password: " + reply.getPassword());
+
+        
+=======
+            {
+                initialMenu();
+            }
+        }catch(EOFException e){System.out.println("Client disconnected :");
+        }catch(IOException e){System.out.println("IO:" + e);
+        }catch(Exception e){
+            System.out.println("Error starting the initial menu.");
+            if (DEBUG)
+                e.printStackTrace();
+        }
+    }
+    
+    
+    public void initialMenu() throws IOException,ClassNotFoundException
     {
         String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
@@ -333,6 +361,7 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
+>>>>>>> 07ae8b9c5d07640ac96043d2f07af5cab1f1d9be
     }
 
   }
