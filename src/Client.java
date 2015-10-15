@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Client {
 
-    public static boolean DEBUG=true;
+    public static boolean DEBUG=false;
 
 
     public static   int clientPort;
@@ -20,6 +20,8 @@ public class Client {
     public static   int threadWait;
     public static   ObjectOutputStream objOut=null;
     public static   ObjectInputStream  objIn=null;
+    public static   Guide guide;
+
 
 
     public static void main(String args[]) {
@@ -48,6 +50,7 @@ public class Client {
             }
         }
 
+        guide=new Guide();
         int tries=reconnection*2;
         while(tries !=0){
 
@@ -78,6 +81,7 @@ public class Client {
 
                     System.out.println("ligação perdida");
                     try {
+
                         //th.interrupt();
                         th.join();
                         System.out.println("thread killed");
@@ -85,15 +89,18 @@ public class Client {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                    //fechar o socket actual
+
                     if(sock!=null){
                         try {
                             sock.close();
+                            sock=null;
+                            System.out.println("closed socket");
                         } catch (Exception e2){
                             e2.printStackTrace();
                             System.out.println("cannot close socket");
                         }
                     }
+
                     try {
                         Thread.sleep(threadWait);
                     }catch(InterruptedException threadex) {
@@ -123,11 +130,14 @@ public class Client {
     public static void createChannels(Socket sock) throws IOException
     {
         objOut = new ObjectOutputStream(sock.getOutputStream());
+        objOut.flush();
         objIn = new ObjectInputStream(sock.getInputStream());
-        Guide g = new Guide();
-        th=new SendToServer(sock,g,objIn,objOut);
+        th=null;
+        th=new SendToServer(sock,objOut);
+
+        System.out.println("Aqui->Reader thread");
         th.start();
-        
+
         //reading from server
         while (true) {
             Message reply = null;
@@ -136,9 +146,9 @@ public class Client {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            synchronized(g)
+            synchronized(guide)
             {
-            	g.getOperations().add(reply.getOperation());
+                guide.getOperations().add(reply.getOperation());
             }
             System.out.println("->"+ reply.getMessage());
         }
@@ -149,15 +159,12 @@ class SendToServer extends Thread{
 
     public static Socket sock;
     public static ObjectOutputStream objOut;
-    public static ObjectInputStream objIn;
-    public static Guide g;
-   
-    SendToServer(Socket sock,Guide g,ObjectInputStream objIn,ObjectOutputStream objOut) 
-    {
+    BufferedReader reader;
+
+
+    SendToServer(Socket sock,ObjectOutputStream objOut){
     	this.sock = sock;
-    	this.g = g;
     	this.objOut = objOut;
-    	this.objIn = objIn;
     }
      
     public void setSocket(Socket sock) { this.sock = sock; }
@@ -167,64 +174,52 @@ class SendToServer extends Thread{
     {
     	String currentOp = "";
         InputStreamReader input = new InputStreamReader(System.in);
-        BufferedReader reader = new BufferedReader(input);
+        reader = new BufferedReader(input);
 
-
-
-            try 
+        try
+        {
+            while(true)
             {
-                while(true)
+                int check = 0;
+                synchronized(Client.guide)
                 {
-                    int check = 0;
-                    synchronized(g)
+                    if(!Client.guide.getOperations().isEmpty())
                     {
-                        if(!g.getOperations().isEmpty())
-                        {
-                            currentOp = g.getOperations().poll();
-                            check = 1;
-                        }
-                    }
-                    if(check != 0)
-                    {
-                        switch(currentOp)
-                        {
-                            case "initial menu":
-                                initialMenu();
-                                break;
-                            default:
-                                continue;
-                        }
+                        currentOp = Client.guide.getOperations().poll();
+                        check = 1;
                     }
                 }
+                if(check != 0)
+                {
+                    switch(currentOp)
+                    {
+                        case "initial menu":
+                            initialMenu();
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+            }
 
-            }catch(Exception e)	{
-                //assumir que o server foi abaixo e matar esta thread
-                //comer a excepção
-                System.out.println("Error in the sender thread.");
+        }catch (Exception e){
+            if (Client.DEBUG)
                 e.printStackTrace();
-            	try {
-                    sock.close();
-                    reader.close();
-                    input.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                    System.out.println("erro ao fechar o socket");
-                }
+            System.out.println("exiting");
+
         }
 
 
-
-
+        System.out.println("thread dead");
 
 
     }
     
     
-    public void initialMenu()
-    {
-    	Scanner sc = new Scanner(System.in);
-    	int op = sc.nextInt();
-    	if(op  ==1)
+    public void initialMenu() throws IOException {
+    	int op = Integer.parseInt(reader.readLine());
+        System.out.println("op="+op);
+        if(op  ==1)
     	{
     		login();
     	}
@@ -234,9 +229,9 @@ class SendToServer extends Thread{
     	}
     }
     
-    public void login() 
-    {
-    	Message reply = new Message();
+    public void login() throws IOException {
+
+        Message reply = new Message();
     	Scanner sc = new Scanner(System.in);
     	System.out.println("Username : ");
     	String username = sc.nextLine();
@@ -245,14 +240,9 @@ class SendToServer extends Thread{
     	String password = sc.nextLine();
     	reply.setPassword(password);
     	reply.setOperation("login");
-    	try
-    	{
-    		objOut.writeObject(reply);
-            objOut.flush();
-    	}catch(IOException ioe)
-    	{
-    		System.out.println("Error sending object to server at login.");
-    	}
+    	objOut.writeObject(reply);
+        objOut.flush();
+
     }
 
 }
