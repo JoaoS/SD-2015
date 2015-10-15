@@ -10,7 +10,9 @@ public class Message implements Serializable {
     private String operation;
     private int menuOption;
     private String message;
-
+	private int age;
+	private String bi;
+	private String email;
     /*  option's menu
     *  login->1
     *
@@ -64,4 +66,28 @@ public class Message implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getBi() {
+		return bi;
+	}
+
+	public void setBi(String bi) {
+		this.bi = bi;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

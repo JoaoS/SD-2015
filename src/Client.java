@@ -26,7 +26,7 @@ public class Client {
 
 
     public static void main(String args[]) {
-        
+
         //read properties file
         Properties prop = new Properties();
         InputStream input = null;
@@ -149,12 +149,12 @@ public class Client {
         objOut.flush();
         objIn = new ObjectInputStream(sock.getInputStream());
         th=null;
-        th=new SendToServer(sock,objOut);
+        th=new SendToServer(sock,objIn,objOut);
         th.start();
 
 
         if(DEBUG)
-             System.out.println("Aqui->Reader thread");
+            System.out.println("Aqui->Reader thread");
 
         //reading from server
         while (true) {
@@ -174,17 +174,21 @@ public class Client {
     }
 }
 
+
 class SendToServer extends Thread{
 
     public static Socket sock;
     public static ObjectOutputStream objOut;
+    public static ObjectInputStream objIn;
     BufferedReader reader;
-
-
-    SendToServer(Socket sock,ObjectOutputStream objOut){
+   
+    SendToServer(Socket sock,ObjectInputStream objIn,ObjectOutputStream objOut)
+    {
     	this.sock = sock;
     	this.objOut = objOut;
+    	this.objIn = objIn;
     }
+     
     public void setSocket(Socket sock) { this.sock = sock; }
     public void closeSocket() throws IOException { this.sock.close();  }
 
@@ -194,80 +198,113 @@ class SendToServer extends Thread{
         InputStreamReader input = new InputStreamReader(System.in);
         reader = new BufferedReader(input);
 
-        try
-        {
-            while(true)
+            try 
             {
-                int check = 0;
-                synchronized(Client.guide)
+                while(true)
                 {
-                    if(!Client.guide.getOperations().isEmpty())
+                    int check = 0;
+                    synchronized(Client.guide)
                     {
-                        currentOp = Client.guide.getOperations().poll();
-                        check = 1;
+                        if(!Client.guide.getOperations().isEmpty())
+                        {
+                            currentOp = Client.guide.getOperations().poll();
+                            check = 1;
+                        }
+                    }
+                    if(check != 0)
+                    {
+                        switch(currentOp)
+                        {
+                            case "initial menu":
+                                initialMenu();
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
-                if(check != 0)
-                {
-                    switch(currentOp)
-                    {
-                        case "initial menu":
-                            initialMenu();
-                            break;
-                        default:
-                            continue;
-                    }
+
+            }catch (Exception e){
+                if (Client.DEBUG) {
+                    e.printStackTrace();
+                    System.out.println("exiting");
                 }
             }
-        }catch (Exception e){
-            if (Client.DEBUG) {
-                e.printStackTrace();
-                System.out.println("exiting");
-            }
-        }
 
         if (Client.DEBUG)
             System.out.println("thread dead");
-
-
-    }
-    
-    
-    public void initialMenu() throws IOException {
-    	int op = Integer.parseInt(reader.readLine());
-        System.out.println("op="+op);
-        if(op  == 1)//todo testar aqui se a sessao já foi iniciada
-    	{
-    		login();
-    	}
-    	else
-    	{
-    		;
-    	}
-    }
-    
-    public void login() throws IOException {
-
-        Message reply = new Message();
-
-        if(Client.loginData!=null){
-            reply=Client.loginData;
         }
-        else {
-            Scanner sc = new Scanner(System.in);
+
+    
+    
+    public void initialMenu() throws IOException
+    {
+            int op = Integer.parseInt(reader.readLine());
+            if(op  ==1) //todo testar aqui se a sessao já foi iniciada
+            {
+                login();
+            }
+            else
+            {
+                signUp();
+            }
+    }
+    
+    public void login() throws IOException
+    {
+        Message request = new Message();
+        if (Client.loginData != null) {
+            request = Client.loginData;
+        }
+        else
+        {
             System.out.println("Username : ");
-            String username = sc.nextLine();
-            reply.setUsername(username);
+            String username = null;
+            username = reader.readLine();
+            request.setUsername(username);
             System.out.println("Password : ");
-            String password = sc.nextLine();
-            reply.setPassword(password);
-            reply.setOperation("login");
-            Client.loginData=reply;
+            String password = reader.readLine();
+            request.setPassword(password);
+            request.setOperation("login");
+            Client.loginData=request;
         }
-
-    	objOut.writeObject(reply);
+        objOut.writeObject(request);
         objOut.flush();
-
     }
 
+    public void signUp() throws IOException
+    {
+        int check = 0;
+            Message request = new Message();
+            System.out.println("Username : ");
+            String username = reader.readLine();
+            System.out.println("Password : ");
+            String password = reader.readLine();
+            System.out.println("BI : ");
+            String bi = reader.readLine();
+            System.out.println("Age : ");
+            int age = Integer.parseInt(reader.readLine());
+            System.out.println("Email : ");
+            String email = reader.readLine();
+            while(check == 0) {
+                String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+                java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+                java.util.regex.Matcher m = p.matcher(email);
+                if (m.matches()) {
+                    check = 1;
+                } else {
+                    System.out.println("Invalid e-mail address.\n\nEmail : ");
+                    email = reader.readLine();
+                }
+            }
+            request.setUsername(username);
+            request.setPassword(password);
+            request.setBi(bi);
+            request.setAge(age);
+            request.setEmail(email);
+            request.setOperation("sign up");
+            objOut.writeObject(request);
+            objOut.flush();
+    }
 }
+
