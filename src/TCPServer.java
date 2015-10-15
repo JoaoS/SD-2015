@@ -223,8 +223,8 @@ public class TCPServer {
             in = new DataInputStream(clientSocket.getInputStream());
             out = new DataOutputStream(clientSocket.getOutputStream());
 
-           // objIn = new ObjectInputStream(in);
-            //objOut = new ObjectOutputStream(out);
+            objIn = new ObjectInputStream(in);
+            objOut = new ObjectOutputStream(out);
 
             this.start();
         } catch (IOException e) {
@@ -283,11 +283,12 @@ public class TCPServer {
             int i=0;
             while (true){
 
-               out.writeUTF("teste nr "+i);
+                objOut.writeUTF("teste nr "+i);
                 i++;
+                objOut.flush();
 
 
-                System.out.println(""+in.readUTF());
+                System.out.println(""+objIn.readUTF());
 
             }
         } catch (IOException e) {

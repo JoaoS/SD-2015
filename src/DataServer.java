@@ -13,7 +13,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
 
     private static final long serialVersionUID = 1L;
     public static int rmiPort;
-    public static String remoteName;
+    public static String rmiName;
     public static String url = "jdbc:mysql://localhost:8889/";
 	public static String dbName = "SD";
 	public static String driver = "com.mysql.jdbc.Driver";
@@ -72,10 +72,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
           Properties prop = new Properties();
           InputStream input = null; 
           try {
-              input = new FileInputStream("DataServer.properties");
+              input = new FileInputStream("tcpProp.properties");
               prop.load(input);
               rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
-              remoteName=prop.getProperty("remoteName");  
+              rmiName=prop.getProperty("rmiName");  
               url = prop.getProperty("url"); 
               dbName = prop.getProperty("dbName"); 
               driver = prop.getProperty("driver"); 
@@ -83,7 +83,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
               password = prop.getProperty("password"); 
               } catch (IOException ex) {
       			System.out.println("Error loading DataServer properties file. The default values were set");
-      			remoteName = "DataServer";
+      			rmiName = "DataServer";
       			rmiPort = 7000;
       		    url = "jdbc:mysql://localhost:8889/";
       			dbName = "SD";
@@ -103,7 +103,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
           
         //-----------------bind remote object-----------------
           Registry r = LocateRegistry.createRegistry(rmiPort);
-          r.rebind(remoteName,ds);
+          r.rebind(rmiName,ds);
           System.out.println("DataServer ready.");
         }catch(RemoteException re)
         {

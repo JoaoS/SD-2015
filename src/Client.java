@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class Client {
 
-    public static boolean DEBUG=true;
+    public static boolean DEBUG=false;
 
     public static   int clientPort;
     public static 	int reconnection;
@@ -73,20 +73,20 @@ public class Client {
                         sock = new Socket(firstIP,clientPort);
                         tries=reconnection;
                     } catch (IOException e) {
-                        tries--;
+                        tries-=2;
                     }
 
                 }
-                /*
+
                 else if(sock==null){
                     try {
                         sock = new Socket("192.168.1.254",clientPort);
                         tries=reconnection;
                     } catch (IOException e) {
-                        tries--;
+                         tries-=2;
                     }
                 }
-                */
+
                 if (sock!=null){
                     try {
                         System.out.println("channels");
@@ -96,7 +96,7 @@ public class Client {
 
                         System.out.println("ligação perdida");
                         try {
-                            th.interrupt();
+                            //th.interrupt();
                             th.join();
                             System.out.println("thread killed");
 
@@ -142,18 +142,10 @@ public class Client {
 
     public static void createChannels(Socket sock) throws IOException {
 
-        teste++;
-        System.out.println("->>>>>>>teste="+teste+" sock"+sock);
 
-        DataOutputStream out = new DataOutputStream(sock.getOutputStream());
-        DataInputStream in = new DataInputStream(sock.getInputStream());
-        ObjectOutputStream objOut = new ObjectOutputStream(out);
-        objOut.flush();
-        ObjectInputStream objIn = new ObjectInputStream(in);
+        ObjectOutputStream objOut = new ObjectOutputStream(sock.getOutputStream());
+        ObjectInputStream objIn = new ObjectInputStream(sock.getInputStream());
 
-        System.out.println("yoyoyo");
-
-        th=null;
         th=new SendToServer();
         th.setObjOut(objOut);
         th.start();
@@ -171,7 +163,6 @@ class SendToServer extends Thread{
 
     public static ObjectOutputStream objOut=null;
 
-
     SendToServer(){}
     public static void setObjOut(ObjectOutputStream objOut) {
         SendToServer.objOut = objOut;
@@ -182,38 +173,43 @@ class SendToServer extends Thread{
         InputStreamReader input = null;
         BufferedReader reader = null;
 
-        while(!Thread.interrupted()){
 
-            //isto não está a apanhar as excepções
-            try {
+        try {
+            while(true){
                 input = new InputStreamReader(System.in);
                 reader = new BufferedReader(input);
                 String texto=reader.readLine();
                 objOut.writeUTF(texto);
+                objOut.flush();
+            }
 
-            } catch (IOException e){
+        }catch (IOException e){
+            if (Client.DEBUG)
                 e.printStackTrace();
-                try {
-                    reader.close();
-                    input.close();
-                } catch (Exception e1) {
+            try {
+                System.out.println("fechar socket" );
+            } catch (Exception e1) {
+                if (Client.DEBUG){
                     e1.printStackTrace();
                     System.out.println("erro ao fechar o socket");
                 }
+            }
 
-            }
-        }
-        try {
-            if (reader!=null && input!= null){
-                reader.close();
-                input.close();
-            }
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            System.out.println("erro ao fechar o socket");
         }
 
-        System.out.println("Stoping send thread");
+        /*finally {
+            try {
+                if (reader!=null && input!= null){
+                    reader.close();
+                    input.close();
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                System.out.println("erro ao fechar o socket");
+            }
+
+        }*/
+         
 
     }
 
