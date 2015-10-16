@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Client {
 
-    public static boolean DEBUG=false;
+    public static boolean DEBUG=true;
 
 
     public static   int clientPort;
@@ -22,6 +22,7 @@ public class Client {
     public static   ObjectInputStream  objIn=null;
     public static   Guide guide;
     public static   Message loginData=null;
+    public static   int alreadyLogin=0;
 
 
 
@@ -55,27 +56,42 @@ public class Client {
         guide=new Guide();
         int tries=reconnection*2;
         while(tries !=0){
+            sock=null;
 
             if (sock==null){
                 try {
                     sock = new Socket(firstIP,clientPort);
                     tries=reconnection;
+                    if (DEBUG)
+                        System.out.println("connecting to first");
                 } catch (IOException e) {
                     tries-=2;
+                    if (DEBUG)
+                        System.out.println("sock value2="+sock);
                 }
 
             }
-            else if(sock==null){
+            if (sock==null){
+                System.out.println("aqui");
                 try {
                     sock = new Socket(secondIP,clientPort);
+                    System.out.println("secondIP="+secondIP);
                     tries=reconnection;
+                    if (DEBUG)
+                        System.out.println("connecting to second");
                 } catch (IOException e) {
                     tries-=2;
+                    if (DEBUG)
+                        System.out.println("sock value3="+sock);
                 }
+
             }
 
             if (sock!=null){
                 try {
+                    if(DEBUG){
+                        System.out.println("Socket status="+sock);
+                    }
                     createChannels(sock);
 
                 }catch (IOException e){
@@ -84,19 +100,19 @@ public class Client {
                         System.out.println("Connection lost");
                     }
 
-                    try {
-
-                        //th.interrupt();
-                        th.join();
-                        if(DEBUG){
-                            System.out.println("thread killed");
+                    if(th!=null){
+                        try {
+                            if(DEBUG){
+                                System.out.println("Wait for sender thread to die");
+                            }
+                            th.join();
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
                         }
-
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
                     }
 
                     if(sock!=null){
+
                         try {
                             sock.close();
                             sock=null;
@@ -160,8 +176,16 @@ public class Client {
         while (true)
         {
             Message reply = null;
+
             try {
-                reply = (Message )objIn.readObject();
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                reply = (Message)objIn.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -220,6 +244,7 @@ class SendToServer extends Thread{
                                 initialMenu();
                                 break;
                             case "login successful":
+                                Client.alreadyLogin=1;
                                 secundaryMenu();
                                 break;
                             default:
@@ -248,7 +273,7 @@ class SendToServer extends Thread{
             int check = 0;
             while(check == 0)
             {
-                if(op  ==1) //todo testar aqui se a sessao já foi iniciada
+                if(op == 1 || Client.alreadyLogin==1) //todo testar aqui se a sessao já foi iniciada
                 {
                     check = 1;
                     login();

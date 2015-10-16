@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -23,8 +24,6 @@ public class TCPServer {
     private static String rmiIp;
     private static String firstIP;
     private static String secondIP;
-
-
 
 
 
@@ -80,7 +79,9 @@ public class TCPServer {
         {
             System.getProperties().put("java.security.policy", "security.policy");
             System.setSecurityManager(new RMISecurityManager());
-            dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiPort).lookup(rmiName);
+            dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(rmiName);
+            //dataServerInterface = (DataServer_I) Naming.lookup("rmi://" + rmiIp + ":" + rmiPort + "/" + rmiName);
+
         } catch (Exception e){
             if(DEBUG)
                 e.printStackTrace();
@@ -309,7 +310,7 @@ public class TCPServer {
     }
     
     
-    public static void initialMenu() throws IOException,ClassNotFoundException
+    public  void initialMenu() throws IOException,ClassNotFoundException
     {
             String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
@@ -353,7 +354,7 @@ public class TCPServer {
             }
     }
 
-    public static void secundaryMenu() throws IOException,ClassNotFoundException
+    public  void secundaryMenu() throws IOException,ClassNotFoundException
     {
         Message reply= new Message();
         reply = (Message) objIn.readObject();
