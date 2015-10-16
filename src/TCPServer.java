@@ -238,6 +238,9 @@ public class TCPServer {
 
      public void restartRmi() throws IOException
      {
+
+         if (DEBUG)
+             System.out.println("Attempting to reconnect to RMI");
             int tries = TCPServer.reconnection;
             while(tries!=0)
             {
@@ -287,6 +290,7 @@ public class TCPServer {
         {
             try {
                 restartRmi();
+
             } catch (IOException e1) {
                 if (DEBUG)
                     e1.printStackTrace();
@@ -304,6 +308,11 @@ public class TCPServer {
         catch(Exception e)
         {
             System.out.println("Error starting the initial menu.");
+            try {
+                restartRmi();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             if (DEBUG)
                 e.printStackTrace();
         }
@@ -320,8 +329,8 @@ public class TCPServer {
             objOut.flush();
         	Message reply = new Message();
         	reply = (Message) objIn.readObject();
-        	if(reply.getOperation().equals("login"))
-            {
+        	if(reply.getOperation().equals("login")){
+
                 if(dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0)
                 {
                     request= new Message();

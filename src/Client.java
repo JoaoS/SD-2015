@@ -25,6 +25,9 @@ public class Client {
     public static   int alreadyLogin=0;
 
 
+    public static int signalToTerminate=0;
+
+
 
     public static void main(String args[]) {
 
@@ -55,34 +58,34 @@ public class Client {
 
         guide=new Guide();
         int tries=reconnection*2;
-        while(tries !=0){
+        while(tries >0){
             sock=null;
+            signalToTerminate=0;
 
             if (sock==null){
                 try {
                     sock = new Socket(firstIP,clientPort);
-                    tries=reconnection;
+                    tries=reconnection*2;
                     if (DEBUG)
                         System.out.println("connecting to first");
                 } catch (IOException e) {
-                    tries-=2;
+                    tries--;
                     if (DEBUG)
-                        System.out.println("sock value2="+sock);
+                        System.out.println("Remaining tries="+tries+"->First server");
                 }
 
             }
             if (sock==null){
-                System.out.println("aqui");
                 try {
                     sock = new Socket(secondIP,clientPort);
                     System.out.println("secondIP="+secondIP);
-                    tries=reconnection;
+                    tries=reconnection*2;
                     if (DEBUG)
                         System.out.println("connecting to second");
                 } catch (IOException e) {
-                    tries-=2;
+                    tries--;
                     if (DEBUG)
-                        System.out.println("sock value3="+sock);
+                        System.out.println("Remaining tries="+tries+"->Second server");
                 }
 
             }
@@ -105,6 +108,7 @@ public class Client {
                             if(DEBUG){
                                 System.out.println("Wait for sender thread to die");
                             }
+                            signalToTerminate=1;
                             th.join();
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
@@ -184,7 +188,7 @@ public class Client {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
+                //todo verificar se as classes message estão em sintonia
                 reply = (Message)objIn.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -227,6 +231,9 @@ class SendToServer extends Thread{
             {
                 while(true)
                 {
+                    if (Client.signalToTerminate==1)
+                        break;
+
                     int check = 0;
                     synchronized(Client.guide)
                     {
@@ -310,8 +317,10 @@ class SendToServer extends Thread{
             request.setOperation("login");
             Client.loginData=request;
         }
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.signalToTerminate!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
     public void signUp() throws IOException
