@@ -9,7 +9,7 @@ import  java.util.ArrayList;
  */
 public class TCPServer {
 
-    private static  boolean DEBUG = false;
+    private static  boolean DEBUG = true;
     public static 	DataServer_I dataServerInterface;
 
     public static 	int reconnection;
@@ -78,7 +78,7 @@ public class TCPServer {
         {
             System.getProperties().put("java.security.policy", "security.policy");
             System.setSecurityManager(new RMISecurityManager());
-            dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiPort).lookup(rmiName);
+            dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(rmiName);
         } catch (Exception e){
             if(DEBUG)
                 e.printStackTrace();
@@ -327,39 +327,56 @@ public class TCPServer {
                 {
                     request= new Message();
                     request.setOperation("sign up unsucessful");
-                    request.setMessage(signUpresult);
+                    String send = "Sign up unsuccessfull. " + signUpresult;
+                    request.setMessage(send);
                     objOut.writeObject(request);
                     objOut.flush();
                 }
             }
     }
 
-    public void secundaryMenu() throws IOException,ClassNotFoundException
-    {
-        Message reply= new Message();
-        reply = (Message) objIn.readObject();
-        Message request= new Message();
+    public void secundaryMenu() throws IOException,ClassNotFoundException {
+        Message reply = new Message();
+        Message request = new Message();
         long accountBalance;
-        if(reply.getOperation().equals("check account balance"))
+        reply = (Message) objIn.readObject();
+        while (reply.getOperation().equals("Exit secundary menu") == false)
         {
-            if((accountBalance = dataServerInterface.checkAccountBalance(reply.getUsername())) >=0)
-            {
-                String send = "You have " + accountBalance + " dollars in your account.";
-                request.setOperation("check account balance sucessful");
-                request.setMessage(send);
-                objOut.writeObject(request);
-                objOut.flush();
+
+            if (reply.getOperation().equals("check account balance")) {
+                if ((accountBalance = dataServerInterface.checkAccountBalance(reply.getUsername())) >= 0) {
+                    String send = "You have " + accountBalance + " dollars in your account.";
+                    request.setOperation("check account balance sucessful");
+                    request.setMessage(send);
+                    objOut.writeObject(request);
+                    objOut.flush();
+                } else {
+                    request.setOperation("check account balance unsucessful");
+                    request.setMessage("Errors occured while checking your account balance.");
+                    objOut.writeObject(request);
+                    objOut.flush();
+                }
             }
-            else
-            {
-                request.setOperation("check account balance unsucessful");
-                request.setMessage("Errors occured while checking your account balance.");
-                objOut.writeObject(request);
-                objOut.flush();
+            if (reply.getOperation().equals("create project")) {
+                String checkResult = dataServerInterface.checkProject(reply.getProjectName());
+                if (checkResult == null && dataServerInterface.addProject(reply.getProjectName(), reply.getProjectDescription(), reply.getProjectLimitDate(), reply.getProjectTargetValue(), reply.getProjectEnterprise()) == true) {
+                    request = new Message();
+                    request.setOperation("create project sucessful");
+                    request.setMessage("Project created with success.");
+                    objOut.writeObject(request);
+                    objOut.flush();
+                } else {
+                    request = new Message();
+                    request.setOperation("create project unsucessful");
+                    String send = "Creation of the project failed. " + checkResult;
+                    request.setMessage(send);
+                    objOut.writeObject(request);
+                    objOut.flush();
+                }
             }
+            reply = (Message) objIn.readObject();
         }
     }
-
   }
     
 }

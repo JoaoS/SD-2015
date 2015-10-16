@@ -2,6 +2,8 @@
  * Created by joaosubtil on 09/10/15.
  */
 
+import sun.text.IntHashtable;
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -291,7 +293,7 @@ class SendToServer extends Thread{
 
     public void signUp() throws IOException
     {
-        int check = 0;
+            int check = 0;
             Message request = new Message();
             System.out.println("Username : ");
             String username = reader.readLine();
@@ -350,6 +352,7 @@ class SendToServer extends Thread{
                 case 5:
                     break;
                 case 6:
+                    createProject();
                     break;
                 case 7:
                     break;
@@ -363,6 +366,29 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check account balance");
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void createProject() throws IOException
+    {
+        Message request = new Message();
+        System.out.println("Name : ");
+        String name = reader.readLine();
+        System.out.println("Description : ");               //-------------------------->todo juntar administrador
+        String description = reader.readLine();
+        System.out.println("Limit Date: ");
+        String limitDate = reader.readLine();               //-------------------------->todo validação da data
+        System.out.println("Target value: ");
+        long targetValue  = Long.parseLong(reader.readLine());
+        System.out.println("Enterprise(just press enter if this is project is individual) : ");
+        String enterprise= reader.readLine();
+        request.setProjectName(name);
+        request.setProjectDescription(description);
+        request.setProjectLimitDate(limitDate);
+        request.setProjectTargetValue(targetValue);
+        request.setProjectEnterprise(enterprise);
+        request.setOperation("create project");
         objOut.writeObject(request);
         objOut.flush();
     }

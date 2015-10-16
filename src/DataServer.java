@@ -52,7 +52,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         catch(SQLException e)
         {
             try {
-                System.out.println("\nException at checkUserPass.\n");
+                System.out.println("\nException at checkLogin.\n");
                 e.printStackTrace();
                 connection.rollback();
                 return -1;
@@ -164,6 +164,62 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return accountBalance;
     }
 
+
+   public boolean addProject(String name,String description,String limitDate,long targetValue, String enterprise) throws RemoteException
+    {
+        PreparedStatement ps;
+        ResultSet rt = null;
+        try
+        {
+            ps = connection.prepareStatement("INSERT INTO PROJECT(name,description,limit_date,target_value,enterprise) VALUES(?,?,?,?,?)");
+            ps.setString(1,name);
+            ps.setString(2,description);
+            ps.setString(3,limitDate);
+            ps.setLong(4, targetValue);
+            ps.setString(5,enterprise);
+            ps.execute();
+            connection.commit();
+        }catch(SQLException e){
+            try {
+                System.out.println("\nException at addProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return false;
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return true;
+    }
+
+
+    public String checkProject(String name) throws RemoteException
+    {
+        ResultSet rt = null;
+        try
+        {
+            // check username
+            String s="SELECT ID_Project FROM PROJECT WHERE name = '" + name + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                return "Already exists one project with that name.";
+            }
+        }
+        catch(SQLException e)
+        {
+            try {
+                System.out.println("\nException at checkProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred during the creation of the project.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {

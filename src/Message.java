@@ -8,25 +8,20 @@ public class Message implements Serializable {
     private String username;
     private String password;
     private String operation;
-    private int menuOption;
     private String message;
 	private int age;
 	private String bi;
 	private String email;
-    /*  option's menu
-    *  login->1
-    *
-    *
-    * */
+	private String projectName;
+    private String projectDescription;
+    private String projectLimitDate;
+    private long projectTargetValue;
+    private String projectEnterprise;
+
 
     public Message() {
 		super();
 	}
-
-    
-    public int getMenuOption() {
-        return menuOption;
-    }
 
 	public String getUsername() {
 		return username;
@@ -54,15 +49,9 @@ public class Message implements Serializable {
 		this.operation = operation;
 	}
 
-
-	public void setMenuOption(int menuOption) {
-        this.menuOption = menuOption;
-    }
-
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
         this.message = message;
     }
@@ -90,4 +79,44 @@ public class Message implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
+
+    public String getProjectLimitDate() {
+        return projectLimitDate;
+    }
+
+    public void setProjectLimitDate(String projectLimitDate) {
+        this.projectLimitDate = projectLimitDate;
+    }
+
+    public long getProjectTargetValue() {
+        return projectTargetValue;
+    }
+
+    public void setProjectTargetValue(long projectTargetValue) {
+        this.projectTargetValue = projectTargetValue;
+    }
+
+    public String getProjectEnterprise() {
+        return projectEnterprise;
+    }
+
+    public void setProjectEnterprise(String projectEnterprise) {
+        this.projectEnterprise = projectEnterprise;
+    }
 }

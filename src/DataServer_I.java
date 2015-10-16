@@ -7,4 +7,7 @@ public interface DataServer_I extends Remote {
     public String checkSignUp(String username,String password,String bi, int age, String email) throws RemoteException;
     public boolean addUser(String username,String password,String bi,int age, String email) throws RemoteException;
     public long checkAccountBalance(String userName) throws RemoteException;
+    public boolean addProject(String name,String description,String limitDate,long targetValue, String enterprise) throws RemoteException;
+    public String checkProject(String name) throws RemoteException;
+
 }
