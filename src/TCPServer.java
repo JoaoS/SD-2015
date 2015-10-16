@@ -1,9 +1,9 @@
 import java.io.*;
 import java.net.*;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Properties;
-import  java.util.ArrayList;
 /**
  * Created by joaosubtil on 07/10/15.
  */
@@ -276,19 +276,36 @@ public class TCPServer {
 
     public void run()
     {
-        try
+        try {
+
+            while (true) {
+                initialMenu();
+            }
+
+        }catch (RemoteException e)
         {
-            while(true)
-            {
-                 initialMenu();
-             }
-         }catch(EOFException e){System.out.println("Client disconnected :");
-         }catch(IOException e){System.out.println("IO:" + e);
-         }catch(Exception e){
-             System.out.println("Error starting the initial menu.");
-             if (DEBUG)
+            try {
+                restartRmi();
+            } catch (IOException e1) {
+                if (DEBUG)
+                    e1.printStackTrace();
+            }
+
+        }
+        catch(EOFException e)
+        {
+            System.out.println("Client disconnected :");
+        }
+        catch(IOException e)
+        {
+            System.out.println("IO:" + e);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error starting the initial menu.");
+            if (DEBUG)
                 e.printStackTrace();
-         }
+        }
     }
     
     
@@ -336,7 +353,7 @@ public class TCPServer {
             }
     }
 
-    public void secundaryMenu() throws IOException,ClassNotFoundException
+    public static void secundaryMenu() throws IOException,ClassNotFoundException
     {
         Message reply= new Message();
         reply = (Message) objIn.readObject();
