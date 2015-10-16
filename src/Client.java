@@ -219,6 +219,9 @@ class SendToServer extends Thread{
                             case "initial menu":
                                 initialMenu();
                                 break;
+                            case "login successful":
+                                secundaryMenu();
+                                break;
                             default:
                                 break;
                         }
@@ -240,14 +243,27 @@ class SendToServer extends Thread{
     
     public void initialMenu() throws IOException
     {
+            String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
             int op = Integer.parseInt(reader.readLine());
-            if(op  ==1) //todo testar aqui se a sessao já foi iniciada
+            int check = 0;
+            while(check == 0)
             {
-                login();
-            }
-            else
-            {
-                signUp();
+                if(op  ==1) //todo testar aqui se a sessao já foi iniciada
+                {
+                    check = 1;
+                    login();
+                }
+                else if(op ==2)
+                {
+                    check = 1;
+                    signUp();
+                }
+                else
+                {
+
+                    System.out.println("Invalid choice." + ini);
+                    op = Integer.parseInt(reader.readLine());
+                }
             }
     }
     
@@ -307,5 +323,49 @@ class SendToServer extends Thread{
             objOut.writeObject(request);
             objOut.flush();
     }
+
+
+    public  void secundaryMenu()throws IOException
+    {
+        int op = 0;
+        String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
+        do{
+            do{
+                System.out.println(ini);
+                op =Integer.parseInt(reader.readLine());
+                if(op <= 0 || op>7)
+                    System.out.println("Select a valid option.\n");
+            }while(op <= 0 || op>7);
+            switch(op)
+            {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    checkAccountBalance();
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+            }
+        }while(op != 0);
+    }
+
+
+    public void checkAccountBalance() throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("check account balance");
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
 }
 
