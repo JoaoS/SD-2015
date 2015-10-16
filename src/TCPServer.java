@@ -307,10 +307,11 @@ public class TCPServer {
                 if(dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0)
                 {
                     request= new Message();
-                    request.setOperation("login sucessful");
+                    request.setOperation("login successful");
                     request.setMessage("Login made with success.");
                     objOut.writeObject(request);
                     objOut.flush();
+                    secundaryMenu();
                 }
             }
             else if(reply.getOperation().equals("sign up"))
@@ -333,6 +334,32 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
+    }
+
+    public void secundaryMenu() throws IOException,ClassNotFoundException
+    {
+        Message reply= new Message();
+        reply = (Message) objIn.readObject();
+        Message request= new Message();
+        long accountBalance;
+        if(reply.getOperation().equals("check account balance"))
+        {
+            if((accountBalance = dataServerInterface.checkAccountBalance(reply.getUsername())) >=0)
+            {
+                String send = "You have " + accountBalance + " dollars in your account.";
+                request.setOperation("check account balance sucessful");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else
+            {
+                request.setOperation("check account balance unsucessful");
+                request.setMessage("Errors occured while checking your account balance.");
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+        }
     }
 
   }

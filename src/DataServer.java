@@ -135,6 +135,36 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return true;
     }
 
+    public long checkAccountBalance(String username) throws RemoteException
+    {
+        ResultSet rt=null;
+        String aux="";
+        long accountBalance = -1;
+        try
+        {
+
+            String s="SELECT account_balance FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                accountBalance =  rt.getLong(1);
+            }
+        }
+        catch(SQLException  e) {
+            try {
+                System.out.println("\nException at checkAccountBalance.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return -1;
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return accountBalance;
+    }
+
+
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
         try
