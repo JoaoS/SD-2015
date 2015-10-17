@@ -336,30 +336,93 @@ public class TCPServer {
     }
 
     public void secundaryMenu() throws IOException,ClassNotFoundException {
+        String ini = "-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
         Message reply = new Message();
-        Message request = new Message();
+        Message request;
         long accountBalance;
+        request = new Message();
+        request.setOperation("secundary menu");
+        request.setMessage(ini);
+        objOut.writeObject(request);
+        objOut.flush();
         reply = (Message) objIn.readObject();
-        while (reply.getOperation().equals("Exit secundary menu") == false)
+        while(reply.getOperation().equals("Exit secundary menu") == false)
         {
-
-            if (reply.getOperation().equals("check account balance")) {
+            if(reply.getOperation().equals("list current projects"))
+            {
+                String send = dataServerInterface.listProjects(1);
+                if(send.equals(""))
+                {
+                    send = "There are no projects open.";
+                }
+                request = new Message();
+                request.setOperation("list current projects successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("list old projects"))
+            {
+                String send = dataServerInterface.listProjects(0);
+                if(send.equals(""))
+                {
+                    send = "There are no old projects.";
+                }
+                request = new Message();
+                request.setOperation("list old projects successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("list all projects"))
+            {
+                String send = dataServerInterface.listProjects(2);
+                if(send.equals(""))
+                {
+                    send = "There are no projects.";
+                }
+                else
+                {
+                    send += "\nWhich project do you want to view the details ?";
+                }
+                request = new Message();
+                request.setOperation("list all projects successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                //////////////////////////////////////////////////////
+                reply = (Message) objIn.readObject();
+                send = dataServerInterface.viewProject(reply.getIdProject());
+                if(send.equals("") || send ==  null)    //todo validação do null
+                {
+                    send = "There are no projects.";
+                }
+                request = new Message();
+                request.setOperation("view project successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if (reply.getOperation().equals("check account balance")) {
                 if ((accountBalance = dataServerInterface.checkAccountBalance(reply.getUsername())) >= 0) {
+                    request = new Message();
                     String send = "You have " + accountBalance + " dollars in your account.";
                     request.setOperation("check account balance sucessful");
                     request.setMessage(send);
                     objOut.writeObject(request);
                     objOut.flush();
                 } else {
+                    request = new Message();
                     request.setOperation("check account balance unsucessful");
                     request.setMessage("Errors occured while checking your account balance.");
                     objOut.writeObject(request);
                     objOut.flush();
                 }
             }
-            if (reply.getOperation().equals("create project")) {
+            else if (reply.getOperation().equals("create project"))
+            {
                 String checkResult = dataServerInterface.checkProject(reply.getProjectName());
-                if (checkResult == null && dataServerInterface.addProject(reply.getProjectName(), reply.getProjectDescription(), reply.getProjectLimitDate(), reply.getProjectTargetValue(), reply.getProjectEnterprise()) == true) {
+                if (checkResult == null && dataServerInterface.addProject(reply.getUsername(),reply.getProjectName(), reply.getProjectDescription(), reply.getProjectLimitDate(), reply.getProjectTargetValue(), reply.getProjectEnterprise(),reply.getRewards(),reply.getAlternatives()) == true) {
                     request = new Message();
                     request.setOperation("create project sucessful");
                     request.setMessage("Project created with success.");
@@ -374,6 +437,16 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
+            else if(reply.getOperation().equals("Exit secundary menu"))
+            {
+                initialMenu();
+                return;
+            }
+            request = new Message();
+            request.setOperation("secundary menu");
+            request.setMessage(ini);
+            objOut.writeObject(request);
+            objOut.flush();
             reply = (Message) objIn.readObject();
         }
     }

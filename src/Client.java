@@ -2,10 +2,13 @@
  * Created by joaosubtil on 09/10/15.
  */
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sun.text.IntHashtable;
 
 import java.net.*;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Client {
@@ -224,6 +227,9 @@ class SendToServer extends Thread{
                             case "login successful":
                                 secundaryMenu();
                                 break;
+                            case "view project successfull":
+                                tertiaryMenu();
+                                break;
                             default:
                                 break;
                         }
@@ -263,7 +269,7 @@ class SendToServer extends Thread{
                 else
                 {
 
-                    System.out.println("Invalid choice." + ini);
+                    System.out.println("Select a valid option." + ini);
                     op = Integer.parseInt(reader.readLine());
                 }
             }
@@ -327,39 +333,86 @@ class SendToServer extends Thread{
     }
 
 
-    public  void secundaryMenu()throws IOException
-    {
-        int op = 0;
-        String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
-        do{
-            do{
-                System.out.println(ini);
-                op =Integer.parseInt(reader.readLine());
-                if(op <= 0 || op>7)
-                    System.out.println("Select a valid option.\n");
-            }while(op <= 0 || op>7);
-            switch(op)
+        public  void secundaryMenu()throws IOException
+        {
+            int op = 0;
+            String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
+            while(op != 8)
             {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    checkAccountBalance();
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    createProject();
-                    break;
-                case 7:
+                do{
+                    op =Integer.parseInt(reader.readLine());
+                    if(op <= 0 || op>8) {
+                        System.out.println("Select a valid option.\n");
+                        System.out.println(ini);
+                    }
+                }while(op <= 0 || op>8);
+                switch(op)
+                {
+                    case 1:
+                        listCurrentProjects();
+                        break;
+                    case 2:
+                        listOldProjects();
+                        break;
+                    case 3:
+                        viewProject();
+                        break;
+                    case 4:
+                        checkAccountBalance();
+                        break;
+                    case 5:                                             //todo check my rewards --> make a pledge function first
+                        break;
+                    case 6:
+                        createProject();
+                        break;
+                    case 7:
+                        adminMenu();
+                        break;
+                    case 8:
+                        sendExitMessage();
+                        break;
+                default:
                     break;
             }
-        }while(op != 0);
+        }
     }
 
+
+    public void listCurrentProjects() throws IOException
+    {
+        Message request = new Message();
+        request.setOperation("list current projects");
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void listOldProjects() throws IOException
+    {
+        Message request = new Message();
+        request.setOperation("list old projects");
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+
+    public void viewProject() throws IOException            //todo validação do id inserido
+    {
+        listAllProjects();
+        long idProject = Integer.parseInt(reader.readLine());
+        Message request = new Message();
+        request.setOperation("view project");
+        request.setIdProject(idProject);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void listAllProjects() throws IOException
+    {
+        Message request = new Message();
+        request.setOperation("list all projects");
+        objOut.writeObject(request);
+        objOut.flush();
+    }
 
     public void checkAccountBalance() throws IOException
     {
@@ -372,17 +425,66 @@ class SendToServer extends Thread{
 
     public void createProject() throws IOException
     {
+        int checkData = 0;
         Message request = new Message();
         System.out.println("Name : ");
         String name = reader.readLine();
-        System.out.println("Description : ");               //-------------------------->todo juntar administrador
+        System.out.println("Description : ");
         String description = reader.readLine();
-        System.out.println("Limit Date: ");
-        String limitDate = reader.readLine();               //-------------------------->todo validação da data
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        formatter.setLenient(false);
+        String limitDate = "";
+        while(checkData ==0)
+        {
+            System.out.println("Limit Date (dd/MM/yyyy HH:mm):");
+            limitDate = reader.readLine();
+            try
+            {
+                date = formatter.parse(limitDate);
+                checkData = 1;
+            }catch(ParseException e)
+            {
+                checkData =0;
+                System.out.println("\nInvalid date.\n");
+            }
+        }
         System.out.println("Target value: ");
         long targetValue  = Long.parseLong(reader.readLine());
         System.out.println("Enterprise(just press enter if this is project is individual) : ");
         String enterprise= reader.readLine();
+        //////////////////////////////////////////////////////
+        System.out.println("Add rewards to the project(insert 0 in description to stop) :");
+        while(true)
+        {
+
+                System.out.println("Description: ");
+                String rewardDescription = reader.readLine();
+                if(rewardDescription.equals("0")== true)
+                {
+                    break;
+                }
+                System.out.println("Minimum value of the pledge :");
+                int minValue = Integer.parseInt(reader.readLine());
+                request.getRewards().add(new Reward(rewardDescription, minValue));
+        }
+        System.out.println("Add alternatives to the project(insert 0 in description to stop) :");
+        while(true)
+        {
+
+            System.out.println("Description: ");
+            String alternativeDescription = reader.readLine();
+            if(alternativeDescription.equals("0")== true)
+            {
+                break;
+            }
+            System.out.println("Divisor(Nr votes of pledge = ceil(pledge value/(divisor * minimum value of pledge))) : ");
+            float divisor = Float.parseFloat(reader.readLine());
+            request.getAlternatives().add(new Alternative(alternativeDescription, divisor));
+        }
+
+        //////////////////////////////////////////////////////
+        request.setUsername(Client.loginData.getUsername());
         request.setProjectName(name);
         request.setProjectDescription(description);
         request.setProjectLimitDate(limitDate);
@@ -393,5 +495,76 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
+    public void sendExitMessage() throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("Exit secundary menu");
+        Client.loginData = null;
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    void tertiaryMenu() throws IOException
+    {
+        int op = 0;
+        String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
+        while(op != 3)
+        {
+            do{
+                op =Integer.parseInt(reader.readLine());
+                if(op <= 0 || op>3) {
+                    System.out.println("Select a valid option.\n");
+                    System.out.println(ini);
+                }
+            }while(op <= 0 || op>3);
+            switch(op)
+            {
+                case 1:                                     //todo contributeToProject
+                    break;
+                case 2:                                     //todo commentProject
+                    break;
+                case 3:                                     //todo send exit message in tertiary menu
+                    sendExitMessage();
+                    System.out.println("OP = " + op);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    void adminMenu() throws IOException
+    {
+        int op = 0;
+        String ini = "\n\n1->Add or remove rewards of a project.\n\n2->Cancel project.\n\n3.Reply to supporter's messages.\n\4.Exit\n\nChoose an option:";
+        while(op != 3)
+        {
+            do{
+                op =Integer.parseInt(reader.readLine());
+                if(op <= 0 || op>3) {
+                    System.out.println("Select a valid option.\n");
+                    System.out.println(ini);
+                }
+            }while(op <= 0 || op>3);
+            switch(op)
+            {
+                case 1:                                     //todo addRemoveRewards
+                    break;
+                case 2:                                     //todo cancelProject
+                    break;
+                case 3:                                     //todo replyMessages
+                    break;
+                case 4:                                     //todo send exit message in admin menu
+                    sendExitMessage();
+                    System.out.println("OP = " + op);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    //todo ----------------------------> fim do projecto
 }
 

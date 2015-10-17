@@ -6,8 +6,11 @@ import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -135,6 +138,101 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return true;
     }
 
+
+    public String listProjects(int current) throws RemoteException        // current projects-->1, old projects --->0,all-->2
+    {
+        ResultSet rt = null;
+        String result = "";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date today = new Date();
+        Date auxDate = null;
+        try
+        {
+            String s="SELECT id_project,name,target_value,current_value,limit_date,accepted FROM project";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                auxDate = formatter.parse(rt.getString(5));
+                if(current == 1)
+                {
+                    if(!auxDate.before(today))  //todo accepted = 0 --> not yet, accepted = 1---> yes
+                    {
+                        result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + "\n";
+                    }
+                }
+                else if(current == 0)
+                {
+                    if(auxDate.before(today))
+                    {
+                        result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Accepted : " + rt.getInt(6) + "\n";
+                    }
+                }
+                else
+                {
+                    result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Accepted : " + rt.getInt(6) + "\n";
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            try {
+                System.out.println("\nException at listCurrentProjects.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred while listing current projects.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
+    public String viewProject(long idProject) throws RemoteException        //todo niveis extra
+    {
+        ResultSet rt = null;
+        String result = "";
+        try
+        {
+            String s = "SELECT name,description,target_value,current_value,limit_date,accepted FROM project where id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())                       //todo accepted = 0 --> not yet, accepted = 1---> yes
+            {
+                result +=  "Project : " + rt.getString(1) + "\nDescription: " + rt.getString(2) +  "\nTarget value : " + rt.getLong(3) + "\nCurrent value : " + rt.getLong(4) +"\nLimit date : "+ rt.getString(5) +"\nAccepted : " + rt.getInt(6) + "\n";
+            }
+            //fetch rewards
+            result += "\nRewards :\n";
+            s = "SELECT description,min_value FROM reward where id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                result += "\nDescription : " + rt.getString(1) + " Minimum value : " + rt.getDouble(2);
+            }
+            //fetch alternatives
+            result += "\nAlternatives :\n";
+            s = "SELECT description FROM alternative WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                result += "\nDescription : " + rt.getString(1);
+            }
+        }catch(SQLException  e)
+        {
+            try {
+                System.out.println("\nException at viewProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return null;
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
     public long checkAccountBalance(String username) throws RemoteException
     {
         ResultSet rt=null;
@@ -165,20 +263,57 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
 
-   public boolean addProject(String name,String description,String limitDate,long targetValue, String enterprise) throws RemoteException
+   public boolean addProject(String username,String name,String description,String limitDate,long targetValue, String enterprise,ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException
     {
         PreparedStatement ps;
         ResultSet rt = null;
+        long idUser = -1;
+        long idProject = -1;
         try
-        {
-            ps = connection.prepareStatement("INSERT INTO PROJECT(name,description,limit_date,target_value,enterprise) VALUES(?,?,?,?,?)");
+        {   //check administrator
+            String s="SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                idUser =  rt.getLong(1);
+            }
+            ps = connection.prepareStatement("INSERT INTO PROJECT(name,description,limit_date,target_value,enterprise,id_user) VALUES(?,?,?,?,?,?)");
             ps.setString(1,name);
             ps.setString(2,description);
             ps.setString(3,limitDate);
             ps.setLong(4, targetValue);
             ps.setString(5,enterprise);
+            ps.setLong(6,idUser);
             ps.execute();
+            //fetch project id
+            s="SELECT ID_project FROM project WHERE name = '" + name + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                idProject =  rt.getLong(1);
+            }
+            //insert rewards
+            for(int i =0;i<rewards.size();i++)
+            {
+                ps = connection.prepareStatement("INSERT INTO REWARD(description,min_value,id_project) VALUES(?,?,?)");
+                ps.setString(1,rewards.get(i).getDescription());
+                ps.setDouble(2, rewards.get(i).getMinValue());
+                ps.setLong(3, idProject);
+                ps.execute();
+
+            }
+            //insert alternatives
+            for(int i =0;i<alternatives.size();i++)
+            {
+                ps = connection.prepareStatement("INSERT INTO ALTERNATIVE(description,divisor,id_project) VALUES(?,?,?)");
+                ps.setString(1, alternatives.get(i).getDescription());
+                ps.setDouble(2, alternatives.get(i).getDivisor());
+                ps.setLong(3, idProject);
+                ps.execute();
+
+            }
             connection.commit();
+
         }catch(SQLException e){
             try {
                 System.out.println("\nException at addProject.\n");
