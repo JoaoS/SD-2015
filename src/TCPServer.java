@@ -346,7 +346,7 @@ public class TCPServer {
         objOut.writeObject(request);
         objOut.flush();
         reply = (Message) objIn.readObject();
-        while(reply.getOperation().equals("Exit secundary menu") == false)
+        while(reply.getOperation().equals("Exit secundary menu") == false)      //todo validações caso dê erro
         {
             if(reply.getOperation().equals("list current projects"))
             {
@@ -390,7 +390,7 @@ public class TCPServer {
                 request.setMessage(send);
                 objOut.writeObject(request);
                 objOut.flush();
-                //////////////////////////////////////////////////////
+                ///////////////////////view project///////////////////////////////
                 reply = (Message) objIn.readObject();
                 send = dataServerInterface.viewProject(reply.getIdProject());
                 if(send.equals("") || send ==  null)    //todo validação do null
@@ -402,6 +402,7 @@ public class TCPServer {
                 request.setMessage(send);
                 objOut.writeObject(request);
                 objOut.flush();
+                tertiaryMenu();
             }
             else if (reply.getOperation().equals("check account balance")) {
                 if ((accountBalance = dataServerInterface.checkAccountBalance(reply.getUsername())) >= 0) {
@@ -418,6 +419,15 @@ public class TCPServer {
                     objOut.writeObject(request);
                     objOut.flush();
                 }
+            }
+            else if(reply.getOperation().equals("check rewards"))
+            {
+                String send = dataServerInterface.checkRewards(reply.getUsername());
+                request = new Message();
+                request.setOperation("check rewards successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
             }
             else if (reply.getOperation().equals("create project"))
             {
@@ -444,6 +454,58 @@ public class TCPServer {
             }
             request = new Message();
             request.setOperation("secundary menu");
+            request.setMessage(ini);
+            objOut.writeObject(request);
+            objOut.flush();
+            reply = (Message) objIn.readObject();
+        }
+    }
+
+    public void tertiaryMenu() throws IOException,ClassNotFoundException {
+        String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
+        Message reply = new Message();
+        Message request;
+        request = new Message();
+        request.setOperation("tertiary menu");
+        request.setMessage(ini);
+        objOut.writeObject(request);
+        objOut.flush();
+        reply = (Message) objIn.readObject();
+        while(reply.getOperation().equals("Exit tertiary menu") == false)
+        {
+            if(reply.getOperation().equals("pledge"))
+            {
+                String send = dataServerInterface.contributeToProject(reply.getIdProject(),reply.getUsername(),reply.getPledgeValue(),reply.getAlternativeChoosen());
+                request = new Message();
+                request.setOperation("pledge successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("show previous comments"))
+            {
+                String send = dataServerInterface.showCommentsProject(reply.getIdProject());
+                request = new Message();
+                request.setOperation("show previous comments successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                ////////////////comment project/////////////////////
+                reply = (Message) objIn.readObject();
+                send = dataServerInterface.commentProject(reply.getIdProject(),reply.getUsername(),reply.getComment());
+                request = new Message();
+                request.setOperation("comment project successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("Exit tertiary menu"))
+            {
+                secundaryMenu();
+                return;
+            }
+            request = new Message();
+            request.setOperation("tertiary menu");
             request.setMessage(ini);
             objOut.writeObject(request);
             objOut.flush();

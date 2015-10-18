@@ -21,6 +21,9 @@ public class Message implements Serializable {
     private ArrayList <Reward> rewards = new ArrayList<Reward>();
     private ArrayList <Alternative> alternatives = new ArrayList<Alternative>();
     private long idProject;
+    private float pledgeValue;
+    private long alternativeChoosen;
+    private String comment;
 
 
     public Message() {
@@ -145,5 +148,29 @@ public class Message implements Serializable {
 
     public void setIdProject(long idProject) {
         this.idProject = idProject;
+    }
+
+    public float getPledgeValue() {
+        return pledgeValue;
+    }
+
+    public void setPledgeValue(float pledgeValue) {
+        this.pledgeValue = pledgeValue;
+    }
+
+    public long getAlternativeChoosen() {
+        return alternativeChoosen;
+    }
+
+    public void setAlternativeChoosen(long alternativeChoosen) {
+        this.alternativeChoosen = alternativeChoosen;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

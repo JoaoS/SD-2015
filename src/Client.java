@@ -187,6 +187,7 @@ class SendToServer extends Thread{
     public static ObjectOutputStream objOut;
     public static ObjectInputStream objIn;
     BufferedReader reader;
+    long idProject;
    
     SendToServer(Socket sock,ObjectInputStream objIn,ObjectOutputStream objOut)
     {
@@ -226,9 +227,6 @@ class SendToServer extends Thread{
                                 break;
                             case "login successful":
                                 secundaryMenu();
-                                break;
-                            case "view project successfull":
-                                tertiaryMenu();
                                 break;
                             default:
                                 break;
@@ -360,7 +358,8 @@ class SendToServer extends Thread{
                     case 4:
                         checkAccountBalance();
                         break;
-                    case 5:                                             //todo check my rewards --> make a pledge function first
+                    case 5:
+                        checkUserRewards();
                         break;
                     case 6:
                         createProject();
@@ -398,12 +397,14 @@ class SendToServer extends Thread{
     public void viewProject() throws IOException            //todo validação do id inserido
     {
         listAllProjects();
-        long idProject = Integer.parseInt(reader.readLine());
+        idProject = Long.parseLong(reader.readLine());
         Message request = new Message();
         request.setOperation("view project");
         request.setIdProject(idProject);
+        System.out.println("ID project : " + request.getIdProject());
         objOut.writeObject(request);
         objOut.flush();
+        tertiaryMenu();
     }
 
     public void listAllProjects() throws IOException
@@ -419,6 +420,16 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check account balance");
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+
+    public void checkUserRewards() throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("check rewards");
         objOut.writeObject(request);
         objOut.flush();
     }
@@ -520,13 +531,14 @@ class SendToServer extends Thread{
             }while(op <= 0 || op>3);
             switch(op)
             {
-                case 1:                                     //todo contributeToProject
+                case 1:
+                    contributeToProject();
                     break;
-                case 2:                                     //todo commentProject
+                case 2:
+                    commentProject();
                     break;
-                case 3:                                     //todo send exit message in tertiary menu
-                    sendExitMessage();
-                    System.out.println("OP = " + op);
+                case 3:
+                    sendExitMessage2();
                     break;
                 default:
                     break;
@@ -534,28 +546,83 @@ class SendToServer extends Thread{
         }
     }
 
+
+    public void contributeToProject() throws IOException
+    {
+        System.out.println("How much do you want to donate ?");
+        float pledgeValue = Float.parseFloat(reader.readLine());
+        System.out.println("ID of the alternative that you want to vote : ");
+        long idAlternative = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("pledge");
+        request.setAlternativeChoosen(idAlternative);
+        request.setPledgeValue(pledgeValue);
+        request.setIdProject(idProject);
+        objOut.writeObject(request);
+        objOut.flush();
+
+    }
+
+    public void showPreviousMessages() throws  IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("show previous comments");
+        request.setIdProject(idProject);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void commentProject() throws IOException
+    {
+        showPreviousMessages();
+        String msg = Client.loginData.getUsername() + ": ";
+        msg += reader.readLine();
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("comment project");
+        request.setIdProject(idProject);
+        request.setComment(msg);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void sendExitMessage2() throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("Exit tertiary menu");
+        Client.loginData = null;
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
     void adminMenu() throws IOException
     {
         int op = 0;
         String ini = "\n\n1->Add or remove rewards of a project.\n\n2->Cancel project.\n\n3.Reply to supporter's messages.\n\4.Exit\n\nChoose an option:";
-        while(op != 3)
+        while(op != 5)
         {
             do{
                 op =Integer.parseInt(reader.readLine());
-                if(op <= 0 || op>3) {
+                if(op <= 0 || op>5) {
                     System.out.println("Select a valid option.\n");
                     System.out.println(ini);
                 }
-            }while(op <= 0 || op>3);
+            }while(op <= 0 || op>5);
             switch(op)
             {
-                case 1:                                     //todo addRemoveRewards
+                case 1:                                     //todo addRewards
                     break;
-                case 2:                                     //todo cancelProject
+                case 2:
+                                                            //todo removeRewards
                     break;
-                case 3:                                     //todo replyMessages
+                case 3:                                     //todo cancelProject
                     break;
-                case 4:                                     //todo send exit message in admin menu
+                case 4:                                     //todo replyMessages
+                    break;
+                case 5:                                     //todo send exit message in admin menu
                     sendExitMessage();
                     System.out.println("OP = " + op);
                     break;

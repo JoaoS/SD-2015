@@ -212,12 +212,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
             //fetch alternatives
             result += "\nAlternatives :\n";
-            s = "SELECT description FROM alternative WHERE id_project = '" + idProject + "'";
+            s = "SELECT id_alternative,description FROM alternative WHERE id_project = '" + idProject + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             while(rt.next())
             {
-                result += "\nDescription : " + rt.getString(1);
+                result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
             }
         }catch(SQLException  e)
         {
@@ -260,6 +260,58 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         }
         return accountBalance;
+    }
+
+    public String checkRewards(String username) throws RemoteException
+    {
+        ResultSet rt = null;
+        long idUser = -1;
+        String result = "";
+        Date today = new Date();
+        Date auxDate = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try
+        {
+            // check username
+            String s="SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //fetch rewards
+            s = "select r.id_reward,r.description, p.name, p.limit_date from reward r,project p, donation d " +
+                    "where r.id_project = p.id_project and d.id_reward = r.id_reward and d.id_user = '" + idUser + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+
+                auxDate = formatter.parse(rt.getString(4));
+                if(auxDate.before(today))
+                {
+                    result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Status: Finished with success.";
+                }
+                else
+                {
+                    result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Status: In course.";
+                }
+            }
+
+        }
+        catch(Exception e)
+        {
+            try {
+                System.out.println("\nException at checkRewards.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred while listing your rewards.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
     }
 
 
@@ -354,6 +406,129 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         }
         return null;
+    }
+
+    public String contributeToProject(long idProject,String username,float pledgeValue,long alternativeChoosen) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        long idUser = -1;
+        long idReward = -1;
+
+        try {
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //select the corresponding reward
+            s = "SELECT id_reward,min_value FROM reward where id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                if(pledgeValue >= rt.getDouble(2))
+                {
+                    idReward = rt.getLong(1);
+                }
+            }
+            //insert the new donation
+            ps = connection.prepareStatement("INSERT INTO DONATION(pledge_value,id_user,id_reward,id_alternative) VALUES(?,?,?,?)");
+            ps.setFloat(1, pledgeValue);
+            ps.setLong(2, idUser);
+            ps.setLong(3, idReward);
+            ps.setLong(4,alternativeChoosen);
+            ps.execute();
+            //add to project_has_user
+            ps = connection.prepareStatement("INSERT INTO PROJECT_HAS_USER(id_project,id_user) VALUES(?,?)");
+            ps.setLong(1, idProject);
+            ps.setLong(2, idUser);
+            ps.execute();
+            //increment votes of the alternative choosen
+            s = "UPDATE ALTERNATIVE SET n_votes = n_votes+1 WHERE id_alternative = ?";
+            ps = connection.prepareStatement(s);
+            ps.setLong(1, alternativeChoosen);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                System.out.println("\nException at contributeToProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred during the creation of the donation.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return "Donation made successfully.";
+    }
+
+    public String showCommentsProject(long idProject) throws RemoteException
+    {
+        ResultSet rt = null;
+        String result = "";
+        try {
+            // fetch id_user
+            String s = "SELECT text FROM MESSAGE WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                result += "\n" + rt.getString(1) + "\n";
+            }
+            result += "\n\nType a message :";
+        }catch (Exception e) {
+            try {
+                System.out.println("\nException at showCommentsProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred listing previous messages.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+
+    }
+
+    public String commentProject(long idProject,String username,String comment) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        long idUser = -1;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date now = new Date();
+        try {
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //insert comment
+            comment += "\n\t\t" +  formatter.format(now);
+            ps = connection.prepareStatement("INSERT INTO MESSAGE(text,id_user,id_project) VALUES(?,?,?)");
+            ps.setString(1, comment);
+            ps.setLong(2, idUser);
+            ps.setLong(3, idProject);
+            ps.execute();
+            connection.commit();
+        }catch (Exception e) {
+                try {
+                    System.out.println("\nException at contributeToProject.\n");
+                    e.printStackTrace();
+                    connection.rollback();
+                    return "Some error occurred sending the message.";
+                } catch (SQLException ex) {
+                    Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        return "Commented with success";
     }
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
