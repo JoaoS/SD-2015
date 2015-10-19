@@ -322,48 +322,52 @@ public class TCPServer {
     public  void initialMenu() throws Exception {
 
 
-            //como o server pode ter ido abaixo e o cliente estar a meio de uma operação o cliente é que diz o que quer e onde está
-            //fazer get da operação que o cliente pede
+        //como o server pode ter ido abaixo e o cliente estar a meio de uma operação o cliente é que diz o que quer e onde está
+        //fazer get da operação que o cliente pede
 
 
+        //1A OPERAÇÃO SEMPRE INITIAL MENU
+        Message teste = new Message();
+        teste.setOperation("initial menu");
+        objOut.writeObject(teste);
+        objOut.flush();
 
+        int flag=0;
+        while (flag==0) {
+            Message reply = null;
+            Message request=null;
 
-            String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
-        	Message request = new Message();
-        	request.setOperation("initial menu");
-        	request.setMessage(ini);
+            reply = (Message) objIn.readObject();
 
-            objOut.writeObject(request);
-            objOut.flush();
+            if (reply.getOperation().equals("login")) {
 
-        	Message reply = new Message();
-        	reply = (Message) objIn.readObject();
-        	if(reply.getOperation().equals("login")){
-
-                if(dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0)
-                {
-                    request= new Message();
+                if (dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0) {
+                    request = new Message();
                     request.setOperation("login successful");
                     request.setMessage("Login made with success.");
                     objOut.writeObject(request);
                     objOut.flush();
                     secundaryMenu();
+                    flag = 1;
+                } else {
+                    System.out.println("unsucess");
+                    request = new Message();
+                    request.setOperation("login unsuccessful");
+                    request.setMessage("Login data incorrect.");
+                    objOut.writeObject(request);
+                    objOut.flush();
+
                 }
-            }
-            else if(reply.getOperation().equals("sign up"))
-            {
-                String signUpresult = dataServerInterface.checkSignUp(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail());
-                if(signUpresult == null && dataServerInterface.addUser(reply.getUsername(),reply.getPassword(),reply.getBi(),reply.getAge(),reply.getEmail()) == true)
-                {
-                    request= new Message();
+            } else if (reply.getOperation().equals("sign up")) {
+                String signUpresult = dataServerInterface.checkSignUp(reply.getUsername(), reply.getPassword(), reply.getBi(), reply.getAge(), reply.getEmail());
+                if (signUpresult == null && dataServerInterface.addUser(reply.getUsername(), reply.getPassword(), reply.getBi(), reply.getAge(), reply.getEmail()) == true) {
+                    request = new Message();
                     request.setOperation("sign up sucessful");
                     request.setMessage("Sign up made with success. You have a reward of 100 dollars in your account.");
                     objOut.writeObject(request);
                     objOut.flush();
-                }
-                else
-                {
-                    request= new Message();
+                } else {
+                    request = new Message();
                     request.setOperation("sign up unsucessful");
                     String send = "Sign up unsuccessfull. " + signUpresult;
                     request.setMessage(send);
@@ -371,21 +375,23 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
+        }
     }
 
     public void secundaryMenu() throws Exception {
-        String ini = "-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
-        Message reply = new Message();
-        Message request;
+
+
+
         long accountBalance;
-        request = new Message();
-        request.setOperation("secundary menu");
-        request.setMessage(ini);
-        objOut.writeObject(request);
-        objOut.flush();
+        Message reply;
+        Message request;
         reply = (Message) objIn.readObject();
         while(reply.getOperation().equals("Exit secundary menu") == false)      //todo validações caso dê erro
         {
+
+            System.out.println("User="+reply.getUsername()+"\nrequest="+reply.getOperation());
+
+
             if(reply.getOperation().equals("list current projects"))
             {
                 String send = dataServerInterface.listProjects(1);
@@ -490,12 +496,7 @@ public class TCPServer {
                 initialMenu();
                 return;
             }
-            request = new Message();
-            request.setOperation("secundary menu");
-            request.setMessage(ini);
-            objOut.writeObject(request);
-            objOut.flush();
-            reply = (Message) objIn.readObject();
+            reply = (Message)objIn.readObject();
         }
     }
 

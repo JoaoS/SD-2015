@@ -30,7 +30,7 @@ public class Client {
     public static   int alreadyLogin=0;
 
 
-    public static int lostConnectionFlag=0;
+    public static int lostConnectionFlag=0; //1 se perdeu a ligação, 2 se não se consegue reconectar
 
 
 
@@ -63,7 +63,7 @@ public class Client {
 
         guide=new Guide();
         int tries=reconnection*2;
-        while(tries >0){
+        while(tries > 0){
             sock=null;
             lostConnectionFlag=0;
 
@@ -111,16 +111,7 @@ public class Client {
                     if(th!=null){
 
                         lostConnectionFlag=1;
-                       /* try {
-                            if(DEBUG){
-                                System.out.println("Wait for sender thread to die");
-                            }
-                            lostConnectionFlag=1;
-                            //th.join();
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        }
-                        */
+
                     }
 
                     if(sock!=null){
@@ -163,12 +154,17 @@ public class Client {
                 }
             }
         }
-        if(tries == 0){
+        if(tries <= 0){
             
             //kill other thread
-            
-            
-            
+            lostConnectionFlag=2;
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
             System.out.println("Server not found, try again later");
             System.exit(0);
 
@@ -182,21 +178,17 @@ public class Client {
         objOut.flush();
         objIn = new ObjectInputStream(sock.getInputStream());
 
+
         if(th==null){
             th=new SendToServer(sock,objIn,objOut);
             th.start();
         }
-        //instead of killing the thread let´s try only restarting the connections if possible
-        //remember to disable thread join in Client main
         else {
             th.setStreams(objOut,objIn);
             th.interrupt();
         }
 
-
-
-        if(DEBUG)
-            System.out.println("Aqui->Reader thread");
+        lostConnectionFlag=0;
 
         //reading from server
         while (true)
@@ -210,12 +202,16 @@ public class Client {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
             synchronized(guide)
             {
+                if (reply.getMessage()!=null)
+                    System.out.println("Server->"+ reply.getMessage());
                 guide.getOperations().add(reply.getOperation());
+
             }
-            if (reply.getMessage()!=null && (reply.getOperation().equalsIgnoreCase("initial menu") && alreadyLogin==0))
-                System.out.println("Server->"+ reply.getMessage());
+
+
         }
     }
 }
@@ -245,7 +241,8 @@ class SendToServer extends Thread{
 
 
         while (!Thread.interrupted()){
-
+            if (Client.DEBUG)
+                System.out.println("waiting to reconect");
             try {
                 Thread.sleep(Client.threadWait);
             } catch (InterruptedException e) {
@@ -253,10 +250,7 @@ class SendToServer extends Thread{
                     e.printStackTrace();
                 break;
             }
-
-
         }
-
     }
 
     public void run()
@@ -269,7 +263,7 @@ class SendToServer extends Thread{
             {
                 while(true)
                 {
-                    if (Client.lostConnectionFlag==1)
+                    if (Client.lostConnectionFlag>0)
                         break;
 
                     int check = 0;
@@ -283,18 +277,17 @@ class SendToServer extends Thread{
                     }
                     if(check != 0)
                     {
-                        switch(currentOp)
-                        {
-                            case "initial menu":
-                                initialMenu();
-                                break;
-                            case "login successful":
-                                Client.alreadyLogin=1;
-                                secundaryMenu();
-                                break;
-                            default:
-                                break;
+                        if(currentOp.equalsIgnoreCase("initial menu")){
+                            initialMenu();
                         }
+                        else if (currentOp.equalsIgnoreCase("login successful")){
+                            Client.alreadyLogin=1;
+                            secundaryMenu();
+                        }
+                        else {
+                            initialMenu();
+                        }
+
                     }
                 }
 
@@ -310,19 +303,27 @@ class SendToServer extends Thread{
         }
 
 
-    public void initialMenu() throws Exception
-    {
-        if (Client.alreadyLogin==1){
-            login();
+    public void initialMenu() throws Exception {
+
+        //se os dados já foram validados posso saltar esta parte
+        if (Client.alreadyLogin == 1) {
+            secundaryMenu();
         }
         else {
-
             String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
-            int op = Integer.parseInt(reader.readLine());
+            System.out.println(ini);
+            int op=0;
             int check = 0;
-            while(check == 0)
+
+            while(check==0)
             {
-                if(op == 1 ) //todo testar aqui se a sessao já foi iniciada
+                try {
+                    op = Integer.parseInt(reader.readLine());
+                }catch (NumberFormatException e){
+                    System.out.println("Please select number 1 or 2");
+
+                }
+                if(op == 1 )
                 {
                     check = 1;
                     login();
@@ -334,18 +335,19 @@ class SendToServer extends Thread{
                 }
                 else
                 {
-
-                    System.out.println("Select a valid option." + ini);
-                    op = Integer.parseInt(reader.readLine());
+                    System.out.println("Select a valid option.");
+                    check=0;
                 }
             }
         }
+
+
+
     }
     
-    public void login() throws Exception
-    {
+    public void login() throws Exception {
         Message request = new Message();
-        if (Client.loginData != null) {
+        if (Client.alreadyLogin != 0) {
             request = Client.loginData;
         }
         else
@@ -363,16 +365,17 @@ class SendToServer extends Thread{
 
 
         if(Client.lostConnectionFlag==1){
-
+            waitToSychonize();
+        }
+        if (Client.lostConnectionFlag==0){
+            objOut.writeObject(request);
+            objOut.flush();
         }
 
-        objOut.writeObject(request);
-        objOut.flush();
 
     }
 
-    public void signUp() throws Exception
-    {
+    public void signUp() throws Exception {
             int check = 0;
             Message request = new Message();
             System.out.println("Username : ");
@@ -403,21 +406,34 @@ class SendToServer extends Thread{
             request.setEmail(email);
             request.setOperation("sign up");
 
-        if(Client.lostConnectionFlag!=1){
+        if(Client.lostConnectionFlag==1){
+            waitToSychonize();
+        }
+        if (Client.lostConnectionFlag==0){
             objOut.writeObject(request);
             objOut.flush();
         }
     }
 
-
     public  void secundaryMenu()throws Exception
-        {
+    {
             int op = 0;
             String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
-            while(op != 8)
+            int flag=0;
+            int check=0;
+            while(op != 8 && flag==0)
             {
+
+
+
+                System.out.println(ini);
                 do{
-                    op =Integer.parseInt(reader.readLine());
+                    try {
+                        op = Integer.parseInt(reader.readLine());
+                    }catch (NumberFormatException e){
+                        System.out.println("Please select number between 1 and 8");
+
+                    }
                     if(op <= 0 || op>8) {
                         System.out.println("Select a valid option.\n");
                         System.out.println(ini);
@@ -448,10 +464,19 @@ class SendToServer extends Thread{
                         break;
                     case 8:
                         sendExitMessage();
+                        flag=1;
                         break;
                 default:
                     break;
             }
+                //para a resposta chegar antes deste menu novamente
+
+                while(check==0){
+                    while(!Client.guide.getOperations().isEmpty()){
+                        String s=Client.guide.getOperations().poll();
+                        check=1;
+                    }
+                }
         }
     }
 
@@ -459,6 +484,7 @@ class SendToServer extends Thread{
     public void listCurrentProjects() throws Exception
     {
         Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
         request.setOperation("list current projects");
         if(Client.lostConnectionFlag!=1){
             objOut.writeObject(request);
@@ -507,7 +533,10 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check account balance");
-        if(Client.lostConnectionFlag!=1){
+        if(Client.lostConnectionFlag==1){
+            waitToSychonize();
+        }
+        if (Client.lostConnectionFlag==0){
             objOut.writeObject(request);
             objOut.flush();
         }
@@ -605,10 +634,14 @@ class SendToServer extends Thread{
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit secundary menu");
         Client.loginData = null;
-        if(Client.lostConnectionFlag!=1){
+        if(Client.lostConnectionFlag==1){
+            waitToSychonize();
+        }
+        if (Client.lostConnectionFlag==0){
             objOut.writeObject(request);
             objOut.flush();
         }
+        Client.alreadyLogin=0;
     }
 
     void tertiaryMenu() throws Exception
