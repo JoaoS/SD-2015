@@ -319,14 +319,23 @@ public class TCPServer {
     }
     
     
-    public  void initialMenu() throws IOException,ClassNotFoundException
-    {
+    public  void initialMenu() throws Exception {
+
+
+            //como o server pode ter ido abaixo e o cliente estar a meio de uma operação o cliente é que diz o que quer e onde está
+            //fazer get da operação que o cliente pede
+
+
+
+
             String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
         	request.setOperation("initial menu");
         	request.setMessage(ini);
-        	objOut.writeObject(request);
+
+            objOut.writeObject(request);
             objOut.flush();
+
         	Message reply = new Message();
         	reply = (Message) objIn.readObject();
         	if(reply.getOperation().equals("login")){
@@ -364,7 +373,7 @@ public class TCPServer {
             }
     }
 
-    public void secundaryMenu() throws IOException,ClassNotFoundException {
+    public void secundaryMenu() throws Exception {
         String ini = "-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
         Message reply = new Message();
         Message request;
@@ -490,7 +499,8 @@ public class TCPServer {
         }
     }
 
-    public void tertiaryMenu() throws IOException,ClassNotFoundException {
+
+    public void tertiaryMenu() throws Exception {
         String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
         Message reply = new Message();
         Message request;

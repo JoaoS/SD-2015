@@ -30,7 +30,7 @@ public class Client {
     public static   int alreadyLogin=0;
 
 
-    public static int signalToTerminate=0;
+    public static int lostConnectionFlag=0;
 
 
 
@@ -65,7 +65,7 @@ public class Client {
         int tries=reconnection*2;
         while(tries >0){
             sock=null;
-            signalToTerminate=0;
+            lostConnectionFlag=0;
 
             if (sock==null){
                 try {
@@ -109,15 +109,18 @@ public class Client {
                     }
 
                     if(th!=null){
-                        try {
+
+                        lostConnectionFlag=1;
+                       /* try {
                             if(DEBUG){
                                 System.out.println("Wait for sender thread to die");
                             }
-                            signalToTerminate=1;
-                            th.join();
+                            lostConnectionFlag=1;
+                            //th.join();
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
+                        */
                     }
 
                     if(sock!=null){
@@ -161,6 +164,11 @@ public class Client {
             }
         }
         if(tries == 0){
+            
+            //kill other thread
+            
+            
+            
             System.out.println("Server not found, try again later");
             System.exit(0);
 
@@ -173,9 +181,18 @@ public class Client {
         objOut = new ObjectOutputStream(sock.getOutputStream());
         objOut.flush();
         objIn = new ObjectInputStream(sock.getInputStream());
-        th=null;
-        th=new SendToServer(sock,objIn,objOut);
-        th.start();
+
+        if(th==null){
+            th=new SendToServer(sock,objIn,objOut);
+            th.start();
+        }
+        //instead of killing the thread let´s try only restarting the connections if possible
+        //remember to disable thread join in Client main
+        else {
+            th.setStreams(objOut,objIn);
+            th.interrupt();
+        }
+
 
 
         if(DEBUG)
@@ -187,13 +204,8 @@ public class Client {
             Message reply = null;
 
             try {
-
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //todo verificar se as classes message estão em sintonia
+                
+                //todo verificar primeiro se as classes message estão em sintonia
                 reply = (Message)objIn.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -202,7 +214,7 @@ public class Client {
             {
                 guide.getOperations().add(reply.getOperation());
             }
-            if (reply.getMessage()!=null)
+            if (reply.getMessage()!=null && (reply.getOperation().equalsIgnoreCase("initial menu") && alreadyLogin==0))
                 System.out.println("Server->"+ reply.getMessage());
         }
     }
@@ -226,6 +238,26 @@ class SendToServer extends Thread{
      
     public void setSocket(Socket sock) { this.sock = sock; }
     public void closeSocket() throws IOException { this.sock.close();  }
+    public void setStreams(ObjectOutputStream out,ObjectInputStream in){this.objOut=out;this.objIn=in;}
+
+
+    public void waitToSychonize(){
+
+
+        while (!Thread.interrupted()){
+
+            try {
+                Thread.sleep(Client.threadWait);
+            } catch (InterruptedException e) {
+                if (Client.DEBUG)
+                    e.printStackTrace();
+                break;
+            }
+
+
+        }
+
+    }
 
     public void run()
     {
@@ -237,7 +269,7 @@ class SendToServer extends Thread{
             {
                 while(true)
                 {
-                    if (Client.signalToTerminate==1)
+                    if (Client.lostConnectionFlag==1)
                         break;
 
                     int check = 0;
@@ -277,16 +309,20 @@ class SendToServer extends Thread{
             System.out.println("thread is dead");
         }
 
-    
-    
-    public void initialMenu() throws IOException
+
+    public void initialMenu() throws Exception
     {
+        if (Client.alreadyLogin==1){
+            login();
+        }
+        else {
+
             String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
             int op = Integer.parseInt(reader.readLine());
             int check = 0;
             while(check == 0)
             {
-                if(op == 1 || Client.alreadyLogin==1) //todo testar aqui se a sessao já foi iniciada
+                if(op == 1 ) //todo testar aqui se a sessao já foi iniciada
                 {
                     check = 1;
                     login();
@@ -303,9 +339,10 @@ class SendToServer extends Thread{
                     op = Integer.parseInt(reader.readLine());
                 }
             }
+        }
     }
     
-    public void login() throws IOException
+    public void login() throws Exception
     {
         Message request = new Message();
         if (Client.loginData != null) {
@@ -323,13 +360,18 @@ class SendToServer extends Thread{
             request.setOperation("login");
             Client.loginData=request;
         }
-        if(Client.signalToTerminate!=1){
-            objOut.writeObject(request);
-            objOut.flush();
+
+
+        if(Client.lostConnectionFlag==1){
+
         }
+
+        objOut.writeObject(request);
+        objOut.flush();
+
     }
 
-    public void signUp() throws IOException
+    public void signUp() throws Exception
     {
             int check = 0;
             Message request = new Message();
@@ -360,12 +402,15 @@ class SendToServer extends Thread{
             request.setAge(age);
             request.setEmail(email);
             request.setOperation("sign up");
+
+        if(Client.lostConnectionFlag!=1){
             objOut.writeObject(request);
             objOut.flush();
+        }
     }
 
 
-        public  void secundaryMenu()throws IOException
+    public  void secundaryMenu()throws Exception
         {
             int op = 0;
             String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
@@ -411,24 +456,28 @@ class SendToServer extends Thread{
     }
 
 
-    public void listCurrentProjects() throws IOException
+    public void listCurrentProjects() throws Exception
     {
         Message request = new Message();
         request.setOperation("list current projects");
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void listOldProjects() throws IOException
+    public void listOldProjects() throws Exception
     {
         Message request = new Message();
         request.setOperation("list old projects");
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
 
-    public void viewProject() throws IOException            //todo validação do id inserido
+    public void viewProject() throws Exception            //todo validação do id inserido
     {
         listAllProjects();
         idProject = Long.parseLong(reader.readLine());
@@ -436,39 +485,47 @@ class SendToServer extends Thread{
         request.setOperation("view project");
         request.setIdProject(idProject);
         System.out.println("ID project : " + request.getIdProject());
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
         tertiaryMenu();
     }
 
-    public void listAllProjects() throws IOException
+    public void listAllProjects() throws Exception
     {
         Message request = new Message();
         request.setOperation("list all projects");
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void checkAccountBalance() throws IOException
+    public void checkAccountBalance() throws Exception
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check account balance");
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
 
-    public void checkUserRewards() throws IOException
+    public void checkUserRewards() throws Exception
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check rewards");
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void createProject() throws IOException
+    public void createProject() throws Exception
     {
         int checkData = 0;
         Message request = new Message();
@@ -536,21 +593,25 @@ class SendToServer extends Thread{
         request.setProjectTargetValue(targetValue);
         request.setProjectEnterprise(enterprise);
         request.setOperation("create project");
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void sendExitMessage() throws IOException
+    public void sendExitMessage() throws Exception
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit secundary menu");
         Client.loginData = null;
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    void tertiaryMenu() throws IOException
+    void tertiaryMenu() throws Exception
     {
         int op = 0;
         String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
@@ -581,7 +642,7 @@ class SendToServer extends Thread{
     }
 
 
-    public void contributeToProject() throws IOException
+    public void contributeToProject() throws Exception
     {
         System.out.println("How much do you want to donate ?");
         float pledgeValue = Float.parseFloat(reader.readLine());
@@ -593,22 +654,26 @@ class SendToServer extends Thread{
         request.setAlternativeChoosen(idAlternative);
         request.setPledgeValue(pledgeValue);
         request.setIdProject(idProject);
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
 
     }
 
-    public void showPreviousMessages() throws  IOException
+    public void showPreviousMessages() throws  Exception
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("show previous comments");
         request.setIdProject(idProject);
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void commentProject() throws IOException
+    public void commentProject() throws Exception
     {
         showPreviousMessages();
         String msg = Client.loginData.getUsername() + ": ";
@@ -618,21 +683,25 @@ class SendToServer extends Thread{
         request.setOperation("comment project");
         request.setIdProject(idProject);
         request.setComment(msg);
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void sendExitMessage2() throws IOException
+    public void sendExitMessage2() throws Exception
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit tertiary menu");
         Client.loginData = null;
-        objOut.writeObject(request);
-        objOut.flush();
+        if(Client.lostConnectionFlag!=1){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    void adminMenu() throws IOException
+    void adminMenu() throws Exception
     {
         int op = 0;
         String ini = "\n\n1->Add or remove rewards of a project.\n\n2->Cancel project.\n\n3.Reply to supporter's messages.\n\4.Exit\n\nChoose an option:";
