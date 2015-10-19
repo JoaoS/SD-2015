@@ -7,7 +7,7 @@ public class Reward implements Serializable {
     private String description;
     private double minValue;
 
-    public Reward(String description, long minValue) {
+    public Reward(String description, double minValue) {
         this.description = description;
         this.minValue = minValue;
     }

@@ -476,7 +476,7 @@ class SendToServer extends Thread{
                     break;
                 }
                 System.out.println("Minimum value of the pledge :");
-                int minValue = Integer.parseInt(reader.readLine());
+                double minValue = Double.parseDouble(reader.readLine());
                 request.getRewards().add(new Reward(rewardDescription, minValue));
         }
         System.out.println("Add alternatives to the project(insert 0 in description to stop) :");
@@ -600,8 +600,15 @@ class SendToServer extends Thread{
 
     void adminMenu() throws IOException
     {
+
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("admin menu");
+        objOut.writeObject(request);
+        objOut.flush();
+        ////////////////////////////////////////////////////////
         int op = 0;
-        String ini = "\n\n1->Add or remove rewards of a project.\n\n2->Cancel project.\n\n3.Reply to supporter's messages.\n\4.Exit\n\nChoose an option:";
+        String ini = "\n\n1->Add rewards to a project.\n\n2->Remove rewards from a project.\n\n3->Cancel project.\n\n4->Reply to supporter's messages.\n\n5->Exit\n\nChoose an option:";
         while(op != 5)
         {
             do{
@@ -614,9 +621,10 @@ class SendToServer extends Thread{
             switch(op)
             {
                 case 1:                                     //todo addRewards
+                    addReward();
                     break;
                 case 2:
-                                                            //todo removeRewards
+                    //todo removeRewards
                     break;
                 case 3:                                     //todo cancelProject
                     break;
@@ -630,6 +638,22 @@ class SendToServer extends Thread{
                     break;
             }
         }
+    }
+
+    public void addReward() throws IOException
+    {
+        long id = Long.parseLong(reader.readLine());
+        System.out.println("Description: ");
+        String rewardDescription = reader.readLine();
+        System.out.println("Minimum value of the pledge :");
+        double minValue = Double.parseDouble(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("add reward");
+        request.setIdProject(id);
+        request.getRewards().add(new Reward(rewardDescription, minValue));
+        objOut.writeObject(request);
+        objOut.flush();
     }
 
     //todo ----------------------------> fim do projecto

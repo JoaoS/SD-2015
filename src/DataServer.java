@@ -531,6 +531,65 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return "Commented with success";
     }
 
+    public String showAdminProjects(String username) throws RemoteException
+    {
+        ResultSet rt = null;
+        long idUser = -1;
+        String result = "";
+        try {
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //fetch projects
+            s = "SELECT id_project,name FROM project WHERE id_user = '" + idUser + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            result += "\nProjects that you administrate:";
+            while(rt.next())
+            {
+                result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
+            }
+        }catch (Exception e) {
+            try {
+                System.out.println("\nException at showAdminProjects.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred listing your projects.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
+    public String addReward(long idProject,Reward r) throws RemoteException
+    {
+        PreparedStatement ps;
+        try
+        {
+            ps = connection.prepareStatement("INSERT INTO REWARD(description,min_value,id_project) VALUES(?,?,?)");
+            ps.setString(1,r.getDescription());
+            ps.setDouble(2, r.getMinValue());
+            ps.setLong(3, idProject);
+            ps.execute();
+        } catch (SQLException e) {
+            try {
+                System.out.println("\nException at addReward.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred while adding reward.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return "Reward added successfully.";
+    }
+
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
         try

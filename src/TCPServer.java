@@ -336,7 +336,7 @@ public class TCPServer {
     }
 
     public void secundaryMenu() throws IOException,ClassNotFoundException {
-        String ini = "-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
+        String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
         Message reply = new Message();
         Message request;
         long accountBalance;
@@ -447,6 +447,16 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
+            else if(reply.getOperation().equals("admin menu"))
+            {
+                request = new Message();
+                request.setOperation("admins projects");
+                String send = dataServerInterface.showAdminProjects(reply.getUsername());
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                adminMenu();
+            }
             else if(reply.getOperation().equals("Exit secundary menu"))
             {
                 initialMenu();
@@ -506,6 +516,38 @@ public class TCPServer {
             }
             request = new Message();
             request.setOperation("tertiary menu");
+            request.setMessage(ini);
+            objOut.writeObject(request);
+            objOut.flush();
+            reply = (Message) objIn.readObject();
+        }
+    }
+
+    public void adminMenu() throws IOException,ClassNotFoundException
+    {
+        String ini = "\n\n1->Add rewards to a project.\n\n2->Remove rewards from a project.\n\n3->Cancel project.\n\n4->Reply to supporter's messages.\n\n5->Exit\n\nChoose an option:";
+        Message reply = new Message();
+        Message request;
+        request = new Message();
+        request.setOperation("admin menu");
+        request.setMessage(ini);
+        objOut.writeObject(request);
+        objOut.flush();
+        reply = (Message) objIn.readObject();
+        while(reply.getOperation().equals("Exit admin menu") == false)
+        {
+            if(reply.getOperation().equals("add reward"))
+            {
+
+                String send = dataServerInterface.addReward(request.getIdProject(),request.getRewards().get(0));
+                request = new Message();
+                request.setOperation("add reward successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            request = new Message();
+            request.setOperation("admin menu");
             request.setMessage(ini);
             objOut.writeObject(request);
             objOut.flush();
