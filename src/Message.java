@@ -1,8 +1,10 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by joaosubtil on 12/10/15.
- */public class Message implements Serializable {
+ */
+public class Message implements Serializable {
 
     private String username;
     private String password;
@@ -16,6 +18,12 @@ import java.io.Serializable;
     private String projectLimitDate;
     private long projectTargetValue;
     private String projectEnterprise;
+    private ArrayList <Reward> rewards = new ArrayList<Reward>();
+    private ArrayList <Alternative> alternatives = new ArrayList<Alternative>();
+    private long idProject;
+    private float pledgeValue;
+    private long alternativeChoosen;
+    private String comment;
 
 
     public Message() {
@@ -42,7 +50,6 @@ import java.io.Serializable;
     public String getOperation() {
         return operation;
     }
-
 
     public void setOperation(String operation) {
         this.operation = operation;
@@ -117,5 +124,53 @@ import java.io.Serializable;
 
     public void setProjectEnterprise(String projectEnterprise) {
         this.projectEnterprise = projectEnterprise;
+    }
+
+    public ArrayList<Reward> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(ArrayList<Reward> rewards) {
+        this.rewards = rewards;
+    }
+
+    public ArrayList<Alternative> getAlternatives() {
+        return alternatives;
+    }
+
+    public void setAlternatives(ArrayList<Alternative> alternatives) {
+        this.alternatives = alternatives;
+    }
+
+    public long getIdProject() {
+        return idProject;
+    }
+
+    public void setIdProject(long idProject) {
+        this.idProject = idProject;
+    }
+
+    public float getPledgeValue() {
+        return pledgeValue;
+    }
+
+    public void setPledgeValue(float pledgeValue) {
+        this.pledgeValue = pledgeValue;
+    }
+
+    public long getAlternativeChoosen() {
+        return alternativeChoosen;
+    }
+
+    public void setAlternativeChoosen(long alternativeChoosen) {
+        this.alternativeChoosen = alternativeChoosen;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
