@@ -15,8 +15,13 @@ public interface DataServer_I extends Remote {
     public String contributeToProject(long idProject,String userName,float pledgeValue,long alternativeChoosen) throws RemoteException;
     public String checkRewards(String username) throws RemoteException;
     public String commentProject(long idProject,String username,String comment) throws RemoteException;
-    public String showCommentsProject(long idProject) throws RemoteException;
+    public String showCommentsProject(long idProject,int mode) throws RemoteException;
     public String showAdminProjects(String username) throws RemoteException;
     public String addReward(long idProject,Reward r) throws RemoteException;
+    public String listRewardsProject(long idProject) throws RemoteException;
+    public String removeReward(long idProject,long idReward) throws RemoteException;
+    public String cancelProject(long idProject) throws RemoteException;
+    public String replyMessage(long idProject,String username ,long idMessage, String reply) throws RemoteException;
+    public boolean checkProjectsDate() throws RemoteException;
 
 }

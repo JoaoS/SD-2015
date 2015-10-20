@@ -1,9 +1,10 @@
 import java.io.*;
 import java.net.*;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.Properties;
-import  java.util.ArrayList;
+import java.util.*;
+
 /**
  * Created by joaosubtil on 07/10/15.
  */
@@ -23,7 +24,7 @@ public class TCPServer {
     private static String rmiIp;
     private static String firstIP;
     private static String secondIP;
-
+    private static TimerTask timerTask;
 
 
     public static void main(String args[]) {
@@ -92,7 +93,6 @@ public class TCPServer {
         secundaryServer();
         //if not create thread to be primary and respond
         new PrimaryThread(udpPort).start();
-
         //accept incoming connections from client
         int connectedUsers = 0;
         try {
@@ -100,6 +100,14 @@ public class TCPServer {
             System.out.println("Listenning for clients on port:" + clientPort);
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
+            /////////task to check finished projects////////////////////////
+            Calendar cal = Calendar.getInstance();
+            Date date0Pm = cal.getTime();
+
+            timerTask = new MyTimerTask(dataServerInterface);
+            Timer timer = new Timer(true);
+            timer.scheduleAtFixedRate(timerTask, date0Pm, 1000*60*60);
+
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
@@ -201,11 +209,31 @@ public class TCPServer {
         }
     }
 
+    static class MyTimerTask extends TimerTask
+    {
+        DataServer_I dataServerInterface;
+
+        MyTimerTask(DataServer_I dataServerInterface)
+        {
+            this.dataServerInterface = dataServerInterface;
+        }
+
+        public void run()
+        {
+            try {
+                dataServerInterface.checkProjectsDate();
+            } catch (RemoteException e) {
+                System.out.println("Exception at MyTimerTask run.");
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 //--------------Class to handle each client-------------------------------------------------------
     static class Connection extends Thread {
 
-    public static 	DataServer_I DataServer_Interface;
+    public static 	DataServer_I dataServerInterface;
     public DataInputStream in;
     public DataOutputStream out;
     public Socket clientSocket;
@@ -216,7 +244,7 @@ public class TCPServer {
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
         thread_number = numero;
-        DataServer_Interface=ds;
+        dataServerInterface=ds;
         try {
             clientSocket = aClientSocket;
             in = new DataInputStream(clientSocket.getInputStream());
@@ -250,8 +278,8 @@ public class TCPServer {
                     System.getProperties().put("java.security.policy", "security.policy");
                     System.setSecurityManager(new RMISecurityManager());
                    
-                    DataServer_Interface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
-                    if(DataServer_Interface.dummyMethod()==0)
+                    dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
+                    if(dataServerInterface.dummyMethod()==0)
                     {
                         System.out.println("RMI back online....");
                         break;
@@ -494,7 +522,7 @@ public class TCPServer {
             }
             else if(reply.getOperation().equals("show previous comments"))
             {
-                String send = dataServerInterface.showCommentsProject(reply.getIdProject());
+                String send = dataServerInterface.showCommentsProject(reply.getIdProject(),0);
                 request = new Message();
                 request.setOperation("show previous comments successfull");
                 request.setMessage(send);
@@ -538,13 +566,60 @@ public class TCPServer {
         {
             if(reply.getOperation().equals("add reward"))
             {
-
-                String send = dataServerInterface.addReward(request.getIdProject(),request.getRewards().get(0));
+                String send = dataServerInterface.addReward(reply.getIdProject(),reply.getRewards().get(0));
                 request = new Message();
                 request.setOperation("add reward successfull");
                 request.setMessage(send);
                 objOut.writeObject(request);
                 objOut.flush();
+            }
+            else if(reply.getOperation().equals("list rewards"))
+            {
+                String send = dataServerInterface.listRewardsProject(reply.getIdProject());
+                request = new Message();
+                request.setOperation("list rewards successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                /////////////////////////////////////////////////
+                reply = (Message) objIn.readObject();
+                send = dataServerInterface.removeReward(reply.getIdProject(), reply.getIdReward());
+                request = new Message();
+                request.setOperation("remove reward successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("cancel project"))
+            {
+                String send = dataServerInterface.cancelProject(reply.getIdProject());
+                request = new Message();
+                request.setOperation("cancel project successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("show previous comments admin"))
+            {
+                String send = dataServerInterface.showCommentsProject(reply.getIdProject(), 1);
+                request = new Message();
+                request.setOperation("show comments project admin successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                /////////////////////////////////////////////////
+                reply = (Message) objIn.readObject();
+                send = dataServerInterface.replyMessage(reply.getIdProject(),reply.getUsername(),reply.getIdMessage() ,reply.getReply());
+                request = new Message();
+                request.setOperation("reply successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+
+            }
+            else if(reply.getOperation().equals("Exit admin menu")) {
+                secundaryMenu();
+                return;
             }
             request = new Message();
             request.setOperation("admin menu");

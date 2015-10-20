@@ -4,14 +4,15 @@
     <list default="true" id="891243f1-8ca4-41fb-9818-0fc9ba70fe65" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/DataServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/DataServer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/DataServer_I.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/DataServer_I.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/Reward.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/Reward.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/Message.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/Message.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/TCPServer$Connection.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/TCPServer$Connection.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Client.java" afterPath="$PROJECT_DIR$/src/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataServer.java" afterPath="$PROJECT_DIR$/src/DataServer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataServer_I.java" afterPath="$PROJECT_DIR$/src/DataServer_I.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Reward.java" afterPath="$PROJECT_DIR$/src/Reward.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Message.java" afterPath="$PROJECT_DIR$/src/Message.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TCPServer.java" afterPath="$PROJECT_DIR$/src/TCPServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tables.sql" afterPath="$PROJECT_DIR$/tables.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SD-2015.iws" />
@@ -34,20 +35,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.072644725">
-              <caret line="619" column="36" selection-start-line="619" selection-start-column="36" selection-end-line="619" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="727" column="5" selection-start-line="727" selection-start-column="5" selection-end-line="727" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#main#0;class#Client#0" expanded="false" />
-                <element signature="method#createChannels#0;class#Client#0" expanded="false" />
                 <element signature="method#run#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#login#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-                <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -58,7 +57,6 @@
                 <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-                <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -68,21 +66,42 @@
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="541" column="109" selection-start-line="541" selection-start-column="109" selection-end-line="541" selection-end-column="109" />
+              <caret line="103" column="50" selection-start-line="103" selection-start-column="50" selection-end-line="103" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataServer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DataServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DataServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.25">
-              <caret line="551" column="58" selection-start-line="551" selection-start-column="58" selection-end-line="551" selection-end-column="58" />
+            <state vertical-scroll-proportion="-0.98275864">
+              <caret line="771" column="58" selection-start-line="771" selection-start-column="58" selection-end-line="771" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+                <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+                <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+                <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+                <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+                <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+                <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+                <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+                <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+                <element signature="e#15328#15360#0" expanded="false" />
+                <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+                <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+                <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+                <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+                <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+                <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -92,7 +111,7 @@
         <entry file="file://$PROJECT_DIR$/src/DataServer_I.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="76" selection-start-line="19" selection-start-column="76" selection-end-line="19" selection-end-column="76" />
+              <caret line="24" column="62" selection-start-line="24" selection-start-column="62" selection-end-line="24" selection-end-column="62" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -104,13 +123,9 @@
         <entry file="file://$PROJECT_DIR$/src/Message.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+              <caret line="195" column="32" selection-start-line="195" selection-start-column="32" selection-end-line="195" selection-end-column="32" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#563#571#0" expanded="true" />
-                <element signature="e#639#652#0" expanded="true" />
-                <element signature="e#3617#3618#0" expanded="true" />
-                <element signature="e#3647#3648#0" expanded="true" />
+                <element signature="e#4164#4165#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -182,11 +197,11 @@
         <option value="$PROJECT_DIR$/tcpProp.properties" />
         <option value="$PROJECT_DIR$/src/Alternative.java" />
         <option value="$PROJECT_DIR$/src/Reward.java" />
-        <option value="$PROJECT_DIR$/src/DataServer_I.java" />
-        <option value="$PROJECT_DIR$/src/DataServer.java" />
         <option value="$PROJECT_DIR$/src/Message.java" />
-        <option value="$PROJECT_DIR$/src/TCPServer.java" />
         <option value="$PROJECT_DIR$/src/Client.java" />
+        <option value="$PROJECT_DIR$/src/DataServer_I.java" />
+        <option value="$PROJECT_DIR$/src/TCPServer.java" />
+        <option value="$PROJECT_DIR$/src/DataServer.java" />
       </list>
     </option>
   </component>
@@ -478,6 +493,9 @@
     </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="891243f1-8ca4-41fb-9818-0fc9ba70fe65" name="Default" comment="" />
@@ -489,17 +507,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3221239" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19469027" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1988273" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -507,13 +523,15 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39911506" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3218391" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23097345" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39911506" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -541,6 +559,14 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39911506" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -548,18 +574,12 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TCPServer.java</url>
-          <line>297</line>
-          <properties />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Guide.java</url>
           <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="10" />
+      <option name="time" value="18" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -575,12 +595,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -591,7 +609,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -602,6 +619,11 @@
           <caret line="400" column="37" selection-start-line="400" selection-start-column="37" selection-end-line="400" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -612,6 +634,22 @@
           <caret line="190" column="95" selection-start-line="190" selection-start-column="95" selection-end-line="190" selection-end-column="95" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+            <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+            <element signature="e#15328#15360#0" expanded="false" />
+            <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+            <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -631,11 +669,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="141" column="32" selection-start-line="141" selection-start-column="32" selection-end-line="141" selection-end-column="32" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#563#571#0" expanded="true" />
-            <element signature="e#639#652#0" expanded="true" />
-            <element signature="e#3617#3618#0" expanded="true" />
-            <element signature="e#3647#3648#0" expanded="true" />
+            <element signature="e#4164#4165#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -681,12 +715,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -697,7 +729,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -708,6 +739,11 @@
           <caret line="400" column="37" selection-start-line="400" selection-start-column="37" selection-end-line="400" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -718,6 +754,22 @@
           <caret line="190" column="95" selection-start-line="190" selection-start-column="95" selection-end-line="190" selection-end-column="95" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+            <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+            <element signature="e#15328#15360#0" expanded="false" />
+            <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+            <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -737,11 +789,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="141" column="32" selection-start-line="141" selection-start-column="32" selection-end-line="141" selection-end-column="32" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#563#571#0" expanded="true" />
-            <element signature="e#639#652#0" expanded="true" />
-            <element signature="e#3617#3618#0" expanded="true" />
-            <element signature="e#3647#3648#0" expanded="true" />
+            <element signature="e#4164#4165#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -787,12 +835,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -803,7 +849,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -814,6 +859,11 @@
           <caret line="386" column="23" selection-start-line="386" selection-start-column="23" selection-end-line="386" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -824,6 +874,22 @@
           <caret line="188" column="25" selection-start-line="188" selection-start-column="25" selection-end-line="189" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+            <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+            <element signature="e#15328#15360#0" expanded="false" />
+            <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+            <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -843,11 +909,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#563#571#0" expanded="true" />
-            <element signature="e#639#652#0" expanded="true" />
-            <element signature="e#3617#3618#0" expanded="true" />
-            <element signature="e#3647#3648#0" expanded="true" />
+            <element signature="e#4164#4165#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -877,12 +939,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -893,7 +953,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -904,6 +963,11 @@
           <caret line="320" column="45" selection-start-line="320" selection-start-column="0" selection-end-line="321" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -914,6 +978,22 @@
           <caret line="116" column="63" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+            <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+            <element signature="e#15328#15360#0" expanded="false" />
+            <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+            <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -923,11 +1003,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#563#571#0" expanded="true" />
-            <element signature="e#639#652#0" expanded="true" />
-            <element signature="e#3617#3618#0" expanded="true" />
-            <element signature="e#3647#3648#0" expanded="true" />
+            <element signature="e#4164#4165#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -966,6 +1042,11 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -977,12 +1058,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -993,7 +1072,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1004,6 +1082,11 @@
           <caret line="286" column="20" selection-start-line="286" selection-start-column="20" selection-end-line="286" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1015,12 +1098,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -1031,7 +1112,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1042,6 +1122,11 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1053,12 +1138,10 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -1069,7 +1152,6 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1090,6 +1172,22 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+            <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+            <element signature="e#15328#15360#0" expanded="false" />
+            <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+            <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1116,26 +1214,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataServer_I.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="76" selection-start-line="19" selection-start-column="76" selection-end-line="19" selection-end-column="76" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.25">
-          <caret line="551" column="58" selection-start-line="551" selection-start-column="58" selection-end-line="551" selection-end-column="58" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Alternative.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1154,16 +1232,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="541" column="109" selection-start-line="541" selection-start-column="109" selection-end-line="541" selection-end-column="109" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Reward.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1175,30 +1243,34 @@
     <entry file="file://$PROJECT_DIR$/src/Message.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <caret line="195" column="32" selection-start-line="195" selection-start-column="32" selection-end-line="195" selection-end-column="32" />
+          <folding>
+            <element signature="e#4164#4165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataServer_I.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="62" selection-start-line="24" selection-start-column="62" selection-end-line="24" selection-end-column="62" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#563#571#0" expanded="true" />
-            <element signature="e#639#652#0" expanded="true" />
-            <element signature="e#3617#3618#0" expanded="true" />
-            <element signature="e#3647#3648#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.072644725">
-          <caret line="619" column="36" selection-start-line="619" selection-start-column="36" selection-end-line="619" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="727" column="5" selection-start-line="727" selection-start-column="5" selection-end-line="727" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#createChannels#0;class#Client#0" expanded="false" />
             <element signature="method#run#0;class#SendToServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listOldProjects#0;class#SendToServer#0" expanded="false" />
             <element signature="method#viewProject#0;class#SendToServer#0" expanded="false" />
@@ -1209,7 +1281,47 @@
             <element signature="method#contributeToProject#0;class#SendToServer#0" expanded="false" />
             <element signature="method#showPreviousMessages#0;class#SendToServer#0" expanded="false" />
             <element signature="method#commentProject#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#sendExitMessage2#0;class#SendToServer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="103" column="50" selection-start-line="103" selection-start-column="50" selection-end-line="103" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.98275864">
+          <caret line="771" column="58" selection-start-line="771" selection-start-column="58" selection-end-line="771" selection-end-column="58" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#dummyMethod#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkLogin#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkSignUp#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addUser#0;class#DataServer#0" expanded="false" />
+            <element signature="method#viewProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkAccountBalance#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkRewards#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#checkProject#0;class#DataServer#0" expanded="false" />
+            <element signature="e#15328#15360#0" expanded="false" />
+            <element signature="method#showCommentsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#commentProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#showAdminProjects#0;class#DataServer#0" expanded="false" />
+            <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
+            <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
+            <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
           </folding>
         </state>
       </provider>

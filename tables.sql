@@ -29,11 +29,12 @@ constraint check_tg_value check (target_value >=1)
 
 
 create table project_has_user
-(id_project int8 not null,
+(id_project_user int8 not null,
+id_project int8 not null,
 id_user int8 not null,
 constraint fk_project_user foreign key(id_project) references project(id_project) on delete cascade on update cascade,
 constraint fk_user_project foreign key(id_user) references user(id_user) on delete cascade on update cascade,
-constraint pk_has primary key(id_project,id_user)
+constraint pk_has primary key(id_project_user)
 );
 
 #---------------------------------------------------------
@@ -84,4 +85,17 @@ id_user int8,
 id_project int8,
 constraint fk_msg_user foreign key(id_user) references user(id_user) on delete cascade on update cascade,
 constraint fk_msg_project foreign key(id_project) references project(id_project) on delete cascade on update cascade
+);
+
+#---------------------------------------------------------
+
+create table reply
+(id_reply int8 primary key,
+text varchar(400),
+id_user int8,
+id_project int8,
+id_message int8,
+constraint fk_reply_user foreign key(id_user) references user(id_user) on delete cascade on update cascade,
+constraint fk_reply_project foreign key(id_project) references project(id_project) on delete cascade on update cascade,
+constraint fk_reply_message foreign key(id_message) references project(id_message) on delete cascade on update cascade
 );

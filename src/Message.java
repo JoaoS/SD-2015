@@ -24,6 +24,9 @@ public class Message implements Serializable {
     private float pledgeValue;
     private long alternativeChoosen;
     private String comment;
+    private long idReward;
+    private String reply;
+    private long idMessage;
 
 
     public Message() {
@@ -172,5 +175,29 @@ public class Message implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public long getIdReward() {
+        return idReward;
+    }
+
+    public void setIdReward(long idReward) {
+        this.idReward = idReward;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+    public long getIdMessage() {
+        return idMessage;
+    }
+
+    public void setIdMessage(long idMessage) {
+        this.idMessage = idMessage;
     }
 }

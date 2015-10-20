@@ -593,7 +593,6 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit tertiary menu");
-        Client.loginData = null;
         objOut.writeObject(request);
         objOut.flush();
     }
@@ -620,19 +619,20 @@ class SendToServer extends Thread{
             }while(op <= 0 || op>5);
             switch(op)
             {
-                case 1:                                     //todo addRewards
+                case 1:
                     addReward();
                     break;
                 case 2:
-                    //todo removeRewards
+                    removeReward();
                     break;
-                case 3:                                     //todo cancelProject
+                case 3:
+                    cancelProject();
                     break;
                 case 4:                                     //todo replyMessages
+                    replyMessage();
                     break;
                 case 5:                                     //todo send exit message in admin menu
-                    sendExitMessage();
-                    System.out.println("OP = " + op);
+                    sendExitMessage3();
                     break;
                 default:
                     break;
@@ -640,8 +640,9 @@ class SendToServer extends Thread{
         }
     }
 
-    public void addReward() throws IOException
+    public void addReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin
     {
+        System.out.println("ID of the project that you want to add a reward:");
         long id = Long.parseLong(reader.readLine());
         System.out.println("Description: ");
         String rewardDescription = reader.readLine();
@@ -650,8 +651,78 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("add reward");
-        request.setIdProject(id);
         request.getRewards().add(new Reward(rewardDescription, minValue));
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void listRewardsProject(long id) throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("list rewards");
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void removeReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin.
+    {                                                               //todo validação do reward escolhido
+        System.out.println("ID of the project that you want to remove a reward:");
+        long id = Long.parseLong(reader.readLine());
+        listRewardsProject(id);
+        long rewardId = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("remove reward");
+        request.setIdProject(id);
+        request.setIdReward(rewardId);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void cancelProject() throws IOException              //todo validação de escolha de projecto em que o user é admin
+    {
+        System.out.println("ID of the project that you want to cancel:");
+        long id = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("cancel project");
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void replyMessage() throws IOException
+    {
+        System.out.println("ID of the project where you want to reply to messages:");
+        long id = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("show previous comments admin");
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+        ///////////////////////////////////////////////////////
+        long idMessage = Long.parseLong(reader.readLine());
+        request = new Message();
+        System.out.println("Type a reply:");
+        String reply = "\t\t\t\t" + reader.readLine();
+        request.setIdMessage(idMessage);
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("reply message");
+        request.setReply(reply);
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void sendExitMessage3() throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("Exit admin menu");
         objOut.writeObject(request);
         objOut.flush();
     }
