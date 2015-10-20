@@ -25,7 +25,7 @@ public class Client {
     public static   int threadWait;
     public static   ObjectOutputStream objOut=null;
     public static   ObjectInputStream  objIn=null;
-    public static   Guide guide;
+    public static   Guide serverReply;
     public static   Message loginData=null;
     public static   int alreadyLogin=0;
 
@@ -61,7 +61,7 @@ public class Client {
             }
         }
 
-        guide=new Guide();
+        serverReply=new Guide();
         int tries=reconnection*2;
         while(tries > 0){
             sock=null;
@@ -203,11 +203,12 @@ public class Client {
                 e.printStackTrace();
             }
 
-            synchronized(guide)
+            synchronized(serverReply)
             {
-                if (reply.getMessage()!=null)
-                    System.out.println("Server->"+ reply.getMessage());
-                guide.getOperations().add(reply.getOperation());
+                
+                System.out.println("Server->"+ reply.getMessage());
+                
+                serverReply.getOperations().add(reply.getOperation());
 
             }
 
@@ -258,7 +259,8 @@ class SendToServer extends Thread{
     	String currentOp = "";
         InputStreamReader input = new InputStreamReader(System.in);
         reader = new BufferedReader(input);
-
+        int check=0;
+        int flag=0;
             try 
             {
                 while(true)
@@ -266,30 +268,40 @@ class SendToServer extends Thread{
                     if (Client.lostConnectionFlag>0)
                         break;
 
-                    int check = 0;
-                    synchronized(Client.guide)
-                    {
-                        if(!Client.guide.getOperations().isEmpty())
-                        {
-                            currentOp = Client.guide.getOperations().poll();
-                            check = 1;
-                        }
+                    //1st op is initial menu
+                    if(check==0){
+                        initialMenu();
+                        check=1;
                     }
-                    if(check != 0)
-                    {
-                        if(currentOp.equalsIgnoreCase("initial menu")){
-                            initialMenu();
-                        }
-                        else if (currentOp.equalsIgnoreCase("login successful")){
-                            Client.alreadyLogin=1;
-                            secundaryMenu();
-                        }
-                        else {
-                            initialMenu();
+
+                    else {
+                        synchronized(Client.serverReply)
+                        {
+                            if(!Client.serverReply.getOperations().isEmpty())
+                            {
+                                currentOp = Client.serverReply.getOperations().poll();
+                                flag = 1;
+                            }
                         }
 
+                        if(flag != 0)
+                        {
+
+
+                            if (currentOp.equalsIgnoreCase("login successful")){
+                                Client.alreadyLogin=1;
+                                secundaryMenu();
+                            }
+                            else {
+                                initialMenu();
+                            }
+
+                        }
                     }
+
+
                 }
+
 
             }catch (Exception e){
                 if (Client.DEBUG) {
@@ -352,6 +364,11 @@ class SendToServer extends Thread{
         }
         else
         {
+            //most important
+            request.setCurrentMenu("menu1");
+
+
+
             System.out.println("Username : ");
             String username = null;
             username = reader.readLine();
@@ -405,6 +422,8 @@ class SendToServer extends Thread{
             request.setAge(age);
             request.setEmail(email);
             request.setOperation("sign up");
+            request.setCurrentMenu("menu1");
+
 
         if(Client.lostConnectionFlag==1){
             waitToSychonize();
@@ -472,8 +491,8 @@ class SendToServer extends Thread{
                 //para a resposta chegar antes deste menu novamente
 
                 while(check==0){
-                    while(!Client.guide.getOperations().isEmpty()){
-                        String s=Client.guide.getOperations().poll();
+                    while(!Client.serverReply.getOperations().isEmpty()){
+                        String s=Client.serverReply.getOperations().poll();
                         check=1;
                     }
                 }

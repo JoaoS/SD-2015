@@ -326,11 +326,6 @@ public class TCPServer {
         //fazer get da operação que o cliente pede
 
 
-        //1A OPERAÇÃO SEMPRE INITIAL MENU
-        Message teste = new Message();
-        teste.setOperation("initial menu");
-        objOut.writeObject(teste);
-        objOut.flush();
 
         int flag=0;
         while (flag==0) {
@@ -339,54 +334,79 @@ public class TCPServer {
 
             reply = (Message) objIn.readObject();
 
-            if (reply.getOperation().equals("login")) {
+            if (reply.getCurrentMenu().equalsIgnoreCase("menu2")){
+                secundaryMenu(reply);
+            }
+            if (reply.getCurrentMenu().equalsIgnoreCase("menu3")){
+                //tertiaryMenu(reply);
+            }
 
-                if (dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0) {
-                    request = new Message();
-                    request.setOperation("login successful");
-                    request.setMessage("Login made with success.");
-                    objOut.writeObject(request);
-                    objOut.flush();
-                    secundaryMenu();
-                    flag = 1;
-                } else {
-                    System.out.println("unsucess");
-                    request = new Message();
-                    request.setOperation("login unsuccessful");
-                    request.setMessage("Login data incorrect.");
-                    objOut.writeObject(request);
-                    objOut.flush();
+            else {
 
-                }
-            } else if (reply.getOperation().equals("sign up")) {
-                String signUpresult = dataServerInterface.checkSignUp(reply.getUsername(), reply.getPassword(), reply.getBi(), reply.getAge(), reply.getEmail());
-                if (signUpresult == null && dataServerInterface.addUser(reply.getUsername(), reply.getPassword(), reply.getBi(), reply.getAge(), reply.getEmail()) == true) {
-                    request = new Message();
-                    request.setOperation("sign up sucessful");
-                    request.setMessage("Sign up made with success. You have a reward of 100 dollars in your account.");
-                    objOut.writeObject(request);
-                    objOut.flush();
-                } else {
-                    request = new Message();
-                    request.setOperation("sign up unsucessful");
-                    String send = "Sign up unsuccessfull. " + signUpresult;
-                    request.setMessage(send);
-                    objOut.writeObject(request);
-                    objOut.flush();
+                if (reply.getOperation().equals("login")) {
+
+                    if (dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0) {
+                        request = new Message();
+                        request.setOperation("login successful");
+                        request.setMessage("Login made with success.");
+                        objOut.writeObject(request);
+                        objOut.flush();
+                        secundaryMenu(null);
+                        flag = 1;
+                    } else {
+                        System.out.println("unsucess");
+                        request = new Message();
+                        request.setOperation("login unsuccessful");
+                        request.setMessage("Login data incorrect.");
+                        objOut.writeObject(request);
+                        objOut.flush();
+
+                    }
+                } else if (reply.getOperation().equals("sign up")) {
+                    String signUpresult = dataServerInterface.checkSignUp(reply.getUsername(), reply.getPassword(), reply.getBi(), reply.getAge(), reply.getEmail());
+                    if (signUpresult == null && dataServerInterface.addUser(reply.getUsername(), reply.getPassword(), reply.getBi(), reply.getAge(), reply.getEmail()) == true) {
+                        request = new Message();
+                        request.setOperation("sign up sucessful");
+                        request.setMessage("Sign up made with success. You have a reward of 100 dollars in your account.");
+                        objOut.writeObject(request);
+                        objOut.flush();
+                    } else {
+                        request = new Message();
+                        request.setOperation("sign up unsucessful");
+                        String send = "Sign up unsuccessfull. " + signUpresult;
+                        request.setMessage(send);
+                        objOut.writeObject(request);
+                        objOut.flush();
+                    }
                 }
             }
         }
     }
 
-    public void secundaryMenu() throws Exception {
+    public void secundaryMenu(Message previous) throws Exception {
 
 
 
         long accountBalance;
-        Message reply;
+        Message reply=null;//para nao aparecerem warnings
         Message request;
-        reply = (Message) objIn.readObject();
-        while(reply.getOperation().equals("Exit secundary menu") == false)      //todo validações caso dê erro
+
+        //se o server voltou  a reconectar é necessário manter contexto
+        if(previous==null) {
+            reply = (Message) objIn.readObject();
+        }
+        else if(previous.getCurrentMenu().equalsIgnoreCase("menu3")){
+            //terciary menu
+            //todo falta este
+        }
+
+
+        else{
+            reply=previous;
+        }
+
+
+        while(reply.getOperation().equals("Exit secundary menu") == false)
         {
 
             System.out.println("User="+reply.getUsername()+"\nrequest="+reply.getOperation());
@@ -541,7 +561,7 @@ public class TCPServer {
             }
             else if(reply.getOperation().equals("Exit tertiary menu"))
             {
-                secundaryMenu();
+                secundaryMenu(null);
                 return;
             }
             request = new Message();

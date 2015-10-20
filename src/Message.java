@@ -10,6 +10,7 @@ public class Message implements Serializable {
     private String password;
     private String operation;
     private String message;
+    private  String currentMenu;    //menu1, menu2 or menu3
     private int age;
     private String bi;
     private String email;
@@ -172,5 +173,13 @@ public class Message implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public void setCurrentMenu(String currentMenu) {
+        this.currentMenu = currentMenu;
     }
 }
