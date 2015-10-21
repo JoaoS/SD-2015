@@ -4,7 +4,12 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+<<<<<<< HEAD
+import java.util.*;
+
+=======
 import java.util.Properties;
+>>>>>>> 22d0f64f06de145a2ad54f2983cf5de673e8855f
 /**
  * Created by joaosubtil on 07/10/15.
  */
@@ -102,6 +107,14 @@ public class TCPServer {
             System.out.println("Listenning for clients on port:" + clientPort);
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
+            /////////task to check finished projects////////////////////////
+            Calendar cal = Calendar.getInstance();
+            Date date0Pm = cal.getTime();
+
+            timerTask = new MyTimerTask(dataServerInterface);
+            Timer timer = new Timer(true);
+            timer.scheduleAtFixedRate(timerTask, date0Pm, 1000*60*60);
+
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
@@ -203,10 +216,31 @@ public class TCPServer {
         }
     }
 
+    static class MyTimerTask extends TimerTask
+    {
+        DataServer_I dataServerInterface;
+
+        MyTimerTask(DataServer_I dataServerInterface)
+        {
+            this.dataServerInterface = dataServerInterface;
+        }
+
+        public void run()
+        {
+            try {
+                dataServerInterface.checkProjectsDate();
+            } catch (RemoteException e) {
+                System.out.println("Exception at MyTimerTask run.");
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 //--------------Class to handle each client-------------------------------------------------------
     static class Connection extends Thread {
 
+<<<<<<< HEAD
     public static 	DataServer_I dataServerInterface;
     public DataInputStream in;
     public DataOutputStream out;
@@ -214,6 +248,15 @@ public class TCPServer {
     public int thread_number;//number of currently connected client
     public ObjectInputStream objIn;
     public ObjectOutputStream objOut;
+=======
+    public static 	DataServer_I DataServer_Interface;
+    public static DataInputStream in;
+    public static DataOutputStream out;
+    public static Socket clientSocket;
+    public static int thread_number;//number of currently connected client
+    public static ObjectInputStream objIn;
+    public static ObjectOutputStream objOut;
+>>>>>>> 22d0f64f06de145a2ad54f2983cf5de673e8855f
 
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
