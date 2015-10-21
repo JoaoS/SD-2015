@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Client {
 
-    public static boolean DEBUG=false;
+    public static boolean DEBUG=true;
 
 
     public static   int clientPort;
@@ -26,8 +26,10 @@ public class Client {
     public static   ObjectOutputStream objOut=null;
     public static   ObjectInputStream  objIn=null;
     public static   Guide guide;
-    public static   Message loginData=null;
 
+    public static   Message loginData=null;
+    public static   int alreadyLogin=0;
+    public static   int signalToTerminate=0;
 
 
     public static void main(String args[]) {
@@ -65,6 +67,9 @@ public class Client {
                 try {
                     sock = new Socket(firstIP,clientPort);
                     tries=reconnection;
+                    if (DEBUG){
+                        System.out.println("connecting to 1");
+                    }
                 } catch (IOException e) {
                     tries-=2;
                 }
@@ -74,6 +79,9 @@ public class Client {
                 try {
                     sock = new Socket(secondIP,clientPort);
                     tries=reconnection;
+                    if (DEBUG){
+                        System.out.println("connecting to 2");
+                    }
                 } catch (IOException e) {
                     tries-=2;
                 }
@@ -92,6 +100,7 @@ public class Client {
                     try {
 
                         //th.interrupt();
+                        signalToTerminate=1;
                         th.join();
                         if(DEBUG){
                             System.out.println("thread killed");
@@ -158,8 +167,13 @@ public class Client {
         th.start();
 
 
-        if(DEBUG)
+        /*if(DEBUG) {
             System.out.println("Aqui->Reader thread");
+            System.out.println("alreadylogedin=" + alreadyLogin);
+
+        }*/
+
+        signalToTerminate=0;
 
         //reading from server
         while (true)
@@ -174,8 +188,14 @@ public class Client {
             {
                 guide.getOperations().add(reply.getOperation());
             }
-            if (reply.getMessage()!=null)
-                System.out.println("Server->"+ reply.getMessage());
+            if (reply.getMessage()!=null){
+
+
+                if(!(alreadyLogin==1 && reply.getOperation().equalsIgnoreCase("initial menu")))
+                    System.out.println("Server->"+ reply.getMessage());
+
+
+            }
         }
     }
 }
@@ -205,11 +225,17 @@ class SendToServer extends Thread{
         InputStreamReader input = new InputStreamReader(System.in);
         reader = new BufferedReader(input);
 
-            try 
+            try
             {
                 while(true)
                 {
                     int check = 0;
+
+                    //veifies if the connection failed
+                    if (Client.signalToTerminate==1)
+                        break;
+
+
                     synchronized(Client.guide)
                     {
                         if(!Client.guide.getOperations().isEmpty())
@@ -225,9 +251,16 @@ class SendToServer extends Thread{
                             case "initial menu":
                                 initialMenu();
                                 break;
+
                             case "login successful":
+                                Client.alreadyLogin=1;
                                 secundaryMenu();
                                 break;
+
+                            case "login unsuccessful":
+                                initialMenu();
+                                break;
+
                             default:
                                 break;
                         }
@@ -243,18 +276,30 @@ class SendToServer extends Thread{
 
         if (Client.DEBUG)
             System.out.println("thread is dead");
-        }
 
-    
-    
-    public void initialMenu() throws IOException
+    }
+
+
+
+    public void initialMenu() throws Exception
     {
+        //se os dados já foram validados posso saltar esta parte
+        if (Client.alreadyLogin == 1) {
+            login();
+        }
+        else {
             String ini="\n-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
-            int op = Integer.parseInt(reader.readLine());
+            int op=0;
             int check = 0;
-            while(check == 0)
+
+            while(check==0)
             {
-                if(op  ==1) //todo testar aqui se a sessao já foi iniciada
+                try {
+                    op = Integer.parseInt(reader.readLine());
+                }catch (NumberFormatException e){
+
+                }
+                if(op == 1 )
                 {
                     check = 1;
                     login();
@@ -266,17 +311,19 @@ class SendToServer extends Thread{
                 }
                 else
                 {
-
-                    System.out.println("Select a valid option." + ini);
-                    op = Integer.parseInt(reader.readLine());
+                    System.out.println(ini);
+                    System.out.println("Please select number 1 or 2");
+                    check=0;
                 }
+
             }
+        }
     }
     
-    public void login() throws IOException
+    public void login() throws Exception        //Validation done
     {
         Message request = new Message();
-        if (Client.loginData != null) {
+        if (Client.alreadyLogin != 0) {
             request = Client.loginData;
         }
         else
@@ -291,110 +338,181 @@ class SendToServer extends Thread{
             request.setOperation("login");
             Client.loginData=request;
         }
-        objOut.writeObject(request);
-        objOut.flush();
-    }
 
-    public void signUp() throws IOException
-    {
-            int check = 0;
-            Message request = new Message();
-            System.out.println("Username : ");
-            String username = reader.readLine();
-            System.out.println("Password : ");
-            String password = reader.readLine();
-            System.out.println("BI : ");
-            String bi = reader.readLine();
-            System.out.println("Age : ");
-            int age = Integer.parseInt(reader.readLine());
-            System.out.println("Email : ");
-            String email = reader.readLine();
-            while(check == 0) {
-                String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-                java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-                java.util.regex.Matcher m = p.matcher(email);
-                if (m.matches()) {
-                    check = 1;
-                } else {
-                    System.out.println("Invalid e-mail address.\n\nEmail : ");
-                    email = reader.readLine();
-                }
-            }
-            request.setUsername(username);
-            request.setPassword(password);
-            request.setBi(bi);
-            request.setAge(age);
-            request.setEmail(email);
-            request.setOperation("sign up");
+        if (Client.signalToTerminate==0){
             objOut.writeObject(request);
             objOut.flush();
+        }
+
     }
 
+    public void signUp() throws IOException     //validation done
+    {
+        int check = 0;
+        Message request = new Message();
+        System.out.println("Username : ");
+        String username = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[a-zA-Z0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(username);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid username.\n\nusername : ");
+                username = reader.readLine();
+            }
+        }
+        check=0;
 
-        public  void secundaryMenu()throws IOException
+        System.out.println("Password : ");
+        String password = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[a-zA-Z0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(password);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid  password.\n\npassword : ");
+                password = reader.readLine();
+            }
+        }
+        check=0;
+
+        System.out.println("BI : ");
+        String bi = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(bi);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid  BI.\n\nBI : ");
+                bi = reader.readLine();
+            }
+        }
+        check=0;
+
+        System.out.println("Age : ");
+        String ageS = reader.readLine();
+        while (check==0 ){
+
+            String ePattern = "^[0-9]*$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(ageS);
+            if (m.matches()) {
+                check = 1;
+            }
+            else {
+                System.out.println("Invalid  Age.\n\nAge : ");
+                ageS = reader.readLine();
+            }
+        }
+        check=0;
+        int age=Integer.parseInt(ageS);
+
+        System.out.println("Email : ");
+        String email = reader.readLine();
+        while(check == 0) {
+
+            String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(email);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid e-mail address.\n\nEmail : ");
+                email = reader.readLine();
+            }
+        }
+        request.setUsername(username);
+        request.setPassword(password);
+        request.setBi(bi);
+        request.setAge(age);
+        request.setEmail(email);
+        request.setOperation("sign up");
+
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
+    }
+
+    public  void secundaryMenu()throws IOException
+    {
+        int op = 0;
+        String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
+        while(op != 8)
         {
-            int op = 0;
-            String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
-            while(op != 8)
+            do{
+                try {
+                    op = Integer.parseInt(reader.readLine());
+                }catch (NumberFormatException e){
+                    System.out.println("Please select number between 1 and 8");
+
+                }
+
+                if(op <= 0 || op>8) {
+                    System.out.println("Select a valid option.\n");
+                    System.out.println(ini);
+                }
+
+            }while(op <= 0 || op>8);
+            switch(op)
             {
-                do{
-                    op =Integer.parseInt(reader.readLine());
-                    if(op <= 0 || op>8) {
-                        System.out.println("Select a valid option.\n");
-                        System.out.println(ini);
-                    }
-                }while(op <= 0 || op>8);
-                switch(op)
-                {
-                    case 1:
-                        listCurrentProjects();
-                        break;
-                    case 2:
-                        listOldProjects();
-                        break;
-                    case 3:
-                        viewProject();
-                        break;
-                    case 4:
-                        checkAccountBalance();
-                        break;
-                    case 5:
-                        checkUserRewards();
-                        break;
-                    case 6:
-                        createProject();
-                        break;
-                    case 7:
-                        adminMenu();
-                        break;
-                    case 8:
-                        sendExitMessage();
-                        break;
+                case 1:
+                    listCurrentProjects();
+                    break;
+                case 2:
+                    listOldProjects();
+                    break;
+                case 3:
+                    viewProject();
+                    break;
+                case 4:
+                    checkAccountBalance();
+                    break;
+                case 5:
+                    checkUserRewards();
+                    break;
+                case 6:
+                    createProject();
+                    break;
+                case 7:
+                    adminMenu();
+                    break;
+                case 8:
+                    sendExitMessage();
+                    break;
                 default:
                     break;
             }
         }
     }
 
-
     public void listCurrentProjects() throws IOException
     {
         Message request = new Message();
         request.setOperation("list current projects");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
     public void listOldProjects() throws IOException
     {
         Message request = new Message();
         request.setOperation("list old projects");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-
-    public void viewProject() throws IOException            //todo validação do id inserido
+    public void viewProject() throws IOException
     {
         listAllProjects();
         idProject = Long.parseLong(reader.readLine());
@@ -402,8 +520,10 @@ class SendToServer extends Thread{
         request.setOperation("view project");
         request.setIdProject(idProject);
         System.out.println("ID project : " + request.getIdProject());
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
         tertiaryMenu();
     }
 
@@ -411,8 +531,10 @@ class SendToServer extends Thread{
     {
         Message request = new Message();
         request.setOperation("list all projects");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
     public void checkAccountBalance() throws IOException
@@ -420,18 +542,21 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check account balance");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
-
 
     public void checkUserRewards() throws IOException
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check rewards");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
     public void createProject() throws IOException
@@ -506,14 +631,19 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
-    public void sendExitMessage() throws IOException
+    public void sendExitMessage() throws IOException    //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit secundary menu");
+
         Client.loginData = null;
-        objOut.writeObject(request);
-        objOut.flush();
+        Client.alreadyLogin=0;
+
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
     void tertiaryMenu() throws IOException
@@ -545,7 +675,6 @@ class SendToServer extends Thread{
             }
         }
     }
-
 
     public void contributeToProject() throws IOException
     {
@@ -595,8 +724,9 @@ class SendToServer extends Thread{
         request.setOperation("Exit tertiary menu");
         objOut.writeObject(request);
         objOut.flush();
+        Client.alreadyLogin=0;
     }
-
+/**/
     void adminMenu() throws IOException
     {
 
@@ -667,8 +797,8 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
-    public void removeReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin.
-    {                                                               //todo validação do reward escolhido
+    public void removeReward() throws IOException
+    {
         System.out.println("ID of the project that you want to remove a reward:");
         long id = Long.parseLong(reader.readLine());
         listRewardsProject(id);
@@ -682,7 +812,7 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
-    public void cancelProject() throws IOException              //todo validação de escolha de projecto em que o user é admin
+    public void cancelProject() throws IOException
     {
         System.out.println("ID of the project that you want to cancel:");
         long id = Long.parseLong(reader.readLine());
@@ -727,6 +857,5 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
-    //todo ----------------------------> fim do projecto
 }
 

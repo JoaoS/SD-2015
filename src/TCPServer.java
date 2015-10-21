@@ -83,7 +83,10 @@ public class TCPServer {
         } catch (Exception e){
             if(DEBUG)
                 e.printStackTrace();
-            System.out.println("Error establishing connection with RMI.");
+
+            System.out.println("Error establishing connection with RMI.\nPlease try again later");
+            System.exit(1);
+
 
         }
         //---------------------------------------------------------------------------
@@ -260,7 +263,6 @@ public class TCPServer {
     }
 
 
-
      public void restartRmi() throws IOException
      {
             int tries = TCPServer.reconnection;
@@ -275,10 +277,11 @@ public class TCPServer {
                 }
                 try
                 {
+
                     System.getProperties().put("java.security.policy", "security.policy");
                     System.setSecurityManager(new RMISecurityManager());
-                   
-                    dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
+                    dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(rmiName);
+
                     if(dataServerInterface.dummyMethod()==0)
                     {
                         System.out.println("RMI back online....");
@@ -302,23 +305,47 @@ public class TCPServer {
 
     public void run()
     {
-        try
-        {
-            while(true)
-            {
+        try {
+
+            while (true) {
                 initialMenu();
             }
-        }catch(EOFException e){System.out.println("Client disconnected :");
-        }catch(IOException e){System.out.println("IO:" + e);
-        }catch(Exception e){
+
+        }catch (RemoteException e)
+        {
+            try {
+                restartRmi();
+
+            } catch (IOException e1) {
+                if (DEBUG)
+                    e1.printStackTrace();
+            }
+
+        }
+        catch(EOFException e)
+        {
+            System.out.println("Client disconnected :");
+        }
+        catch(IOException e)
+        {
+            System.out.println("IO:" + e);
+        }
+        catch(Exception e)
+        {
             System.out.println("Error starting the initial menu.");
+            try {
+                restartRmi();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             if (DEBUG)
                 e.printStackTrace();
         }
     }
-    
-    
-    public void initialMenu() throws IOException,ClassNotFoundException
+
+
+
+    public void initialMenu() throws Exception
     {
             String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
@@ -338,6 +365,14 @@ public class TCPServer {
                     objOut.writeObject(request);
                     objOut.flush();
                     secundaryMenu();
+                }
+                else {
+                    request= new Message();
+                    request.setOperation("login unsuccessful");
+                    request.setMessage("Login credentials wrong please insert correct ones");
+                    objOut.writeObject(request);
+                    objOut.flush();
+
                 }
             }
             else if(reply.getOperation().equals("sign up"))
@@ -363,8 +398,9 @@ public class TCPServer {
             }
     }
 
-    public void secundaryMenu() throws IOException,ClassNotFoundException {
-        String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
+    public void secundaryMenu() throws Exception
+    {
+        String ini = "-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
         Message reply = new Message();
         Message request;
         long accountBalance;
@@ -495,11 +531,13 @@ public class TCPServer {
             request.setMessage(ini);
             objOut.writeObject(request);
             objOut.flush();
+
             reply = (Message) objIn.readObject();
         }
     }
 
-    public void tertiaryMenu() throws IOException,ClassNotFoundException {
+    public void tertiaryMenu() throws Exception
+    {
         String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
         Message reply = new Message();
         Message request;
@@ -551,7 +589,7 @@ public class TCPServer {
         }
     }
 
-    public void adminMenu() throws IOException,ClassNotFoundException
+    public void adminMenu() throws Exception
     {
         String ini = "\n\n1->Add rewards to a project.\n\n2->Remove rewards from a project.\n\n3->Cancel project.\n\n4->Reply to supporter's messages.\n\n5->Exit\n\nChoose an option:";
         Message reply = new Message();
