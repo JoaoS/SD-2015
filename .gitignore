@@ -1,2 +1,5 @@
 *.class
 .idea/
+out/
+mysql-connector-java-5.0.8/
+ 
