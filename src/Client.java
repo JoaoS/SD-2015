@@ -440,7 +440,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public  void secundaryMenu()throws IOException
+    public  void secundaryMenu()throws IOException  //validation done
     {
         int op = 0;
         String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
@@ -492,7 +492,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void listCurrentProjects() throws IOException
+    public void listCurrentProjects() throws IOException    //validation done
     {
         Message request = new Message();
         request.setOperation("list current projects");
@@ -502,7 +502,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void listOldProjects() throws IOException
+    public void listOldProjects() throws IOException    //validation done
     {
         Message request = new Message();
         request.setOperation("list old projects");
@@ -510,9 +510,10 @@ class SendToServer extends Thread{
             objOut.writeObject(request);
             objOut.flush();
         }
+
     }
 
-    public void viewProject() throws IOException
+    public void viewProject() throws IOException        //validation done
     {
         listAllProjects();
         idProject = Long.parseLong(reader.readLine());
@@ -527,7 +528,7 @@ class SendToServer extends Thread{
         tertiaryMenu();
     }
 
-    public void listAllProjects() throws IOException
+    public void listAllProjects() throws IOException    //validation done
     {
         Message request = new Message();
         request.setOperation("list all projects");
@@ -537,7 +538,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void checkAccountBalance() throws IOException
+    public void checkAccountBalance() throws IOException //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -548,7 +549,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void checkUserRewards() throws IOException
+    public void checkUserRewards() throws IOException   //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -559,21 +560,49 @@ class SendToServer extends Thread{
         }
     }
 
-    public void createProject() throws IOException
+    public void createProject() throws IOException      //validation done
     {
+        int check=0;
+
         int checkData = 0;
         Message request = new Message();
         System.out.println("Name : ");
         String name = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[a-zA-Z0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(name);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid Name.\n\nName : ");
+                name = reader.readLine();
+            }
+        }
+        check=0;
+
         System.out.println("Description : ");
         String description = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[a-zA-Z0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(description);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid Description.\n\nDescription : ");
+                description = reader.readLine();
+            }
+        }
+        check=0;
+
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         formatter.setLenient(false);
         String limitDate = "";
         while(checkData ==0)
         {
-            System.out.println("Limit Date (dd/MM/yyyy HH:mm):");
+            System.out.println("Limit Date (dd/MM/yyyy HH):");
             limitDate = reader.readLine();
             try
             {
@@ -586,7 +615,23 @@ class SendToServer extends Thread{
             }
         }
         System.out.println("Target value: ");
-        long targetValue  = Long.parseLong(reader.readLine());
+        String targetValueS  = reader.readLine();
+
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(targetValueS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid Target value.\n\nTarget value : ");
+                targetValueS = reader.readLine();
+            }
+        }
+        check=0;
+        long targetValue  = Long.parseLong(targetValueS);
+
+
         System.out.println("Enterprise(just press enter if this is project is individual) : ");
         String enterprise= reader.readLine();
         //////////////////////////////////////////////////////
@@ -627,8 +672,11 @@ class SendToServer extends Thread{
         request.setProjectTargetValue(targetValue);
         request.setProjectEnterprise(enterprise);
         request.setOperation("create project");
-        objOut.writeObject(request);
-        objOut.flush();
+
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
     public void sendExitMessage() throws IOException    //validation done
@@ -646,14 +694,19 @@ class SendToServer extends Thread{
         }
     }
 
-    void tertiaryMenu() throws IOException
+    void tertiaryMenu() throws IOException      //validation done
     {
         int op = 0;
         String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
         while(op != 3)
         {
             do{
-                op =Integer.parseInt(reader.readLine());
+                try {
+                    op = Integer.parseInt(reader.readLine());
+                }catch (NumberFormatException e){
+
+                }
+
                 if(op <= 0 || op>3) {
                     System.out.println("Select a valid option.\n");
                     System.out.println(ini);
@@ -676,34 +729,67 @@ class SendToServer extends Thread{
         }
     }
 
-    public void contributeToProject() throws IOException
+    public void contributeToProject() throws IOException       //validaton done
     {
+        int check=0;
         System.out.println("How much do you want to donate ?");
-        float pledgeValue = Float.parseFloat(reader.readLine());
+        String pledgeValueS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(pledgeValueS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid Value.\n\nValue : ");
+                pledgeValueS = reader.readLine();
+            }
+        }
+        check=0;
+        float pledgeValue = Float.parseFloat(pledgeValueS);
+
         System.out.println("ID of the alternative that you want to vote : ");
-        long idAlternative = Long.parseLong(reader.readLine());
+        String idAlternativeS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(idAlternativeS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid option.\n\nID : ");
+                idAlternativeS = reader.readLine();
+            }
+        }
+        check=0;
+        long idAlternative = Long.parseLong(idAlternativeS);
+
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("pledge");
         request.setAlternativeChoosen(idAlternative);
         request.setPledgeValue(pledgeValue);
         request.setIdProject(idProject);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
 
     }
 
-    public void showPreviousMessages() throws  IOException
+    public void showPreviousMessages() throws  IOException      //validaton done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("show previous comments");
         request.setIdProject(idProject);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void commentProject() throws IOException
+    public void commentProject() throws IOException     //validaton done
     {
         showPreviousMessages();
         String msg = Client.loginData.getUsername() + ": ";
@@ -713,21 +799,28 @@ class SendToServer extends Thread{
         request.setOperation("comment project");
         request.setIdProject(idProject);
         request.setComment(msg);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void sendExitMessage2() throws IOException
+    public void sendExitMessage2() throws IOException       //validaton done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit tertiary menu");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
         Client.alreadyLogin=0;
     }
-/**/
-    void adminMenu() throws IOException
+
+
+
+    
+    void adminMenu() throws IOException //validaton done
     {
 
         Message request = new Message();
@@ -741,7 +834,12 @@ class SendToServer extends Thread{
         while(op != 5)
         {
             do{
-                op =Integer.parseInt(reader.readLine());
+                try {
+                    op = Integer.parseInt(reader.readLine());
+                }catch (NumberFormatException e){
+                    System.out.println("Please select number between 1 and 8");
+
+                }
                 if(op <= 0 || op>5) {
                     System.out.println("Select a valid option.\n");
                     System.out.println(ini);
@@ -770,72 +868,186 @@ class SendToServer extends Thread{
         }
     }
 
-    public void addReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin
+    public void addReward() throws IOException      //validation done
     {
+        int check=0;
         System.out.println("ID of the project that you want to add a reward:");
-        long id = Long.parseLong(reader.readLine());
+        String idS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(idS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid value.\n\nNew ID : ");
+                idS = reader.readLine();
+            }
+        }
+        check=0;
+        long id = Long.parseLong(idS);
+
+
         System.out.println("Description: ");
         String rewardDescription = reader.readLine();
         System.out.println("Minimum value of the pledge :");
-        double minValue = Double.parseDouble(reader.readLine());
+        String minValueS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(minValueS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid value.\n\nNew value : ");
+                minValueS = reader.readLine();
+            }
+        }
+        check=0;
+        double minValue = Double.parseDouble(minValueS);
+
+
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("add reward");
         request.getRewards().add(new Reward(rewardDescription, minValue));
         request.setIdProject(id);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void listRewardsProject(long id) throws IOException
+    public void listRewardsProject(long id) throws IOException      //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("list rewards");
         request.setIdProject(id);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void removeReward() throws IOException
+    public void removeReward() throws IOException       //validation done
     {
+        int check=0;
         System.out.println("ID of the project that you want to remove a reward:");
-        long id = Long.parseLong(reader.readLine());
+        String idS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(idS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid value.\n\nNew ID : ");
+                idS = reader.readLine();
+            }
+        }
+        check=0;
+        long id = Long.parseLong(idS);
         listRewardsProject(id);
-        long rewardId = Long.parseLong(reader.readLine());
+
+        String rewardIdS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(rewardIdS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid value.\n\nNew ID : ");
+                rewardIdS = reader.readLine();
+            }
+        }
+        long rewardId = Long.parseLong(rewardIdS);
+
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("remove reward");
         request.setIdProject(id);
         request.setIdReward(rewardId);
-        objOut.writeObject(request);
-        objOut.flush();
+
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void cancelProject() throws IOException
+    public void cancelProject() throws IOException      //validation done
     {
+        int check=0;
         System.out.println("ID of the project that you want to cancel:");
-        long id = Long.parseLong(reader.readLine());
+        String idS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(idS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid value.\n\nNew ID : ");
+                idS = reader.readLine();
+            }
+        }
+        check=0;
+        long id = Long.parseLong(idS);
+
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("cancel project");
         request.setIdProject(id);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void replyMessage() throws IOException
+    public void replyMessage() throws IOException       //validation done
     {
+        int check=0;
         System.out.println("ID of the project where you want to reply to messages:");
-        long id = Long.parseLong(reader.readLine());
+        String idS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(idS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid value.\n\nNew ID : ");
+                idS = reader.readLine();
+            }
+        }
+        check=0;
+        long id = Long.parseLong(idS);
+
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("show previous comments admin");
         request.setIdProject(id);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
         ///////////////////////////////////////////////////////
-        long idMessage = Long.parseLong(reader.readLine());
+        String idMessageS = reader.readLine();
+        while (check==0 ){
+            String ePattern = "^[0-9]*.$";
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+            java.util.regex.Matcher m = p.matcher(idMessageS);
+            if (m.matches()) {
+                check = 1;
+            } else {
+                System.out.println("Invalid message value.\n\nNew message value : ");
+                idMessageS = reader.readLine();
+            }
+        }
+        check=0;
+        long idMessage = Long.parseLong(idMessageS);
+
         request = new Message();
         System.out.println("Type a reply:");
         String reply = "\t\t\t\t" + reader.readLine();
@@ -844,17 +1056,21 @@ class SendToServer extends Thread{
         request.setOperation("reply message");
         request.setReply(reply);
         request.setIdProject(id);
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
-    public void sendExitMessage3() throws IOException
+    public void sendExitMessage3() throws IOException       //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit admin menu");
-        objOut.writeObject(request);
-        objOut.flush();
+        if (Client.signalToTerminate==0){
+            objOut.writeObject(request);
+            objOut.flush();
+        }
     }
 
 }
