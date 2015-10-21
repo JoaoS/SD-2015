@@ -10,10 +10,10 @@ public class Message implements Serializable {
     private String password;
     private String operation;
     private String message;
-    private int age;
-    private String bi;
-    private String email;
-    private String projectName;
+	private int age;
+	private String bi;
+	private String email;
+	private String projectName;
     private String projectDescription;
     private String projectLimitDate;
     private long projectTargetValue;
@@ -24,36 +24,39 @@ public class Message implements Serializable {
     private float pledgeValue;
     private long alternativeChoosen;
     private String comment;
+    private long idReward;
+    private String reply;
+    private long idMessage;
 
 
     public Message() {
-        super();
-    }
+		super();
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 
-    public String getOperation() {
-        return operation;
-    }
+	public String getOperation() {
+		return operation;
+	}
 
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
 
     public String getMessage() {
         return message;
@@ -62,29 +65,29 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public int getAge() {
-        return age;
-    }
+	public int getAge() {
+		return age;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-    public String getBi() {
-        return bi;
-    }
+	public String getBi() {
+		return bi;
+	}
 
-    public void setBi(String bi) {
-        this.bi = bi;
-    }
+	public void setBi(String bi) {
+		this.bi = bi;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
     public String getProjectName() {
         return projectName;
@@ -172,5 +175,29 @@ public class Message implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public long getIdReward() {
+        return idReward;
+    }
+
+    public void setIdReward(long idReward) {
+        this.idReward = idReward;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+    public long getIdMessage() {
+        return idMessage;
+    }
+
+    public void setIdMessage(long idMessage) {
+        this.idMessage = idMessage;
     }
 }

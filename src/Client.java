@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Client {
 
-    public static boolean DEBUG=true;
+    public static boolean DEBUG=false;
 
 
     public static   int clientPort;
@@ -27,10 +27,6 @@ public class Client {
     public static   ObjectInputStream  objIn=null;
     public static   Guide guide;
     public static   Message loginData=null;
-    public static   int alreadyLogin=0;
-
-
-    public static int signalToTerminate=0;
 
 
 
@@ -63,43 +59,28 @@ public class Client {
 
         guide=new Guide();
         int tries=reconnection*2;
-        while(tries >0){
-            sock=null;
-            signalToTerminate=0;
+        while(tries !=0){
 
             if (sock==null){
                 try {
                     sock = new Socket(firstIP,clientPort);
-                    tries=reconnection*2;
-                    if (DEBUG)
-                        System.out.println("connecting to first");
+                    tries=reconnection;
                 } catch (IOException e) {
-                    tries--;
-                    if (DEBUG)
-                        System.out.println("Remaining tries="+tries+"->First server");
+                    tries-=2;
                 }
 
             }
-            if (sock==null){
+            else if(sock==null){
                 try {
                     sock = new Socket(secondIP,clientPort);
-                    System.out.println("secondIP="+secondIP);
-                    tries=reconnection*2;
-                    if (DEBUG)
-                        System.out.println("connecting to second");
+                    tries=reconnection;
                 } catch (IOException e) {
-                    tries--;
-                    if (DEBUG)
-                        System.out.println("Remaining tries="+tries+"->Second server");
+                    tries-=2;
                 }
-
             }
 
             if (sock!=null){
                 try {
-                    if(DEBUG){
-                        System.out.println("Socket status="+sock);
-                    }
                     createChannels(sock);
 
                 }catch (IOException e){
@@ -108,20 +89,19 @@ public class Client {
                         System.out.println("Connection lost");
                     }
 
-                    if(th!=null){
-                        try {
-                            if(DEBUG){
-                                System.out.println("Wait for sender thread to die");
-                            }
-                            signalToTerminate=1;
-                            th.join();
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
+                    try {
+
+                        //th.interrupt();
+                        th.join();
+                        if(DEBUG){
+                            System.out.println("thread killed");
                         }
+
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
                     }
 
                     if(sock!=null){
-
                         try {
                             sock.close();
                             sock=null;
@@ -185,16 +165,8 @@ public class Client {
         while (true)
         {
             Message reply = null;
-
             try {
-
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //todo verificar se as classes message estão em sintonia
-                reply = (Message)objIn.readObject();
+                reply = (Message )objIn.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -237,9 +209,6 @@ class SendToServer extends Thread{
             {
                 while(true)
                 {
-                    if (Client.signalToTerminate==1)
-                        break;
-
                     int check = 0;
                     synchronized(Client.guide)
                     {
@@ -257,7 +226,6 @@ class SendToServer extends Thread{
                                 initialMenu();
                                 break;
                             case "login successful":
-                                Client.alreadyLogin=1;
                                 secundaryMenu();
                                 break;
                             default:
@@ -286,7 +254,7 @@ class SendToServer extends Thread{
             int check = 0;
             while(check == 0)
             {
-                if(op == 1 || Client.alreadyLogin==1) //todo testar aqui se a sessao já foi iniciada
+                if(op  ==1) //todo testar aqui se a sessao já foi iniciada
                 {
                     check = 1;
                     login();
@@ -323,10 +291,8 @@ class SendToServer extends Thread{
             request.setOperation("login");
             Client.loginData=request;
         }
-        if(Client.signalToTerminate!=1){
-            objOut.writeObject(request);
-            objOut.flush();
-        }
+        objOut.writeObject(request);
+        objOut.flush();
     }
 
     public void signUp() throws IOException
@@ -510,7 +476,7 @@ class SendToServer extends Thread{
                     break;
                 }
                 System.out.println("Minimum value of the pledge :");
-                int minValue = Integer.parseInt(reader.readLine());
+                double minValue = Double.parseDouble(reader.readLine());
                 request.getRewards().add(new Reward(rewardDescription, minValue));
         }
         System.out.println("Add alternatives to the project(insert 0 in description to stop) :");
@@ -627,15 +593,21 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("Exit tertiary menu");
-        Client.loginData = null;
         objOut.writeObject(request);
         objOut.flush();
     }
 
     void adminMenu() throws IOException
     {
+
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("admin menu");
+        objOut.writeObject(request);
+        objOut.flush();
+        ////////////////////////////////////////////////////////
         int op = 0;
-        String ini = "\n\n1->Add or remove rewards of a project.\n\n2->Cancel project.\n\n3.Reply to supporter's messages.\n\4.Exit\n\nChoose an option:";
+        String ini = "\n\n1->Add rewards to a project.\n\n2->Remove rewards from a project.\n\n3->Cancel project.\n\n4->Reply to supporter's messages.\n\n5->Exit\n\nChoose an option:";
         while(op != 5)
         {
             do{
@@ -647,23 +619,112 @@ class SendToServer extends Thread{
             }while(op <= 0 || op>5);
             switch(op)
             {
-                case 1:                                     //todo addRewards
+                case 1:
+                    addReward();
                     break;
                 case 2:
-                                                            //todo removeRewards
+                    removeReward();
                     break;
-                case 3:                                     //todo cancelProject
+                case 3:
+                    cancelProject();
                     break;
                 case 4:                                     //todo replyMessages
+                    replyMessage();
                     break;
                 case 5:                                     //todo send exit message in admin menu
-                    sendExitMessage();
-                    System.out.println("OP = " + op);
+                    sendExitMessage3();
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    public void addReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin
+    {
+        System.out.println("ID of the project that you want to add a reward:");
+        long id = Long.parseLong(reader.readLine());
+        System.out.println("Description: ");
+        String rewardDescription = reader.readLine();
+        System.out.println("Minimum value of the pledge :");
+        double minValue = Double.parseDouble(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("add reward");
+        request.getRewards().add(new Reward(rewardDescription, minValue));
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void listRewardsProject(long id) throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("list rewards");
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void removeReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin.
+    {                                                               //todo validação do reward escolhido
+        System.out.println("ID of the project that you want to remove a reward:");
+        long id = Long.parseLong(reader.readLine());
+        listRewardsProject(id);
+        long rewardId = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("remove reward");
+        request.setIdProject(id);
+        request.setIdReward(rewardId);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void cancelProject() throws IOException              //todo validação de escolha de projecto em que o user é admin
+    {
+        System.out.println("ID of the project that you want to cancel:");
+        long id = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("cancel project");
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void replyMessage() throws IOException
+    {
+        System.out.println("ID of the project where you want to reply to messages:");
+        long id = Long.parseLong(reader.readLine());
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("show previous comments admin");
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+        ///////////////////////////////////////////////////////
+        long idMessage = Long.parseLong(reader.readLine());
+        request = new Message();
+        System.out.println("Type a reply:");
+        String reply = "\t\t\t\t" + reader.readLine();
+        request.setIdMessage(idMessage);
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("reply message");
+        request.setReply(reply);
+        request.setIdProject(id);
+        objOut.writeObject(request);
+        objOut.flush();
+    }
+
+    public void sendExitMessage3() throws IOException
+    {
+        Message request = new Message();
+        request.setUsername(Client.loginData.getUsername());
+        request.setOperation("Exit admin menu");
+        objOut.writeObject(request);
+        objOut.flush();
     }
 
     //todo ----------------------------> fim do projecto

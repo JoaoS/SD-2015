@@ -1,10 +1,10 @@
 import java.io.*;
 import java.net.*;
-import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.Properties;
+import java.util.*;
+
 /**
  * Created by joaosubtil on 07/10/15.
  */
@@ -24,7 +24,7 @@ public class TCPServer {
     private static String rmiIp;
     private static String firstIP;
     private static String secondIP;
-
+    private static TimerTask timerTask;
 
 
     public static void main(String args[]) {
@@ -80,8 +80,6 @@ public class TCPServer {
             System.getProperties().put("java.security.policy", "security.policy");
             System.setSecurityManager(new RMISecurityManager());
             dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(rmiName);
-            //dataServerInterface = (DataServer_I) Naming.lookup("rmi://" + rmiIp + ":" + rmiPort + "/" + rmiName);
-
         } catch (Exception e){
             if(DEBUG)
                 e.printStackTrace();
@@ -95,7 +93,6 @@ public class TCPServer {
         secundaryServer();
         //if not create thread to be primary and respond
         new PrimaryThread(udpPort).start();
-
         //accept incoming connections from client
         int connectedUsers = 0;
         try {
@@ -103,6 +100,14 @@ public class TCPServer {
             System.out.println("Listenning for clients on port:" + clientPort);
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
+            /////////task to check finished projects////////////////////////
+            Calendar cal = Calendar.getInstance();
+            Date date0Pm = cal.getTime();
+
+            timerTask = new MyTimerTask(dataServerInterface);
+            Timer timer = new Timer(true);
+            timer.scheduleAtFixedRate(timerTask, date0Pm, 1000*60*60);
+
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
@@ -204,22 +209,42 @@ public class TCPServer {
         }
     }
 
+    static class MyTimerTask extends TimerTask
+    {
+        DataServer_I dataServerInterface;
+
+        MyTimerTask(DataServer_I dataServerInterface)
+        {
+            this.dataServerInterface = dataServerInterface;
+        }
+
+        public void run()
+        {
+            try {
+                dataServerInterface.checkProjectsDate();
+            } catch (RemoteException e) {
+                System.out.println("Exception at MyTimerTask run.");
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 //--------------Class to handle each client-------------------------------------------------------
     static class Connection extends Thread {
 
-    public static 	DataServer_I DataServer_Interface;
-    public static DataInputStream in;
-    public static DataOutputStream out;
-    public static Socket clientSocket;
-    public static int thread_number;//number of currently connected client
-    public static ObjectInputStream objIn;
-    public static ObjectOutputStream objOut;
+    public static 	DataServer_I dataServerInterface;
+    public DataInputStream in;
+    public DataOutputStream out;
+    public Socket clientSocket;
+    public int thread_number;//number of currently connected client
+    public ObjectInputStream objIn;
+    public ObjectOutputStream objOut;
 
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
         thread_number = numero;
-        DataServer_Interface=ds;
+        dataServerInterface=ds;
         try {
             clientSocket = aClientSocket;
             in = new DataInputStream(clientSocket.getInputStream());
@@ -238,9 +263,6 @@ public class TCPServer {
 
      public void restartRmi() throws IOException
      {
-
-         if (DEBUG)
-             System.out.println("Attempting to reconnect to RMI");
             int tries = TCPServer.reconnection;
             while(tries!=0)
             {
@@ -256,8 +278,8 @@ public class TCPServer {
                     System.getProperties().put("java.security.policy", "security.policy");
                     System.setSecurityManager(new RMISecurityManager());
                    
-                    DataServer_Interface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
-                    if(DataServer_Interface.dummyMethod()==0)
+                    dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(TCPServer.rmiPort).lookup(TCPServer.rmiName);
+                    if(dataServerInterface.dummyMethod()==0)
                     {
                         System.out.println("RMI back online....");
                         break;
@@ -280,46 +302,23 @@ public class TCPServer {
 
     public void run()
     {
-        try {
-
-            while (true) {
+        try
+        {
+            while(true)
+            {
                 initialMenu();
             }
-
-        }catch (RemoteException e)
-        {
-            try {
-                restartRmi();
-
-            } catch (IOException e1) {
-                if (DEBUG)
-                    e1.printStackTrace();
-            }
-
-        }
-        catch(EOFException e)
-        {
-            System.out.println("Client disconnected :");
-        }
-        catch(IOException e)
-        {
-            System.out.println("IO:" + e);
-        }
-        catch(Exception e)
-        {
+        }catch(EOFException e){System.out.println("Client disconnected :");
+        }catch(IOException e){System.out.println("IO:" + e);
+        }catch(Exception e){
             System.out.println("Error starting the initial menu.");
-            try {
-                restartRmi();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
             if (DEBUG)
                 e.printStackTrace();
         }
     }
     
     
-    public  void initialMenu() throws IOException,ClassNotFoundException
+    public void initialMenu() throws IOException,ClassNotFoundException
     {
             String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
@@ -329,8 +328,8 @@ public class TCPServer {
             objOut.flush();
         	Message reply = new Message();
         	reply = (Message) objIn.readObject();
-        	if(reply.getOperation().equals("login")){
-
+        	if(reply.getOperation().equals("login"))
+            {
                 if(dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0)
                 {
                     request= new Message();
@@ -365,7 +364,7 @@ public class TCPServer {
     }
 
     public void secundaryMenu() throws IOException,ClassNotFoundException {
-        String ini = "-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Exit.\n\nChoose an option:";
+        String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
         Message reply = new Message();
         Message request;
         long accountBalance;
@@ -476,6 +475,16 @@ public class TCPServer {
                     objOut.flush();
                 }
             }
+            else if(reply.getOperation().equals("admin menu"))
+            {
+                request = new Message();
+                request.setOperation("admins projects");
+                String send = dataServerInterface.showAdminProjects(reply.getUsername());
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                adminMenu();
+            }
             else if(reply.getOperation().equals("Exit secundary menu"))
             {
                 initialMenu();
@@ -513,7 +522,7 @@ public class TCPServer {
             }
             else if(reply.getOperation().equals("show previous comments"))
             {
-                String send = dataServerInterface.showCommentsProject(reply.getIdProject());
+                String send = dataServerInterface.showCommentsProject(reply.getIdProject(),0);
                 request = new Message();
                 request.setOperation("show previous comments successfull");
                 request.setMessage(send);
@@ -535,6 +544,85 @@ public class TCPServer {
             }
             request = new Message();
             request.setOperation("tertiary menu");
+            request.setMessage(ini);
+            objOut.writeObject(request);
+            objOut.flush();
+            reply = (Message) objIn.readObject();
+        }
+    }
+
+    public void adminMenu() throws IOException,ClassNotFoundException
+    {
+        String ini = "\n\n1->Add rewards to a project.\n\n2->Remove rewards from a project.\n\n3->Cancel project.\n\n4->Reply to supporter's messages.\n\n5->Exit\n\nChoose an option:";
+        Message reply = new Message();
+        Message request;
+        request = new Message();
+        request.setOperation("admin menu");
+        request.setMessage(ini);
+        objOut.writeObject(request);
+        objOut.flush();
+        reply = (Message) objIn.readObject();
+        while(reply.getOperation().equals("Exit admin menu") == false)
+        {
+            if(reply.getOperation().equals("add reward"))
+            {
+                String send = dataServerInterface.addReward(reply.getIdProject(),reply.getRewards().get(0));
+                request = new Message();
+                request.setOperation("add reward successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("list rewards"))
+            {
+                String send = dataServerInterface.listRewardsProject(reply.getIdProject());
+                request = new Message();
+                request.setOperation("list rewards successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                /////////////////////////////////////////////////
+                reply = (Message) objIn.readObject();
+                send = dataServerInterface.removeReward(reply.getIdProject(), reply.getIdReward());
+                request = new Message();
+                request.setOperation("remove reward successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("cancel project"))
+            {
+                String send = dataServerInterface.cancelProject(reply.getIdProject());
+                request = new Message();
+                request.setOperation("cancel project successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+            }
+            else if(reply.getOperation().equals("show previous comments admin"))
+            {
+                String send = dataServerInterface.showCommentsProject(reply.getIdProject(), 1);
+                request = new Message();
+                request.setOperation("show comments project admin successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+                /////////////////////////////////////////////////
+                reply = (Message) objIn.readObject();
+                send = dataServerInterface.replyMessage(reply.getIdProject(),reply.getUsername(),reply.getIdMessage() ,reply.getReply());
+                request = new Message();
+                request.setOperation("reply successfull");
+                request.setMessage(send);
+                objOut.writeObject(request);
+                objOut.flush();
+
+            }
+            else if(reply.getOperation().equals("Exit admin menu")) {
+                secundaryMenu();
+                return;
+            }
+            request = new Message();
+            request.setOperation("admin menu");
             request.setMessage(ini);
             objOut.writeObject(request);
             objOut.flush();
