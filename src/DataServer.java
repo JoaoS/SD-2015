@@ -156,7 +156,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 auxDate = formatter.parse(rt.getString(5));
                 if(current == 1)
                 {
-                    if(!auxDate.before(today))  //todo accepted = 0 --> not yet, accepted = 1---> yes
+                    if(!auxDate.before(today))
                     {
                         result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + "\n";
                     }
@@ -165,12 +165,19 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 {
                     if(auxDate.before(today))
                     {
-                        result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Accepted : " + rt.getInt(6) + "\n";
+                        result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + "\n";
                     }
                 }
                 else
                 {
-                    result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Accepted : " + rt.getInt(6) + "\n";
+                    if(rt.getInt(6) == 0)
+                    {
+                        result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Status: In course.\n";
+                    }
+                    else
+                    {
+                        result += "ID : "+ rt.getLong(1) + "Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Status: Finished with success.\n";
+                    }
                 }
             }
         }
@@ -188,7 +195,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
-    public String viewProject(long idProject) throws RemoteException        //todo niveis extra
+    public String viewProject(long idProject) throws RemoteException
     {
         ResultSet rt = null;
         String result = "";
@@ -197,27 +204,38 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             String s = "SELECT name,description,target_value,current_value,limit_date,accepted FROM project where id_project = '" + idProject + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
-            if(rt.next())                       //todo accepted = 0 --> not yet, accepted = 1---> yes
+            if(rt.next())
             {
-                result +=  "Project : " + rt.getString(1) + "\nDescription: " + rt.getString(2) +  "\nTarget value : " + rt.getLong(3) + "\nCurrent value : " + rt.getLong(4) +"\nLimit date : "+ rt.getString(5) +"\nAccepted : " + rt.getInt(6) + "\n";
+                if(rt.getInt(6) == 0)
+                {
+                    result +=  "Project : " + rt.getString(1) + "\nDescription: " + rt.getString(2) +  "\nTarget value : " + rt.getLong(3) + "\nCurrent value : " + rt.getLong(4) +"\nLimit date : "+ rt.getString(5) +"\nStatus: In course.\n";
+                }
+                else
+                {
+                    result +=  "Project : " + rt.getString(1) + "\nDescription: " + rt.getString(2) +  "\nTarget value : " + rt.getLong(3) + "\nCurrent value : " + rt.getLong(4) +"\nLimit date : "+ rt.getString(5) +"\nStatus: Finished with success.\n";
+                }
+                //fetch rewards
+                result += "\nRewards :\n";
+                s = "SELECT description,min_value FROM reward where id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                while(rt.next())
+                {
+                    result += "\nDescription : " + rt.getString(1) + " Minimum value : " + rt.getDouble(2);
+                }
+                //fetch alternatives
+                result += "\nAlternatives :\n";
+                s = "SELECT id_alternative,description FROM alternative WHERE id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                while(rt.next())
+                {
+                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
+                }
             }
-            //fetch rewards
-            result += "\nRewards :\n";
-            s = "SELECT description,min_value FROM reward where id_project = '" + idProject + "'";
-            rt = connection.createStatement().executeQuery(s);
-            connection.commit();
-            while(rt.next())
+            else
             {
-                result += "\nDescription : " + rt.getString(1) + " Minimum value : " + rt.getDouble(2);
-            }
-            //fetch alternatives
-            result += "\nAlternatives :\n";
-            s = "SELECT id_alternative,description FROM alternative WHERE id_project = '" + idProject + "'";
-            rt = connection.createStatement().executeQuery(s);
-            connection.commit();
-            while(rt.next())
-            {
-                result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
+                result += "There is no project with the entered ID.";
             }
         }catch(SQLException  e)
         {
@@ -225,7 +243,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 System.out.println("\nException at viewProject.\n");
                 e.printStackTrace();
                 connection.rollback();
-                return null;
+                return "Some error occurred while fecthing the project information.";
             } catch (SQLException ex) {
                 Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -287,7 +305,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             connection.commit();
             while(rt.next())
             {
-
+                if(rt.getLong(1) == 0)
+                {
+                    continue;
+                }
                 auxDate = formatter.parse(rt.getString(4));
                 if(auxDate.before(today))
                 {
@@ -409,21 +430,51 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
     public String contributeToProject(long idProject,String username,float pledgeValue,long alternativeChoosen) throws RemoteException
-    {                               //todo retirar dinheiro do saldo
-                                    //todo nao dar para contribuir para um projecto que ja fechou
+    {
         ResultSet rt = null;
         PreparedStatement ps;
         long idUser = -1;
-        long idReward = -1;
-
-        try {
+        long idReward = 0;
+        long accountBalance = 0;
+        try
+        {
+            if(pledgeValue < 1)
+            {
+                return "Pledge value invalid.";
+            }
+            //verify if project is open or exists
+            String s="SELECT accepted FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                if(rt.getInt(1) ==1)
+                {
+                    return "You cannot contribute to this project anymore.";
+                }
+            }
+            else
+            {
+                return "There is no project with the id entered.";
+            }
+            //verify if the alternative choosen is valid
+            s="SELECT id_alternative FROM alternative WHERE id_project = '" + idProject + " 'and id_alternative = '" + alternativeChoosen + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(!rt.next())
+            {
+                return "There is no alternative for this project with the entered ID.";
+            }
             // fetch id_user
-            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            s = "SELECT id_user,account_balance FROM USER WHERE name = '" + username + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             if (rt.next())
             {
                 idUser = rt.getLong(1);
+                accountBalance = rt.getLong(2);
+                if(accountBalance - pledgeValue <0)
+                {
+                    return "You do not have enough money to make this donation.";
+                }
             }
             //select the corresponding reward
             s = "SELECT id_reward,min_value FROM reward where id_project = '" + idProject + "'";
@@ -443,6 +494,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             ps.setLong(3, idReward);
             ps.setLong(4,alternativeChoosen);
             ps.execute();
+            //update account balance
+            s = "UPDATE user SET account_balance = account_balance - ? WHERE id_user = ?";
+            ps = connection.prepareStatement(s);
+            ps.setFloat(1, pledgeValue);
+            ps.setLong(2,idUser);
+            ps.executeUpdate();
             //add to project_has_user
             ps = connection.prepareStatement("INSERT INTO PROJECT_HAS_USER(id_project,id_user) VALUES(?,?)");
             ps.setLong(1, idProject);
@@ -470,18 +527,24 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     public String showCommentsProject(long idProject,int mode) throws RemoteException       // mode --> 0 to user, 1 to admin
     {
         ResultSet rt = null;
-        String result = "";             //todo mostrar respostas do admin
-                                        //todo validação se nao houver mensagens neste projecto
+        String result = "";
+        ResultSet rt2;
         try
         {
             if(mode == 0)
             {
                 // fetch id_user
-                String s = "SELECT text FROM MESSAGE WHERE id_project = '" + idProject + "'";
+                String s = "SELECT id_message,text FROM MESSAGE WHERE id_project = '" + idProject + "'";
                 rt = connection.createStatement().executeQuery(s);
                 connection.commit();
                 while (rt.next()) {
-                    result += "\n" + rt.getString(1) + "\n";
+                    result += "\n" + rt.getString(2) + "\n";
+                    s = "SELECT id_reply,text FROM REPLY WHERE id_message = '" + rt.getLong(1) + "'order by id_reply";
+                    rt2 = connection.createStatement().executeQuery(s);
+                    while(rt2.next())
+                    {
+                        result += "\n" + rt.getString(2) + "\n";
+                    }
                 }
                 result += "\n\nType a message :";
             }
@@ -493,6 +556,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 connection.commit();
                 while (rt.next()) {
                     result += "\nMessage ID  : "+ rt.getLong(1) +" Message : " + rt.getString(2) + "\n";
+                    s = "SELECT id_reply,text FROM REPLY WHERE id_message = '" + rt.getLong(1) + "'order by id_reply";
+                    rt2 = connection.createStatement().executeQuery(s);
+                    while(rt2.next())
+                    {
+                        result += "\n" + rt.getString(2) + "\n";
+                    }
                 }
                 result += "\n\nReply to message with the ID :";
             }
@@ -582,17 +651,45 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
-    public String addReward(long idProject,Reward r) throws RemoteException
+    public String addReward(long idProject,Reward r,String username) throws RemoteException
     {
         PreparedStatement ps;
+        ResultSet rt;
+        long idUser = -1, idAdmin = -1;
         try
         {
-            ps = connection.prepareStatement("INSERT INTO REWARD(description,min_value,id_project) VALUES(?,?,?)");
-            ps.setString(1, r.getDescription());
-            ps.setDouble(2, r.getMinValue());
-            ps.setLong(3, idProject);
-            ps.execute();
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
             connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //fetch admin
+            s = "SELECT id_user FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idAdmin = rt.getLong(1);
+            }
+            else
+            {
+                return "There is no project with the entered ID.";
+            }
+            if(idAdmin == idUser)
+            {
+                ps = connection.prepareStatement("INSERT INTO REWARD(description,min_value,id_project) VALUES(?,?,?)");
+                ps.setString(1, r.getDescription());
+                ps.setDouble(2, r.getMinValue());
+                ps.setLong(3, idProject);
+                ps.execute();
+                connection.commit();
+            }else
+            {
+                return "You are not the administrator of the project.";
+            }
         } catch (SQLException e) {
             try {
                 System.out.println("\nException at addReward.\n");
@@ -611,7 +708,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         String result = "";
         try {
-            // fetch id_user
+            // fetch id_rewards
             String s = "SELECT id_reward,description FROM reward WHERE id_project = '" + idProject + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
@@ -633,15 +730,60 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result += "\n\nID of the reward that you want to remove:";
     }
 
-    public String removeReward(long idProject,long idReward) throws RemoteException
+    public String removeReward(long idProject,long idReward,String username) throws RemoteException
     {
         PreparedStatement ps;
+        ResultSet rt;
+        long idUser = -1,idAdmin = -1;
+        ArrayList<Long> ids = new ArrayList<Long>();
         try
         {
-            ps = connection.prepareStatement("DELETE FROM reward WHERE id_reward = ?");
-            ps.setLong(1, idReward);
-            ps.execute();
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
             connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //fetch admin
+            s = "SELECT id_user FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idAdmin = rt.getLong(1);
+            }
+            else
+            {
+                return "There is no project with the entered ID.";
+            }
+            if(idAdmin == idUser)
+            {
+                // fetch id_rewards
+                s = "SELECT id_reward FROM reward WHERE id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                while (rt.next())
+                {
+                    ids.add(rt.getLong(1));
+                }
+                if(ids.contains(idReward))
+                {
+                    ps = connection.prepareStatement("DELETE FROM reward WHERE id_reward = ?");
+                    ps.setLong(1, idReward);
+                    ps.execute();
+                    connection.commit();
+                }
+                else
+                {
+                    return "There is no reward for this project with the entered ID.";
+                }
+            }
+            else
+            {
+                return "You are not the administrator of the project.";
+            }
         } catch (SQLException e) {
             try {
                 System.out.println("\nException at removeReward.\n");
@@ -662,7 +804,8 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         long idUser = -1;
         PreparedStatement ps;
         try {
-            // fetch id_user
+
+            // fetch donation value and its user
             String s = "SELECT d.pledge_value,d.id_user FROM donation d,reward r WHERE d.id_reward = r.id_reward and r.id_project = '" + idProject + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
@@ -698,11 +841,80 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return "Project canceled successfully.";
     }
 
-    public String replyMessage(long idProject,String username ,long idMessage, String reply) throws RemoteException         //todo validação de id_message
+    public String cancelProject(long idProject,String username) throws RemoteException
+    {
+        ResultSet rt = null;
+        float refund = 0;
+        long idUser = -1,idAdmin = -1;
+        PreparedStatement ps;
+        try
+        {
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //fetch admin
+            s = "SELECT id_user FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idAdmin = rt.getLong(1);
+            }
+            else
+            {
+                return "There is no project with the entered ID.";
+            }
+            if(idAdmin == idUser)
+            {
+                // fetch donation value and its user
+                s = "SELECT d.pledge_value,d.id_user FROM donation d,reward r WHERE d.id_reward = r.id_reward and r.id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                while (rt.next()) {
+                    refund = rt.getFloat(1);
+                    idUser = rt.getLong(2);
+                    //refund user
+                    s = "UPDATE USER SET account_balance = account_balance + ? WHERE id_user = ?";
+                    ps = connection.prepareStatement(s);
+                    ps.setFloat(1, refund);
+                    ps.setLong(2, idUser);
+                    ps.executeUpdate();
+                }
+                //cancel project
+                s = "DELETE from project where id_project = ?";
+                ps = connection.prepareStatement(s);
+                ps.setLong(1, idProject);
+                ps.execute();
+                connection.commit();
+            }
+            else
+            {
+                return "You are not the administrator of the project.";
+            }
+
+        }catch (Exception e) {
+            try {
+                System.out.println("\nException at cancelProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred canceling the project.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return "Project canceled successfully.";
+    }
+
+    public String replyMessage(long idProject,String username ,long idMessage, String reply) throws RemoteException
     {
         ResultSet rt = null;
         PreparedStatement ps;
-        long idUser = -1;
+        long idUser = -1,idAdmin = -1;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date now = new Date();
         try
@@ -715,15 +927,55 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             {
                 idUser = rt.getLong(1);
             }
-            //insert reply
-            reply += "\n\t\t" +  formatter.format(now);
-            ps = connection.prepareStatement("INSERT INTO REPLY(text,id_user,id_project,id_message) VALUES(?,?,?,?)");
-            ps.setString(1,reply);
-            ps.setLong(2, idUser);
-            ps.setLong(3, idProject);
-            ps.setLong(4,idMessage);
-            ps.execute();
+            //fetch admin
+            s = "SELECT id_user FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
             connection.commit();
+            if (rt.next())
+            {
+                idAdmin = rt.getLong(1);
+            }
+            else
+            {
+                return "There is no project with the entered ID.";
+            }
+            if(idAdmin == idUser)
+            {
+                //check if project has messages to reply
+                s = "SELECT id_message FROM message WHERE id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                if (!rt.next()) {
+                    return "This project have no messages.";
+                }
+                //validate idMessage
+                s = "SELECT id_message FROM message WHERE id_project = '" + idProject + "' and id_message = '" + idMessage + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                if (!rt.next()) {
+                    return "There is no message por this project with the entered ID.";
+                }
+                // fetch id_user
+                s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                if (rt.next()) {
+                    idUser = rt.getLong(1);
+                }
+                //insert reply
+                reply += "\n\t\t" + formatter.format(now);
+                ps = connection.prepareStatement("INSERT INTO REPLY(text,id_user,id_project,id_message) VALUES(?,?,?,?)");
+                ps.setString(1, reply);
+                ps.setLong(2, idUser);
+                ps.setLong(3, idProject);
+                ps.setLong(4, idMessage);
+                ps.execute();
+                connection.commit();
+            }
+            else
+            {
+                return "Only the administrator of the project can reply to messages from supporters.";
+            }
         }catch (Exception e) {
             try {
                 System.out.println("\nException at contributeToProject.\n");
@@ -738,12 +990,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
 
-    public boolean checkProjectsDate() throws RemoteException           //todo tornar datas só até a hora e n até ao minuto
+    public boolean checkProjectsDate() throws RemoteException
     {
         ResultSet rt = null;
         PreparedStatement ps;
         String result = "";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         Date today = new Date();
         Date auxDate = null;
         try
@@ -768,11 +1020,14 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                         ps.setFloat(1, rt.getLong(3));
                         ps.setLong(2,rt.getLong(5));
                         ps.executeUpdate();
+                        //update accepted to 1 in project
+                        s = "UPDATE project SET accepted = 1 WHERE id_project = ?";
+                        ps = connection.prepareStatement(s);
+                        ps.setLong(1, rt.getLong(1));
+                        ps.executeUpdate();
                         connection.commit();
-                        //todo update accepted do projecto
                     }
                 }
-
             }
         }catch (Exception e) {
             try {

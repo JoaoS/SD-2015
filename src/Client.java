@@ -394,7 +394,7 @@ class SendToServer extends Thread{
     }
 
 
-    public void viewProject() throws IOException            //todo validação do id inserido
+    public void viewProject() throws IOException
     {
         listAllProjects();
         idProject = Long.parseLong(reader.readLine());
@@ -443,12 +443,12 @@ class SendToServer extends Thread{
         System.out.println("Description : ");
         String description = reader.readLine();
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         formatter.setLenient(false);
         String limitDate = "";
         while(checkData ==0)
         {
-            System.out.println("Limit Date (dd/MM/yyyy HH:mm):");
+            System.out.println("Limit Date (dd/MM/yyyy HH):");
             limitDate = reader.readLine();
             try
             {
@@ -628,10 +628,10 @@ class SendToServer extends Thread{
                 case 3:
                     cancelProject();
                     break;
-                case 4:                                     //todo replyMessages
+                case 4:
                     replyMessage();
                     break;
-                case 5:                                     //todo send exit message in admin menu
+                case 5:
                     sendExitMessage3();
                     break;
                 default:
@@ -640,7 +640,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void addReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin
+    public void addReward() throws IOException
     {
         System.out.println("ID of the project that you want to add a reward:");
         long id = Long.parseLong(reader.readLine());
@@ -667,8 +667,8 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
-    public void removeReward() throws IOException                  //todo validação de escolha de projecto em que o user é admin.
-    {                                                               //todo validação do reward escolhido
+    public void removeReward() throws IOException
+    {
         System.out.println("ID of the project that you want to remove a reward:");
         long id = Long.parseLong(reader.readLine());
         listRewardsProject(id);
@@ -682,7 +682,7 @@ class SendToServer extends Thread{
         objOut.flush();
     }
 
-    public void cancelProject() throws IOException              //todo validação de escolha de projecto em que o user é admin
+    public void cancelProject() throws IOException
     {
         System.out.println("ID of the project that you want to cancel:");
         long id = Long.parseLong(reader.readLine());
@@ -726,7 +726,5 @@ class SendToServer extends Thread{
         objOut.writeObject(request);
         objOut.flush();
     }
-
-    //todo ----------------------------> fim do projecto
 }
 
