@@ -2,18 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="891243f1-8ca4-41fb-9818-0fc9ba70fe65" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/DataServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/DataServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/DataServer_I.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/DataServer_I.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/Message.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/Message.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/TCPServer$Connection.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/TCPServer$Connection.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Client.java" afterPath="$PROJECT_DIR$/src/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataServer.java" afterPath="$PROJECT_DIR$/src/DataServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataServer_I.java" afterPath="$PROJECT_DIR$/src/DataServer_I.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Message.java" afterPath="$PROJECT_DIR$/src/Message.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TCPServer.java" afterPath="$PROJECT_DIR$/src/TCPServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tables.sql" afterPath="$PROJECT_DIR$/tables.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/TCPServer$Connection.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/TCPServer$Connection.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TCPServer.java" afterPath="$PROJECT_DIR$/src/TCPServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Message.java" afterPath="$PROJECT_DIR$/src/Message.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tables.sql" afterPath="$PROJECT_DIR$/tables.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Client.java" afterPath="$PROJECT_DIR$/src/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/Message.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/Message.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/DataServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/DataServer.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataServer_I.java" afterPath="$PROJECT_DIR$/src/DataServer_I.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataServer.java" afterPath="$PROJECT_DIR$/src/DataServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/DataServer_I.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/DataServer_I.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" afterPath="$PROJECT_DIR$/out/production/Trabalhos/SendToServer.class" />
     </list>
     <ignored path="SD-2015.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,12 +39,9 @@
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="727" column="5" selection-start-line="727" selection-start-column="5" selection-end-line="727" selection-end-column="5" />
+              <caret line="693" column="5" selection-start-line="693" selection-start-column="5" selection-end-line="693" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#main#0;class#Client#0" expanded="false" />
-                <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-                <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#login#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -62,13 +59,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TCPServer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TCPServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="103" column="50" selection-start-line="103" selection-start-column="50" selection-end-line="103" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.51771116">
+              <caret line="213" column="39" selection-start-line="213" selection-start-column="39" selection-end-line="213" selection-end-column="39" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="docComment;class#TCPServer#0" expanded="false" />
+                <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+                <element signature="e#3008#3085#0" expanded="false" />
+                <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+                <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+                <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+                <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -79,10 +85,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataServer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DataServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.98275864">
+            <state vertical-scroll-proportion="0.0">
               <caret line="771" column="58" selection-start-line="771" selection-start-column="58" selection-end-line="771" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -200,8 +206,8 @@
         <option value="$PROJECT_DIR$/src/Message.java" />
         <option value="$PROJECT_DIR$/src/Client.java" />
         <option value="$PROJECT_DIR$/src/DataServer_I.java" />
-        <option value="$PROJECT_DIR$/src/TCPServer.java" />
         <option value="$PROJECT_DIR$/src/DataServer.java" />
+        <option value="$PROJECT_DIR$/src/TCPServer.java" />
       </list>
     </option>
   </component>
@@ -594,9 +600,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -618,7 +621,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="400" column="37" selection-start-line="400" selection-start-column="37" selection-end-line="400" selection-end-column="63" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -714,9 +726,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -738,7 +747,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="400" column="37" selection-start-line="400" selection-start-column="37" selection-end-line="400" selection-end-column="63" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -834,9 +852,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -858,7 +873,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="386" column="23" selection-start-line="386" selection-start-column="23" selection-end-line="386" selection-end-column="23" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -938,9 +962,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -962,7 +983,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="320" column="45" selection-start-line="320" selection-start-column="0" selection-end-line="321" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1041,7 +1071,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1057,9 +1096,6 @@
           <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -1081,7 +1117,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="286" column="20" selection-start-line="286" selection-start-column="20" selection-end-line="286" selection-end-column="20" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1097,9 +1142,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -1121,7 +1163,16 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1137,9 +1188,6 @@
           <caret line="154" column="30" selection-start-line="154" selection-start-column="30" selection-end-line="154" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -1263,12 +1311,9 @@
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="727" column="5" selection-start-line="727" selection-start-column="5" selection-end-line="727" selection-end-column="5" />
+          <caret line="693" column="5" selection-start-line="693" selection-start-column="5" selection-end-line="693" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Client#0" expanded="false" />
-            <element signature="method#run#0;class#SendToServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#SendToServer#0" expanded="false" />
             <element signature="method#login#0;class#SendToServer#0" expanded="false" />
             <element signature="method#signUp#0;class#SendToServer#0" expanded="false" />
             <element signature="method#listCurrentProjects#0;class#SendToServer#0" expanded="false" />
@@ -1285,24 +1330,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="103" column="50" selection-start-line="103" selection-start-column="50" selection-end-line="103" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.98275864">
+        <state vertical-scroll-proportion="0.0">
           <caret line="771" column="58" selection-start-line="771" selection-start-column="58" selection-end-line="771" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1322,6 +1352,30 @@
             <element signature="method#addReward#0;class#DataServer#0" expanded="false" />
             <element signature="method#listRewardsProject#0;class#DataServer#0" expanded="false" />
             <element signature="method#replyMessage#0;class#DataServer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.51771116">
+          <caret line="213" column="39" selection-start-line="213" selection-start-column="39" selection-end-line="213" selection-end-column="39" />
+          <folding>
+            <element signature="docComment;class#TCPServer#0" expanded="false" />
+            <element signature="method#main#0;class#TCPServer#0" expanded="false" />
+            <element signature="e#3008#3085#0" expanded="false" />
+            <element signature="method#secundaryServer#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
+            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+            <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
       </provider>

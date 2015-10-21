@@ -1,10 +1,10 @@
 import java.io.*;
 import java.net.*;
-import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.Properties;
+import java.util.*;
+
 /**
  * Created by joaosubtil on 07/10/15.
  */
@@ -80,8 +80,6 @@ public class TCPServer {
             System.getProperties().put("java.security.policy", "security.policy");
             System.setSecurityManager(new RMISecurityManager());
             dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(rmiName);
-            //dataServerInterface = (DataServer_I) Naming.lookup("rmi://" + rmiIp + ":" + rmiPort + "/" + rmiName);
-
         } catch (Exception e){
             if(DEBUG)
                 e.printStackTrace();
@@ -102,6 +100,14 @@ public class TCPServer {
             System.out.println("Listenning for clients on port:" + clientPort);
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
+            /////////task to check finished projects////////////////////////
+            Calendar cal = Calendar.getInstance();
+            Date date0Pm = cal.getTime();
+
+            timerTask = new MyTimerTask(dataServerInterface);
+            Timer timer = new Timer(true);
+            timer.scheduleAtFixedRate(timerTask, date0Pm, 1000*60*60);
+
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
@@ -203,6 +209,26 @@ public class TCPServer {
         }
     }
 
+    static class MyTimerTask extends TimerTask
+    {
+        DataServer_I dataServerInterface;
+
+        MyTimerTask(DataServer_I dataServerInterface)
+        {
+            this.dataServerInterface = dataServerInterface;
+        }
+
+        public void run()
+        {
+            try {
+                dataServerInterface.checkProjectsDate();
+            } catch (RemoteException e) {
+                System.out.println("Exception at MyTimerTask run.");
+                e.printStackTrace();
+            }
+        }
+
+    }
 
 //--------------Class to handle each client-------------------------------------------------------
     static class Connection extends Thread {
@@ -237,9 +263,6 @@ public class TCPServer {
 
      public void restartRmi() throws IOException
      {
-
-         if (DEBUG)
-             System.out.println("Attempting to reconnect to RMI");
             int tries = TCPServer.reconnection;
             while(tries!=0)
             {
@@ -279,46 +302,23 @@ public class TCPServer {
 
     public void run()
     {
-        try {
-
-            while (true) {
+        try
+        {
+            while(true)
+            {
                 initialMenu();
             }
-
-        }catch (RemoteException e)
-        {
-            try {
-                restartRmi();
-
-            } catch (IOException e1) {
-                if (DEBUG)
-                    e1.printStackTrace();
-            }
-
-        }
-        catch(EOFException e)
-        {
-            System.out.println("Client disconnected :");
-        }
-        catch(IOException e)
-        {
-            System.out.println("IO:" + e);
-        }
-        catch(Exception e)
-        {
+        }catch(EOFException e){System.out.println("Client disconnected :");
+        }catch(IOException e){System.out.println("IO:" + e);
+        }catch(Exception e){
             System.out.println("Error starting the initial menu.");
-            try {
-                restartRmi();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
             if (DEBUG)
                 e.printStackTrace();
         }
     }
     
     
-    public  void initialMenu() throws IOException,ClassNotFoundException
+    public void initialMenu() throws IOException,ClassNotFoundException
     {
             String ini="-------------------Initial MENU-----------------\n\n1->Login\n\n2->Sign up\n\nChoose an option : ";
         	Message request = new Message();
@@ -328,8 +328,8 @@ public class TCPServer {
             objOut.flush();
         	Message reply = new Message();
         	reply = (Message) objIn.readObject();
-        	if(reply.getOperation().equals("login")){
-
+        	if(reply.getOperation().equals("login"))
+            {
                 if(dataServerInterface.checkLogin(reply.getUsername(), reply.getPassword()) != 0)
                 {
                     request= new Message();

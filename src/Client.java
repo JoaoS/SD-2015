@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Client {
 
-    public static boolean DEBUG=true;
+    public static boolean DEBUG=false;
 
 
     public static   int clientPort;
@@ -27,10 +27,6 @@ public class Client {
     public static   ObjectInputStream  objIn=null;
     public static   Guide guide;
     public static   Message loginData=null;
-    public static   int alreadyLogin=0;
-
-
-    public static int signalToTerminate=0;
 
 
 
@@ -63,43 +59,28 @@ public class Client {
 
         guide=new Guide();
         int tries=reconnection*2;
-        while(tries >0){
-            sock=null;
-            signalToTerminate=0;
+        while(tries !=0){
 
             if (sock==null){
                 try {
                     sock = new Socket(firstIP,clientPort);
-                    tries=reconnection*2;
-                    if (DEBUG)
-                        System.out.println("connecting to first");
+                    tries=reconnection;
                 } catch (IOException e) {
-                    tries--;
-                    if (DEBUG)
-                        System.out.println("Remaining tries="+tries+"->First server");
+                    tries-=2;
                 }
 
             }
-            if (sock==null){
+            else if(sock==null){
                 try {
                     sock = new Socket(secondIP,clientPort);
-                    System.out.println("secondIP="+secondIP);
-                    tries=reconnection*2;
-                    if (DEBUG)
-                        System.out.println("connecting to second");
+                    tries=reconnection;
                 } catch (IOException e) {
-                    tries--;
-                    if (DEBUG)
-                        System.out.println("Remaining tries="+tries+"->Second server");
+                    tries-=2;
                 }
-
             }
 
             if (sock!=null){
                 try {
-                    if(DEBUG){
-                        System.out.println("Socket status="+sock);
-                    }
                     createChannels(sock);
 
                 }catch (IOException e){
@@ -108,20 +89,19 @@ public class Client {
                         System.out.println("Connection lost");
                     }
 
-                    if(th!=null){
-                        try {
-                            if(DEBUG){
-                                System.out.println("Wait for sender thread to die");
-                            }
-                            signalToTerminate=1;
-                            th.join();
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
+                    try {
+
+                        //th.interrupt();
+                        th.join();
+                        if(DEBUG){
+                            System.out.println("thread killed");
                         }
+
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
                     }
 
                     if(sock!=null){
-
                         try {
                             sock.close();
                             sock=null;
@@ -185,16 +165,8 @@ public class Client {
         while (true)
         {
             Message reply = null;
-
             try {
-
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //todo verificar se as classes message estão em sintonia
-                reply = (Message)objIn.readObject();
+                reply = (Message )objIn.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -237,9 +209,6 @@ class SendToServer extends Thread{
             {
                 while(true)
                 {
-                    if (Client.signalToTerminate==1)
-                        break;
-
                     int check = 0;
                     synchronized(Client.guide)
                     {
@@ -257,7 +226,6 @@ class SendToServer extends Thread{
                                 initialMenu();
                                 break;
                             case "login successful":
-                                Client.alreadyLogin=1;
                                 secundaryMenu();
                                 break;
                             default:
@@ -286,7 +254,7 @@ class SendToServer extends Thread{
             int check = 0;
             while(check == 0)
             {
-                if(op == 1 || Client.alreadyLogin==1) //todo testar aqui se a sessao já foi iniciada
+                if(op  ==1) //todo testar aqui se a sessao já foi iniciada
                 {
                     check = 1;
                     login();
@@ -323,10 +291,8 @@ class SendToServer extends Thread{
             request.setOperation("login");
             Client.loginData=request;
         }
-        if(Client.signalToTerminate!=1){
-            objOut.writeObject(request);
-            objOut.flush();
-        }
+        objOut.writeObject(request);
+        objOut.flush();
     }
 
     public void signUp() throws IOException
