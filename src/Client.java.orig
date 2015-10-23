@@ -513,8 +513,11 @@ class SendToServer extends Thread{
 
     }
 
-
+<<<<<<< HEAD
+    public void viewProject() throws IOException        //validation done
+=======
     public void viewProject() throws IOException
+>>>>>>> bb47b0df5928475cc853472352f2061f9358e568
     {
         listAllProjects();
         idProject = Long.parseLong(reader.readLine());
@@ -869,7 +872,11 @@ class SendToServer extends Thread{
         }
     }
 
+<<<<<<< HEAD
     public void addReward() throws IOException      //validation done
+=======
+    public void addReward() throws IOException
+>>>>>>> bb47b0df5928475cc853472352f2061f9358e568
     {
         int check=0;
         System.out.println("ID of the project that you want to add a reward:");
@@ -931,9 +938,14 @@ class SendToServer extends Thread{
         }
     }
 
+<<<<<<< HEAD
     public void removeReward() throws IOException       //validation done
     {
         int check=0;
+=======
+    public void removeReward() throws IOException
+    {
+>>>>>>> bb47b0df5928475cc853472352f2061f9358e568
         System.out.println("ID of the project that you want to remove a reward:");
         String idS = reader.readLine();
         while (check==0 ){
@@ -977,7 +989,11 @@ class SendToServer extends Thread{
         }
     }
 
+<<<<<<< HEAD
     public void cancelProject() throws IOException      //validation done
+=======
+    public void cancelProject() throws IOException
+>>>>>>> bb47b0df5928475cc853472352f2061f9358e568
     {
         int check=0;
         System.out.println("ID of the project that you want to cancel:");
@@ -1073,5 +1089,9 @@ class SendToServer extends Thread{
             objOut.flush();
         }
     }
+<<<<<<< HEAD
+
+=======
+>>>>>>> bb47b0df5928475cc853472352f2061f9358e568
 }
 

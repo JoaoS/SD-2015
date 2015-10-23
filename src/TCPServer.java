@@ -410,7 +410,7 @@ public class TCPServer {
         objOut.writeObject(request);
         objOut.flush();
         reply = (Message) objIn.readObject();
-        while(reply.getOperation().equals("Exit secundary menu") == false)      //todo validações caso dê erro
+        while(reply.getOperation().equals("Exit secundary menu") == false)
         {
             if(reply.getOperation().equals("list current projects"))
             {
@@ -457,10 +457,6 @@ public class TCPServer {
                 ///////////////////////view project///////////////////////////////
                 reply = (Message) objIn.readObject();
                 send = dataServerInterface.viewProject(reply.getIdProject());
-                if(send.equals("") || send ==  null)    //todo validação do null
-                {
-                    send = "There are no projects.";
-                }
                 request = new Message();
                 request.setOperation("view project successfull");
                 request.setMessage(send);
@@ -604,7 +600,7 @@ public class TCPServer {
         {
             if(reply.getOperation().equals("add reward"))
             {
-                String send = dataServerInterface.addReward(reply.getIdProject(),reply.getRewards().get(0));
+                String send = dataServerInterface.addReward(reply.getIdProject(),reply.getRewards().get(0),reply.getUsername());
                 request = new Message();
                 request.setOperation("add reward successfull");
                 request.setMessage(send);
@@ -621,7 +617,7 @@ public class TCPServer {
                 objOut.flush();
                 /////////////////////////////////////////////////
                 reply = (Message) objIn.readObject();
-                send = dataServerInterface.removeReward(reply.getIdProject(), reply.getIdReward());
+                send = dataServerInterface.removeReward(reply.getIdProject(), reply.getIdReward(),reply.getUsername());
                 request = new Message();
                 request.setOperation("remove reward successfull");
                 request.setMessage(send);
@@ -630,7 +626,7 @@ public class TCPServer {
             }
             else if(reply.getOperation().equals("cancel project"))
             {
-                String send = dataServerInterface.cancelProject(reply.getIdProject());
+                String send = dataServerInterface.cancelProject(reply.getIdProject(),reply.getUsername());
                 request = new Message();
                 request.setOperation("cancel project successfull");
                 request.setMessage(send);
