@@ -287,7 +287,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         String result = "";
         Date today = new Date();
         Date auxDate = null;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         try
         {
             // check username
@@ -589,7 +589,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         PreparedStatement ps;
         long idUser = -1;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         Date now = new Date();
         try {
             // fetch id_user
@@ -921,7 +921,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         PreparedStatement ps;
         long idUser = -1,idAdmin = -1;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         Date now = new Date();
         try
         {
