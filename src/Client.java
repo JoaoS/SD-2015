@@ -399,7 +399,7 @@ class SendToServer extends Thread{
         String ageS = reader.readLine();
         while (check==0 ){
 
-            String ePattern = "^[0-9]*$";
+            String ePattern = "^[0-9]*.$";
             java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
             java.util.regex.Matcher m = p.matcher(ageS);
             if (m.matches()) {
@@ -544,6 +544,7 @@ class SendToServer extends Thread{
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("check account balance");
+
         if (Client.signalToTerminate==0){
             objOut.writeObject(request);
             objOut.flush();
@@ -569,32 +570,9 @@ class SendToServer extends Thread{
         Message request = new Message();
         System.out.println("Name : ");
         String name = reader.readLine();
-        while (check==0 ){
-            String ePattern = "^[a-zA-Z0-9]*.$";
-            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-            java.util.regex.Matcher m = p.matcher(name);
-            if (m.matches()) {
-                check = 1;
-            } else {
-                System.out.println("Invalid Name.\n\nName : ");
-                name = reader.readLine();
-            }
-        }
-        check=0;
 
         System.out.println("Description : ");
         String description = reader.readLine();
-        while (check==0 ){
-            String ePattern = "^[a-zA-Z0-9]*.$";
-            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-            java.util.regex.Matcher m = p.matcher(description);
-            if (m.matches()) {
-                check = 1;
-            } else {
-                System.out.println("Invalid Description.\n\nDescription : ");
-                description = reader.readLine();
-            }
-        }
         check=0;
 
         Date date = new Date();
