@@ -64,24 +64,26 @@ public class Client {
         while(tries !=0){
 
             if (sock==null){
+                if (DEBUG){
+                    System.out.println("connecting to 1");
+                }
                 try {
                     sock = new Socket(firstIP,clientPort);
                     tries=reconnection;
-                    if (DEBUG){
-                        System.out.println("connecting to 1");
-                    }
+
                 } catch (IOException e) {
                     tries-=2;
                 }
 
             }
-            else if(sock==null){
+            if(sock==null){
+                if (DEBUG){
+                    System.out.println("connecting to 2");
+                }
                 try {
                     sock = new Socket(secondIP,clientPort);
                     tries=reconnection;
-                    if (DEBUG){
-                        System.out.println("connecting to 2");
-                    }
+
                 } catch (IOException e) {
                     tries-=2;
                 }
