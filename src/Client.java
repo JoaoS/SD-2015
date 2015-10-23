@@ -996,7 +996,7 @@ class SendToServer extends Thread{
             if (m.matches()) {
                 check = 1;
             } else {
-                System.out.println("Invalid value.\n\nNew ID : ");
+                System.out.println("Invalid ID, please insert correct id.\n\nNew ID : ");
                 idS = reader.readLine();
             }
         }
