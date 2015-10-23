@@ -457,11 +457,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 return "There is no project with the id entered.";
             }
             //verify if the alternative choosen is valid
-            s="SELECT id_alternative FROM alternative WHERE id_project = '" + idProject + " 'and id_alternative = '" + alternativeChoosen + "'";
-            rt = connection.createStatement().executeQuery(s);
-            if(!rt.next())
-            {
-                return "There is no alternative for this project with the entered ID.";
+            if(alternativeChoosen != 0) {
+                s = "SELECT id_alternative FROM alternative WHERE id_project = '" + idProject + " 'and id_alternative = '" + alternativeChoosen + "'";
+                rt = connection.createStatement().executeQuery(s);
+                if (!rt.next()) {
+                    return "There is no alternative for this project with the entered ID.";
+                }
             }
             // fetch id_user
             s = "SELECT id_user,account_balance FROM USER WHERE name = '" + username + "'";
