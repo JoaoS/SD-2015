@@ -729,7 +729,7 @@ class SendToServer extends Thread{
         check=0;
         float pledgeValue = Float.parseFloat(pledgeValueS);
 
-        System.out.println("ID of the alternative that you want to vote : ");
+        System.out.println("ID of the alternative that you want to vote(insert 0 if the project have no alternatives or you do not want to vote) : ");
         String idAlternativeS = reader.readLine();
         while (check==0 ){
             String ePattern = "^[0-9]*.$";
