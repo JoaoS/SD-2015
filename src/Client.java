@@ -101,7 +101,6 @@ public class Client {
 
                     try {
 
-                        //th.interrupt();
                         signalToTerminate=1;
                         th.join();
                         if(DEBUG){
@@ -186,6 +185,11 @@ public class Client {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
+            if (reply.getOperation().equalsIgnoreCase("EXIT")) {
+                System.out.println("Cannot connect to server, shuting down");
+                System.exit(1);
+            }
             synchronized(guide)
             {
                 guide.getOperations().add(reply.getOperation());
@@ -193,9 +197,9 @@ public class Client {
             if (reply.getMessage()!=null){
 
 
-                if(!(alreadyLogin==1 && reply.getOperation().equalsIgnoreCase("initial menu")))
-                    System.out.println("Server->"+ reply.getMessage());
-
+                if(!(alreadyLogin==1 && reply.getOperation().equalsIgnoreCase("initial menu"))) {
+                    System.out.println("Server->" + reply.getMessage());
+                }
 
             }
         }
@@ -301,6 +305,10 @@ class SendToServer extends Thread{
                 }catch (NumberFormatException e){
 
                 }
+                //test if connection was lost
+                if(Client.signalToTerminate==1)
+                        break;
+
                 if(op == 1 )
                 {
                     check = 1;
@@ -348,7 +356,7 @@ class SendToServer extends Thread{
 
     }
 
-    public void signUp() throws IOException     //validation done
+    public void signUp() throws Exception     //validation done
     {
         int check = 0;
         Message request = new Message();
@@ -442,7 +450,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public  void secundaryMenu()throws IOException  //validation done
+    public  void secundaryMenu()throws Exception  //validation done
     {
         int op = 0;
         String ini = "\n-------------------Secundary Menu-----------------\n\n1->List current projects.\n\n2->List old projects.\n\n3.View details of a project.\n\n4.Check account balance.\n\n5.Check my rewards.\n\n6.Create project.\n\n7.Administrator menu.\n\n8.Exit.\n\nChoose an option:";
@@ -462,6 +470,9 @@ class SendToServer extends Thread{
                 }
 
             }while(op <= 0 || op>8);
+            //test for lost connection
+            if(Client.signalToTerminate==1)
+                break;
             switch(op)
             {
                 case 1:
@@ -494,7 +505,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void listCurrentProjects() throws IOException    //validation done
+    public void listCurrentProjects() throws Exception    //validation done
     {
         Message request = new Message();
         request.setOperation("list current projects");
@@ -504,7 +515,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void listOldProjects() throws IOException    //validation done
+    public void listOldProjects() throws Exception    //validation done
     {
         Message request = new Message();
         request.setOperation("list old projects");
@@ -516,7 +527,7 @@ class SendToServer extends Thread{
     }
 
 
-    public void viewProject() throws IOException
+    public void viewProject() throws Exception
     {
         listAllProjects();
         idProject = Long.parseLong(reader.readLine());
@@ -531,7 +542,7 @@ class SendToServer extends Thread{
         tertiaryMenu();
     }
 
-    public void listAllProjects() throws IOException    //validation done
+    public void listAllProjects() throws Exception    //validation done
     {
         Message request = new Message();
         request.setOperation("list all projects");
@@ -541,7 +552,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void checkAccountBalance() throws IOException //validation done
+    public void checkAccountBalance() throws Exception //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -553,7 +564,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void checkUserRewards() throws IOException   //validation done
+    public void checkUserRewards() throws Exception   //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -564,7 +575,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void createProject() throws IOException      //validation done
+    public void createProject() throws Exception      //validation done
     {
         int check=0;
 
@@ -660,7 +671,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void sendExitMessage() throws IOException    //validation done
+    public void sendExitMessage() throws Exception    //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -675,7 +686,7 @@ class SendToServer extends Thread{
         }
     }
 
-    void tertiaryMenu() throws IOException      //validation done
+    void tertiaryMenu() throws Exception      //validation done
     {
         int op = 0;
         String ini = "\n\n1->Contribute to this project.\n\n2->Comment project.\n\n3.Exit.\n\nChoose an option:";
@@ -710,7 +721,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void contributeToProject() throws IOException       //validaton done
+    public void contributeToProject() throws Exception       //validaton done
     {
         int check=0;
         System.out.println("How much do you want to donate ?");
@@ -758,7 +769,7 @@ class SendToServer extends Thread{
 
     }
 
-    public void showPreviousMessages() throws  IOException      //validaton done
+    public void showPreviousMessages() throws  Exception      //validaton done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -770,7 +781,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void commentProject() throws IOException     //validaton done
+    public void commentProject() throws Exception     //validaton done
     {
         showPreviousMessages();
         String msg = Client.loginData.getUsername() + ": ";
@@ -786,7 +797,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void sendExitMessage2() throws IOException       //validaton done
+    public void sendExitMessage2() throws Exception       //validaton done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -801,7 +812,7 @@ class SendToServer extends Thread{
 
 
     
-    void adminMenu() throws IOException //validaton done
+    void adminMenu() throws Exception //validaton done
     {
 
         Message request = new Message();
@@ -849,7 +860,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void addReward() throws IOException      //validation done
+    public void addReward() throws Exception      //validation done
     {
         int check=0;
         System.out.println("ID of the project that you want to add a reward:");
@@ -899,7 +910,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void listRewardsProject(long id) throws IOException      //validation done
+    public void listRewardsProject(long id) throws Exception      //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
@@ -911,7 +922,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void removeReward() throws IOException       //validation done
+    public void removeReward() throws Exception       //validation done
     {
         int check=0;
         System.out.println("ID of the project that you want to remove a reward:");
@@ -957,7 +968,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void cancelProject() throws IOException      //validation done
+    public void cancelProject() throws Exception      //validation done
     {
         int check=0;
         System.out.println("ID of the project that you want to cancel:");
@@ -986,7 +997,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void replyMessage() throws IOException       //validation done
+    public void replyMessage() throws Exception       //validation done
     {
         int check=0;
         System.out.println("ID of the project where you want to reply to messages:");
@@ -1043,7 +1054,7 @@ class SendToServer extends Thread{
         }
     }
 
-    public void sendExitMessage3() throws IOException       //validation done
+    public void sendExitMessage3() throws Exception       //validation done
     {
         Message request = new Message();
         request.setUsername(Client.loginData.getUsername());
