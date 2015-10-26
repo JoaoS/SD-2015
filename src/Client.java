@@ -60,16 +60,18 @@ public class Client {
         }
 
         guide=new Guide();
-        int tries=reconnection*2;
-        while(tries !=0){
+        int dRecon=reconnection*2;
+        int tries=dRecon;
+
+        while(tries >=0){
 
             if (sock==null){
                 if (DEBUG){
-                    System.out.println("connecting to 1");
+                    System.out.println("connecting to 1, tries:"+tries);
                 }
                 try {
                     sock = new Socket(firstIP,clientPort);
-                    tries=reconnection;
+                    tries=dRecon;
 
                 } catch (IOException e) {
                     tries-=2;
@@ -78,11 +80,11 @@ public class Client {
             }
             if(sock==null){
                 if (DEBUG){
-                    System.out.println("connecting to 2");
+                    System.out.println("connecting to 2, tries:"+tries);
                 }
                 try {
                     sock = new Socket(secondIP,clientPort);
-                    tries=reconnection;
+                    tries=dRecon;
 
                 } catch (IOException e) {
                     tries-=2;
@@ -150,7 +152,7 @@ public class Client {
                 }
             }
         }
-        if(tries == 0){
+        if(tries <= 0){
             System.out.println("Server not found, try again later");
             System.exit(0);
 

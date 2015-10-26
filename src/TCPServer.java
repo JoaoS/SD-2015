@@ -772,7 +772,7 @@ public class TCPServer {
                     restartRmi();
                     send = dataServerInterface.replyMessage(reply.getIdProject(),reply.getUsername(),reply.getIdMessage() ,reply.getReply());
                 }
-                
+
                 request = new Message();
                 request.setOperation("reply successfull");
                 request.setMessage(send);
