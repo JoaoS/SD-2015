@@ -200,7 +200,9 @@ public class Client {
 
 
                 if(!(alreadyLogin==1 && reply.getOperation().equalsIgnoreCase("initial menu"))) {
-                    System.out.println("Server->" + reply.getMessage());
+
+                    if(!(alreadyLogin==1& reply.getOperation().equalsIgnoreCase("login successful")))
+                        System.out.println("Server->" + reply.getMessage());
                 }
 
             }
