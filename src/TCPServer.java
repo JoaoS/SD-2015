@@ -105,13 +105,23 @@ public class TCPServer {
             System.out.println("Listenning for clients on port:" + clientPort);
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
+            try {
+                dataServerInterface.checkProjectsDate();
+            } catch (RemoteException e) {
+                System.out.println("Exception running checkProjectsDate.");
+                e.printStackTrace();
+            }
             /////////task to check finished projects////////////////////////
             Calendar cal = Calendar.getInstance();
-            Date date0Pm = cal.getTime();
+            cal.add(Calendar.HOUR, 1);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND,0);
+            Date date = cal.getTime();
+
             timerTask = new MyTimerTask(dataServerInterface);
             Timer timer = new Timer(true);
-            timer.scheduleAtFixedRate(timerTask, date0Pm, 1000*60*60);
-
+            timer.scheduleAtFixedRate(timerTask, date, 1000*60*60);
             while (true) {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
