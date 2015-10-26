@@ -4,3 +4,5 @@ out/
 *.iml
 SD.mwb
 SD.mwb.bak
+/src/JavaApplication4/nbproject/private/
+/src/JavaApplication4/build/

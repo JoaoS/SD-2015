@@ -1042,7 +1042,7 @@ class SendToServer extends Thread{
 
         request = new Message();
         System.out.println("Type a reply:");
-        String reply = "\t\t\t\t" + reader.readLine();
+        String reply = reader.readLine();
         request.setIdMessage(idMessage);
         request.setUsername(Client.loginData.getUsername());
         request.setOperation("reply message");
