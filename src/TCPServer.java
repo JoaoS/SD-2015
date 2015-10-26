@@ -20,12 +20,15 @@ public class TCPServer {
     private static int udpPort;
     private static int clientPort;
     private static int rmiPort;
+    private static int replyNumber;
 
     private static String rmiName;
     private static String rmiIp;
     private static String firstIP;
     private static String secondIP;
     private static TimerTask timerTask;
+
+
 
     public static void main(String args[]) {
 
@@ -124,7 +127,7 @@ public class TCPServer {
     }
 
     public static void secundaryServer() {
-        int replyNumber = 0;
+        replyNumber = 0;
         DatagramSocket aSocket = null;
 
         try {
@@ -155,7 +158,6 @@ public class TCPServer {
                     tries = maxDropHeartbeats;
                     Thread.sleep(WAIT);
                 } catch (SocketTimeoutException tme) {
-                    //System.err.println(tme);
                     System.out.println("Primary not found,trying again(remaining tries:" + tries + ", time interval=" + WAIT + "ms)");
                     tries--;
                 } catch (InterruptedException e) {
@@ -346,7 +348,7 @@ public class TCPServer {
 
                 objOut.writeObject(shutdownn);//shuts down client   <----------------------------------------------------------
                 System.out.println("RMI disconnected, shuting down...");
-                System.exit(0);
+                System.exit(1);
             }
         }
     //=============================

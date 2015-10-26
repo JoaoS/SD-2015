@@ -32,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/src/Client.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="82" column="50" selection-start-line="82" selection-start-column="40" selection-end-line="82" selection-end-column="50" />
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding>
                 <element signature="method#SendToServer#0;class#SendToServer#0" expanded="false" />
                 <element signature="method#setSocket#0;class#SendToServer#0" expanded="false" />
@@ -67,16 +67,14 @@
       <file leaf-file-name="TCPServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4183267">
-              <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
+            <state vertical-scroll-proportion="-0.13944224">
+              <caret line="129" column="8" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="8" />
               <folding>
                 <element signature="docComment;class#TCPServer#0" expanded="false" />
                 <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-                <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-                <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -89,7 +87,7 @@
         <entry file="file://$PROJECT_DIR$/tcpProp.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <caret line="20" column="12" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -140,8 +138,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/DataServer.java" />
-        <option value="$PROJECT_DIR$/src/Client.java" />
         <option value="$PROJECT_DIR$/tcpProp.properties" />
+        <option value="$PROJECT_DIR$/src/Client.java" />
         <option value="$PROJECT_DIR$/src/TCPServer.java" />
       </list>
     </option>
@@ -725,10 +723,8 @@
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -923,10 +919,8 @@
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1105,10 +1099,8 @@
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1253,10 +1245,8 @@
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1306,10 +1296,8 @@
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1359,10 +1347,8 @@
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
@@ -1524,7 +1510,7 @@
     <entry file="file://$PROJECT_DIR$/tcpProp.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <caret line="20" column="12" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -1532,7 +1518,7 @@
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="82" column="50" selection-start-line="82" selection-start-column="40" selection-end-line="82" selection-end-column="50" />
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding>
             <element signature="method#SendToServer#0;class#SendToServer#0" expanded="false" />
             <element signature="method#setSocket#0;class#SendToServer#0" expanded="false" />
@@ -1565,16 +1551,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4183267">
-          <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
+        <state vertical-scroll-proportion="-0.13944224">
+          <caret line="129" column="8" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="8" />
           <folding>
             <element signature="docComment;class#TCPServer#0" expanded="false" />
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
-            <element signature="class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#run#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="method#initialMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#secundaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#tertiaryMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />
             <element signature="method#adminMenu#0;class#Connection#0;class#TCPServer#0" expanded="false" />

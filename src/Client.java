@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Client {
 
-    public static boolean DEBUG=true;
+    public static boolean DEBUG=false;
 
 
     public static   int clientPort;
