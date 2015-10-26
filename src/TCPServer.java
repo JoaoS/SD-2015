@@ -106,7 +106,8 @@ public class TCPServer {
             ServerSocket listenSocket = new ServerSocket(clientPort);
             System.out.println("LISTEN SOCKET=" + listenSocket);
             try {
-                dataServerInterface.checkProjectsDate();
+                if (replyNumber==0)
+                    dataServerInterface.checkProjectsDate();
             } catch (RemoteException e) {
                 System.out.println("Exception running checkProjectsDate.");
                 e.printStackTrace();
