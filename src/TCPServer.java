@@ -29,7 +29,6 @@ public class TCPServer {
 
     public static void main(String args[]) {
 
-
         //read java properties
         Properties prop = new Properties();
         InputStream input = null;
@@ -235,8 +234,54 @@ public class TCPServer {
             try {
                 dataServerInterface.checkProjectsDate();
             } catch (RemoteException e) {
+                restartRmiTask();
+                try {
+                    dataServerInterface.checkProjectsDate();
+                } catch (RemoteException e1) {
+                    if (TCPServer.DEBUG)
+                    e1.printStackTrace();
+                }
+
                 System.out.println("Exception at MyTimerTask run.");
-                e.printStackTrace();
+                if (TCPServer.DEBUG)
+                    e.printStackTrace();
+            }
+        }
+        public void restartRmiTask()
+        {
+            int tries = TCPServer.reconnection;
+            while(tries!=0)
+            {
+                try
+                {
+                    Thread.sleep(TCPServer.WAIT*2);
+                }catch (InterruptedException e){
+                    if(DEBUG)
+                        e.printStackTrace();
+                }
+                try
+                {
+
+                    System.getProperties().put("java.security.policy", "security.policy");
+                    System.setSecurityManager(new RMISecurityManager());
+                    dataServerInterface = (DataServer_I)LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(rmiName);
+
+                    if(dataServerInterface.dummyMethod()==0)
+                    {
+                        System.out.println("Timertask=RMI back online....");
+                        break;
+                    }
+                }catch (Exception e){
+                    /*if(DEBUG)
+                        e.printStackTrace();
+*/
+                    System.out.println("Exception in Timertask, dataserver not online yet...");
+                }
+                tries--;
+            }
+            if(tries==0){
+                System.out.println("RMI disconnected, shuting down...");
+                System.exit(0);
             }
         }
 
@@ -781,7 +826,7 @@ public class TCPServer {
                     restartRmi();
                     send = dataServerInterface.replyMessage(reply.getIdProject(),reply.getUsername(),reply.getIdMessage() ,reply.getReply());
                 }
-                
+
                 request = new Message();
                 request.setOperation("reply successfull");
                 request.setMessage(send);

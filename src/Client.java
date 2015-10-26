@@ -60,16 +60,18 @@ public class Client {
         }
 
         guide=new Guide();
-        int tries=reconnection*2;
-        while(tries !=0){
+        int dRecon=reconnection*2;
+        int tries=dRecon;
+
+        while(tries >=0){
 
             if (sock==null){
                 if (DEBUG){
-                    System.out.println("connecting to 1");
+                    System.out.println("connecting to 1, tries:"+tries);
                 }
                 try {
                     sock = new Socket(firstIP,clientPort);
-                    tries=reconnection;
+                    tries=dRecon;
 
                 } catch (IOException e) {
                     tries-=2;
@@ -78,11 +80,11 @@ public class Client {
             }
             if(sock==null){
                 if (DEBUG){
-                    System.out.println("connecting to 2");
+                    System.out.println("connecting to 2, tries:"+tries);
                 }
                 try {
                     sock = new Socket(secondIP,clientPort);
-                    tries=reconnection;
+                    tries=dRecon;
 
                 } catch (IOException e) {
                     tries-=2;
@@ -150,7 +152,7 @@ public class Client {
                 }
             }
         }
-        if(tries == 0){
+        if(tries <= 0){
             System.out.println("Server not found, try again later");
             System.exit(0);
 
@@ -265,6 +267,7 @@ class SendToServer extends Thread{
 
                             case "login unsuccessful":
                                 initialMenu();
+                                Client.guide.getOperations().poll();//to avoid duplicate "unsucessful and initial menu" in case of login error -server side
                                 break;
 
                             default:
@@ -289,6 +292,8 @@ class SendToServer extends Thread{
 
     public void initialMenu() throws Exception
     {
+
+        //todo, se eu meter um enter a 1ª vez ele volta ao LOGIN WTF!!!!!!!!!
         //se os dados já foram validados posso saltar esta parte
         if (Client.alreadyLogin == 1) {
             login();
@@ -303,7 +308,6 @@ class SendToServer extends Thread{
                 try {
                     op = Integer.parseInt(reader.readLine());
                 }catch (NumberFormatException e){
-
                 }
                 //test if connection was lost
                 if(Client.signalToTerminate==1)
@@ -473,6 +477,7 @@ class SendToServer extends Thread{
             //test for lost connection
             if(Client.signalToTerminate==1)
                 break;
+
             switch(op)
             {
                 case 1:
@@ -703,6 +708,8 @@ class SendToServer extends Thread{
                     System.out.println("Select a valid option.\n");
                     System.out.println(ini);
                 }
+                if(Client.signalToTerminate==1)
+                    break;
             }while(op <= 0 || op>3);
             switch(op)
             {
@@ -811,8 +818,7 @@ class SendToServer extends Thread{
 
 
 
-    
-    void adminMenu() throws Exception //validaton done
+    void adminMenu() throws Exception   //validaton done
     {
 
         Message request = new Message();
@@ -836,6 +842,8 @@ class SendToServer extends Thread{
                     System.out.println("Select a valid option.\n");
                     System.out.println(ini);
                 }
+                if(Client.signalToTerminate==1)
+                    break;
             }while(op <= 0 || op>5);
             switch(op)
             {
@@ -1064,5 +1072,6 @@ class SendToServer extends Thread{
             objOut.flush();
         }
     }
+
 }
 
