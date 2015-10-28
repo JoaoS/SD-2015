@@ -301,7 +301,7 @@ public class TCPServer {
     public int thread_number;//number of currently connected client
     public ObjectInputStream objIn;
     public ObjectOutputStream objOut;
-    public String currentUser=new String();
+    public String currentUser=null;
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
         thread_number = numero;
@@ -466,7 +466,7 @@ public class TCPServer {
                     //if size=1 only i am online
                     for (int i=0;i<TCPServer.onlineUsers.size();i++){
                         //write my name in other users socket
-                        if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
+                        if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser) &&TCPServer.onlineUsers.get(i).getCurrentUser()!=null ){
                             printNewUserLogin= new Message();
                             printNewUserLogin.setMessage("User: "+currentUser+" online");
                             printNewUserLogin.setOperation("New User");
