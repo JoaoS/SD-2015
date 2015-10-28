@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="891243f1-8ca4-41fb-9818-0fc9ba70fe65" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tcpProp.properties" afterPath="$PROJECT_DIR$/tcpProp.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TCPServer.java" afterPath="$PROJECT_DIR$/src/TCPServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Client.java" afterPath="$PROJECT_DIR$/src/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Trabalhos.iml" afterPath="$PROJECT_DIR$/Trabalhos.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Client.java" afterPath="$PROJECT_DIR$/src/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TCPServer.java" afterPath="$PROJECT_DIR$/src/TCPServer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SD-2015.iws" />
@@ -63,10 +63,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TCPServer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TCPServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7568579">
+            <state vertical-scroll-proportion="0.0">
               <caret line="416" column="26" selection-start-line="416" selection-start-column="26" selection-end-line="416" selection-end-column="26" />
               <folding>
                 <element signature="docComment;class#TCPServer#0" expanded="false" />
@@ -74,14 +74,6 @@
                 <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
                 <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-                <element signature="e#11853#11854#0" expanded="true" />
-                <element signature="e#11887#11888#0" expanded="true" />
-                <element signature="e#11941#11942#0" expanded="true" />
-                <element signature="e#11987#11988#0" expanded="true" />
-                <element signature="e#12032#12033#0" expanded="true" />
-                <element signature="e#12061#12062#0" expanded="true" />
-                <element signature="e#12117#12118#0" expanded="true" />
-                <element signature="e#12153#12154#0" expanded="true" />
                 <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
               </folding>
             </state>
@@ -104,17 +96,18 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding>
-                <element signature="e#297#298#0" expanded="true" />
+                <element signature="e#370#371#0" expanded="false" />
+                <element signature="e#407#408#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataServer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DataServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DataServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.7139037">
+              <caret line="900" column="13" selection-start-line="900" selection-start-column="13" selection-end-line="900" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -142,10 +135,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/DataServer.java" />
         <option value="$PROJECT_DIR$/src/Client.java" />
         <option value="$PROJECT_DIR$/tcpProp.properties" />
         <option value="$PROJECT_DIR$/src/TCPServer.java" />
+        <option value="$PROJECT_DIR$/src/DataServer.java" />
       </list>
     </option>
   </component>
@@ -179,6 +172,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -232,8 +227,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -464,17 +457,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3180723" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40987125" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14520743" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -482,13 +473,15 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17525035" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3180723" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40987125" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17525035" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -580,7 +573,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#370#371#0" expanded="false" />
+            <element signature="e#407#408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -589,7 +583,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="48" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -597,7 +590,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -652,14 +644,6 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
@@ -699,7 +683,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#370#371#0" expanded="false" />
+            <element signature="e#407#408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -708,7 +693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="48" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -716,7 +700,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -771,14 +754,6 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
@@ -818,7 +793,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#370#371#0" expanded="false" />
+            <element signature="e#407#408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -874,14 +850,6 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
@@ -914,7 +882,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#370#371#0" expanded="false" />
+            <element signature="e#407#408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -944,14 +913,6 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
@@ -1000,14 +961,6 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
@@ -1056,14 +1009,6 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
           </folding>
         </state>
@@ -1144,7 +1089,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13837638">
           <caret line="5" column="48" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1152,7 +1096,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24907748">
           <caret line="9" column="31" selection-start-line="9" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1178,21 +1121,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/src.zip!/java/net/SocketInputStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="93" column="23" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1201,7 +1133,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#370#371#0" expanded="false" />
+            <element signature="e#407#408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1261,7 +1194,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7568579">
+        <state vertical-scroll-proportion="0.0">
           <caret line="416" column="26" selection-start-line="416" selection-start-column="26" selection-end-line="416" selection-end-column="26" />
           <folding>
             <element signature="docComment;class#TCPServer#0" expanded="false" />
@@ -1269,15 +1202,17 @@
             <element signature="class#PrimaryThread#0;class#TCPServer#0" expanded="false" />
             <element signature="method#restartRmiTask#0;class#MyTimerTask#0;class#TCPServer#0" expanded="false" />
             <element signature="method#Connection#0;class#Connection#0;class#TCPServer#0" expanded="false" />
-            <element signature="e#11853#11854#0" expanded="true" />
-            <element signature="e#11887#11888#0" expanded="true" />
-            <element signature="e#11941#11942#0" expanded="true" />
-            <element signature="e#11987#11988#0" expanded="true" />
-            <element signature="e#12032#12033#0" expanded="true" />
-            <element signature="e#12061#12062#0" expanded="true" />
-            <element signature="e#12117#12118#0" expanded="true" />
-            <element signature="e#12153#12154#0" expanded="true" />
             <element signature="method#restartRmi#0;class#Connection#0;class#TCPServer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7139037">
+          <caret line="900" column="13" selection-start-line="900" selection-start-column="13" selection-end-line="900" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

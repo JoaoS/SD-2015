@@ -888,6 +888,17 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 ps.executeUpdate();
 
             }
+            //delete donations from project
+            s = "SELECT id_reward FROM reward WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            while (rt.next())
+            {
+                s = "DELETE from donation where id_reward = ?";
+                ps = connection.prepareStatement(s);
+                ps.setLong(1, rt.getLong(1));
+                ps.execute();
+                connection.commit();
+            }
             //cancel project
             s = "DELETE from project where id_project = ?";
             ps = connection.prepareStatement(s);
