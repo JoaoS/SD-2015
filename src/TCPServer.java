@@ -4,6 +4,7 @@ import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -28,6 +29,7 @@ public class TCPServer {
     private static String secondIP;
     private static TimerTask timerTask;
 
+    public static CopyOnWriteArrayList<Connection> onlineUsers=new CopyOnWriteArrayList<>();
 
     public static void main(String args[]) {
 
@@ -126,7 +128,7 @@ public class TCPServer {
                 Socket clientSocket = listenSocket.accept();
                 System.out.println("CLIENT_SOCKET (created at accept())=" + clientSocket);
                 connectedUsers++;
-                new Connection(clientSocket, connectedUsers,dataServerInterface);
+                onlineUsers.add(new Connection(clientSocket, connectedUsers,dataServerInterface));
             }
         } catch (Exception e) {
             if(DEBUG)
@@ -299,7 +301,7 @@ public class TCPServer {
     public int thread_number;//number of currently connected client
     public ObjectInputStream objIn;
     public ObjectOutputStream objOut;
-
+    public String currentUser=new String();
 
     public Connection(Socket aClientSocket, int numero, DataServer_I ds) {
         thread_number = numero;
@@ -318,8 +320,23 @@ public class TCPServer {
         }
     }
 
+    public String getCurrentUser() {
+        return currentUser;
+    }
 
-     public void restartRmi() throws IOException
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public ObjectOutputStream getObjOut() {
+        return objOut;
+    }
+
+    public void setObjOut(ObjectOutputStream objOut) {
+        this.objOut = objOut;
+    }
+
+    public void restartRmi() throws IOException
      {
             int tries = TCPServer.reconnection;
             while(tries!=0)
@@ -372,7 +389,35 @@ public class TCPServer {
             }
 
         }catch(EOFException e) {
-            System.out.println("Client disconnected :");
+            System.out.println("Client disconnected: "+currentUser);
+
+            Message printNewUserLogin;
+            //if size=1 only i am online
+            for (int i=0;i<TCPServer.onlineUsers.size();i++){
+                //write my name in other users socket
+                if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
+                    printNewUserLogin= new Message();
+                    printNewUserLogin.setMessage("User: "+currentUser+" offline");
+                    printNewUserLogin.setOperation("New User");
+                    try {
+                        TCPServer.onlineUsers.get(i).getObjOut().writeObject(printNewUserLogin);
+                        TCPServer.onlineUsers.get(i).getObjOut().flush();
+
+                    } catch (IOException e1) {
+                        if (DEBUG)
+                         e1.printStackTrace();
+                    }
+                }
+            }
+            //remove the current user
+            for (int i=0;i<TCPServer.onlineUsers.size();i++){
+                //write my name in other users socket
+                if (TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
+                    TCPServer.onlineUsers.remove(i);
+                    break;
+                }
+            }
+
         }
         catch(IOException e) {
             System.out.println("IO:" + e);
@@ -413,9 +458,24 @@ public class TCPServer {
                     request= new Message();
                     request.setOperation("login successful");
                     request.setMessage("Login made with success.");
-                    request.setUsername(reply.getUsername());
                     objOut.writeObject(request);
                     objOut.flush();
+
+                    currentUser=reply.getUsername();
+                    Message printNewUserLogin;
+                    //if size=1 only i am online
+                    for (int i=0;i<TCPServer.onlineUsers.size();i++){
+                        //write my name in other users socket
+                        if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
+                            printNewUserLogin= new Message();
+                            printNewUserLogin.setMessage("User: "+currentUser+" online");
+                            printNewUserLogin.setOperation("New User");
+                            TCPServer.onlineUsers.get(i).getObjOut().writeObject(printNewUserLogin);
+                            TCPServer.onlineUsers.get(i).getObjOut().flush();
+                        }
+                    }
+
+
                     secundaryMenu();
                 }
                 else {
