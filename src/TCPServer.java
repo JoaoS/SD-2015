@@ -29,7 +29,6 @@ public class TCPServer {
     private static TimerTask timerTask;
 
 
-
     public static void main(String args[]) {
 
         //read java properties
@@ -414,6 +413,7 @@ public class TCPServer {
                     request= new Message();
                     request.setOperation("login successful");
                     request.setMessage("Login made with success.");
+                    request.setUsername(reply.getUsername());
                     objOut.writeObject(request);
                     objOut.flush();
                     secundaryMenu();

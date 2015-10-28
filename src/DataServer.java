@@ -219,18 +219,32 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 s = "SELECT id_reward,description,min_value FROM reward where id_project = '" + idProject + "'";
                 rt = connection.createStatement().executeQuery(s);
                 connection.commit();
-                while(rt.next())
+                if(rt.next())
                 {
-                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Minimum value : " + rt.getDouble(3);
+                    while(rt.next())
+                    {
+                        result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Minimum value : " + rt.getDouble(3);
+                    }
+                }
+                else
+                {
+                    result += "\nThis project has no rewards.";
                 }
                 //fetch alternatives
                 result += "\nAlternatives :\n";
                 s = "SELECT id_alternative,description FROM alternative WHERE id_project = '" + idProject + "'";
                 rt = connection.createStatement().executeQuery(s);
                 connection.commit();
-                while(rt.next())
+                if(rt.next())
                 {
-                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
+                    while(rt.next())
+                    {
+                        result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
+                    }
+                }
+                else
+                {
+                    result += "\nThis project has no alternatives.";
                 }
             }
             else
@@ -303,21 +317,28 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                     "where r.id_project = p.id_project and d.id_reward = r.id_reward and d.id_user = '" + idUser + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
-            while(rt.next())
+            if(rt.next())
             {
-                if(rt.getLong(1) == 0)
+                while(rt.next())
                 {
-                    continue;
+                    if(rt.getLong(1) == 0)
+                    {
+                        continue;
+                    }
+                    auxDate = formatter.parse(rt.getString(4));
+                    if(auxDate.before(today))
+                    {
+                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: Finished with success.";
+                    }
+                    else
+                    {
+                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: In course.";
+                    }
                 }
-                auxDate = formatter.parse(rt.getString(4));
-                if(auxDate.before(today))
-                {
-                    result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: Finished with success.";
-                }
-                else
-                {
-                    result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: In course.";
-                }
+            }
+            else
+            {
+                result += "\nYou have no rewards.";
             }
 
         }
@@ -592,7 +613,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         PreparedStatement ps;
         long idUser = -1;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date now = new Date();
         try {
             // fetch id_user
@@ -643,9 +664,16 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             result += "\nProjects that you administrate:";
-            while(rt.next())
+            if(rt.next())
             {
-                result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
+                while(rt.next())
+                {
+                    result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
+                }
+            }
+            else
+            {
+                result += "\nYou do not administrate any project.";
             }
         }catch (Exception e) {
             try {
@@ -722,9 +750,16 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             result += "Rewards of this project: \n";
-            while (rt.next())
+            if(rt.next())
             {
-                result += "\nReward ID: " + rt.getLong(1) + " Description : " + rt.getString(2);
+                while (rt.next())
+                {
+                    result += "\nReward ID: " + rt.getLong(1) + " Description : " + rt.getString(2);
+                }
+            }
+            else
+            {
+                result += "\nThis project has no rewards.";
             }
         }catch (Exception e) {
             try {
@@ -917,6 +952,17 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                     ps.setLong(2, idUser);
                     ps.executeUpdate();
                 }
+                //delete donations from project
+                s = "SELECT id_reward FROM reward WHERE id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                while (rt.next())
+                {
+                    s = "DELETE from donation where id_reward = ?";
+                    ps = connection.prepareStatement(s);
+                    ps.setLong(1, rt.getLong(1));
+                    ps.execute();
+                    connection.commit();
+                }
                 //cancel project
                 s = "DELETE from project where id_project = ?";
                 ps = connection.prepareStatement(s);
@@ -947,7 +993,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         PreparedStatement ps;
         long idUser = -1,idAdmin = -1;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date now = new Date();
         try
         {

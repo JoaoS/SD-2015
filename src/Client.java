@@ -588,13 +588,27 @@ class SendToServer extends Thread{
 
         int checkData = 0;
         Message request = new Message();
-        System.out.println("Name : ");
-        String name = reader.readLine();
-
-        System.out.println("Description : ");
-        String description = reader.readLine();
+        String name = "",description = "";
+        while(check ==0)
+        {
+            System.out.println("Name : ");
+            name = reader.readLine();
+            if(name.trim().length()!=0 )
+            {
+                check =1;
+            }
+        }
         check=0;
-
+        while(check ==0)
+        {
+            System.out.println("Description : ");
+            description = reader.readLine();
+            if(description.trim().length()!=0 )
+            {
+                check=1;
+            }
+        }
+        check=0;
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH");
         formatter.setLenient(false);
