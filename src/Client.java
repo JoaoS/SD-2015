@@ -295,7 +295,6 @@ class SendToServer extends Thread{
     public void initialMenu() throws Exception
     {
 
-        //todo, se eu meter um enter a 1ª vez ele volta ao LOGIN WTF!!!!!!!!!
         //se os dados já foram validados posso saltar esta parte
         if (Client.alreadyLogin == 1) {
             login();

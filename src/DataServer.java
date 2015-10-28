@@ -221,6 +221,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 connection.commit();
                 if(rt.next())
                 {
+                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Minimum value : " + rt.getDouble(3);
                     while(rt.next())
                     {
                         result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Minimum value : " + rt.getDouble(3);
@@ -237,6 +238,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 connection.commit();
                 if(rt.next())
                 {
+                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
                     while(rt.next())
                     {
                         result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
@@ -319,6 +321,18 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             connection.commit();
             if(rt.next())
             {
+                if(rt.getLong(1) != 0)
+                {
+                    auxDate = formatter.parse(rt.getString(4));
+                    if(auxDate.before(today))
+                    {
+                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: Finished with success.";
+                    }
+                    else
+                    {
+                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: In course.";
+                    }
+                }
                 while(rt.next())
                 {
                     if(rt.getLong(1) == 0)
@@ -510,11 +524,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 }
             }
             //insert the new donation
-            ps = connection.prepareStatement("INSERT INTO DONATION(pledge_value,id_user,id_reward,id_alternative) VALUES(?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO DONATION(pledge_value,id_user,id_reward,id_alternative,id_project) VALUES(?,?,?,?,?)");
             ps.setFloat(1, pledgeValue);
             ps.setLong(2, idUser);
             ps.setLong(3, idReward);
             ps.setLong(4,alternativeChoosen);
+            ps.setLong(5,idProject);
             ps.execute();
             //update account balance
             s = "UPDATE user SET account_balance = account_balance - ? WHERE id_user = ?";
@@ -666,6 +681,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             result += "\nProjects that you administrate:";
             if(rt.next())
             {
+                result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
                 while(rt.next())
                 {
                     result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
@@ -752,6 +768,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             result += "Rewards of this project: \n";
             if(rt.next())
             {
+                result += "\nReward ID: " + rt.getLong(1) + " Description : " + rt.getString(2);
                 while (rt.next())
                 {
                     result += "\nReward ID: " + rt.getLong(1) + " Description : " + rt.getString(2);
@@ -873,7 +890,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         try {
 
             // fetch donation value and its user
-            String s = "SELECT d.pledge_value,d.id_user FROM donation d,reward r WHERE d.id_reward = r.id_reward and r.id_project = '" + idProject + "'";
+            String s = "SELECT pledge_value,id_user from donation where id_project = '" + idProject + "'" ;
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             while (rt.next())
@@ -886,7 +903,6 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 ps.setFloat(1, refund);
                 ps.setLong(2,idUser);
                 ps.executeUpdate();
-
             }
             //delete donations from project
             s = "SELECT id_reward FROM reward WHERE id_project = '" + idProject + "'";
@@ -897,7 +913,6 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 ps = connection.prepareStatement(s);
                 ps.setLong(1, rt.getLong(1));
                 ps.execute();
-                connection.commit();
             }
             //cancel project
             s = "DELETE from project where id_project = ?";
@@ -950,7 +965,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             if(idAdmin == idUser)
             {
                 // fetch donation value and its user
-                s = "SELECT d.pledge_value,d.id_user FROM donation d,reward r WHERE d.id_reward = r.id_reward and r.id_project = '" + idProject + "'";
+                s = "SELECT pledge_value,id_user from donation where id_project = '" + idProject + "'" ;
                 rt = connection.createStatement().executeQuery(s);
                 connection.commit();
                 while (rt.next()) {
