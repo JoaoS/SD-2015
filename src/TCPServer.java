@@ -328,6 +328,10 @@ public class TCPServer {
         this.currentUser = currentUser;
     }
 
+    public int getThread_number() {
+        return thread_number;
+    }
+
     public ObjectOutputStream getObjOut() {
         return objOut;
     }
@@ -394,28 +398,38 @@ public class TCPServer {
             Message printNewUserLogin;
             //if size=1 only i am online
             for (int i=0;i<TCPServer.onlineUsers.size();i++){
-                //write my name in other users socket
-                if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
-                    printNewUserLogin= new Message();
-                    printNewUserLogin.setMessage("User: "+currentUser+" offline");
-                    printNewUserLogin.setOperation("New User");
-                    try {
-                        TCPServer.onlineUsers.get(i).getObjOut().writeObject(printNewUserLogin);
-                        TCPServer.onlineUsers.get(i).getObjOut().flush();
 
-                    } catch (IOException e1) {
-                        if (DEBUG)
-                         e1.printStackTrace();
+                if (TCPServer.onlineUsers.get(i).getCurrentUser() != null){
+                    if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
+
+                        if (currentUser!=null){
+                            printNewUserLogin= new Message();
+                            printNewUserLogin.setMessage("User: "+currentUser+" offline");
+                            printNewUserLogin.setOperation("New User");
+
+                            try {
+                                TCPServer.onlineUsers.get(i).getObjOut().writeObject(printNewUserLogin);
+                                TCPServer.onlineUsers.get(i).getObjOut().flush();
+
+                            } catch (IOException e1) {
+                                if (DEBUG)
+                                    e1.printStackTrace();
+                            }
+                        }
+
                     }
                 }
+
             }
             //remove the current user
             for (int i=0;i<TCPServer.onlineUsers.size();i++){
                 //write my name in other users socket
-                if (TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser)){
-                    TCPServer.onlineUsers.remove(i);
-                    break;
-                }
+                    if (TCPServer.onlineUsers.get(i).getThread_number()==thread_number){
+                        TCPServer.onlineUsers.remove(i);
+                        break;
+                    }
+
+
             }
 
         }
@@ -466,13 +480,16 @@ public class TCPServer {
                     //if size=1 only i am online
                     for (int i=0;i<TCPServer.onlineUsers.size();i++){
                         //write my name in other users socket
-                        if (!TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser) &&TCPServer.onlineUsers.get(i).getCurrentUser()!=null ){
-                            printNewUserLogin= new Message();
-                            printNewUserLogin.setMessage("User: "+currentUser+" online");
-                            printNewUserLogin.setOperation("New User");
-                            TCPServer.onlineUsers.get(i).getObjOut().writeObject(printNewUserLogin);
-                            TCPServer.onlineUsers.get(i).getObjOut().flush();
+                        if (TCPServer.onlineUsers.get(i).getCurrentUser()!=null){
+                            if (!(TCPServer.onlineUsers.get(i).getCurrentUser().equalsIgnoreCase(currentUser))){
+                                printNewUserLogin= new Message();
+                                printNewUserLogin.setMessage("User: "+currentUser+" online");
+                                printNewUserLogin.setOperation("New User");
+                                TCPServer.onlineUsers.get(i).getObjOut().writeObject(printNewUserLogin);
+                                TCPServer.onlineUsers.get(i).getObjOut().flush();
+                            }
                         }
+
                     }
 
 
