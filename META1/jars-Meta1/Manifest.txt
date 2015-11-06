@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: jonhy_bigodes
+Class-Path: ./mysql-connector-java-5.0.8-bin.jar
+Main-Class: DataServer
+

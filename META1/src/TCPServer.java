@@ -416,10 +416,8 @@ public class TCPServer {
                                     e1.printStackTrace();
                             }
                         }
-
                     }
                 }
-
             }
             //remove the current user
             for (int i=0;i<TCPServer.onlineUsers.size();i++){
