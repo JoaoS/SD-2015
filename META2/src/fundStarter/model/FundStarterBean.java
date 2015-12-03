@@ -20,14 +20,11 @@ public class FundStarterBean {
     public FundStarterBean() {
         try {
 
-            server = (DataServer_I) Naming.lookup("DataServer");
+            //server = (DataServer_I) Naming.lookup("DataServer");
             //System.setSecurityManager(new RMISecurityManager());
-            //server = (DataServer_I) LocateRegistry.getRegistry("localhost",5000).lookup("DataServer");
-            System.out.println("DEPOIS DO SERVER !");
+            server = (DataServer_I) LocateRegistry.getRegistry("localhost",5000).lookup("DataServer");
         }
         catch(NotBoundException |RemoteException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
@@ -42,6 +39,8 @@ public class FundStarterBean {
     }
 
     public int checkLogin() throws RemoteException  {
+        System.out.println("texto= "+this.server.checkLogin(this.username,this.password));
+
         return this.server.checkLogin(this.username,this.password);
     }
 

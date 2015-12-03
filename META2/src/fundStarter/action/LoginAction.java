@@ -19,17 +19,24 @@ public class LoginAction extends ActionSupport implements SessionAware
     {
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         // any username is accepted without confirmation (should check using RMI)
-        if(this.username != null && !username.equals("") && this.getFundStarterBean().checkLogin() > 0)
+        if(this.username != null && !username.equals(""))
         {
+            System.out.println("herre");
             this.getFundStarterBean().setUsername(this.username);
             this.getFundStarterBean().setPassword(this.password);
             session.put("username", username);
             session.put("password",password);
             session.put("loggedin", true);
-            return SUCCESS;
+            System.out.println("AQUI DEVia dar login------------------------------------------------");
+
+            if(this.getFundStarterBean().checkLogin() > 0)
+                return SUCCESS;
+            else
+                return LOGIN;
         }
         else
             return LOGIN;
+
     }
 
 
