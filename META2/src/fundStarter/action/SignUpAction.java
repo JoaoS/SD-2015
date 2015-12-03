@@ -13,14 +13,15 @@ public class SignUpAction extends ActionSupport implements SessionAware
 
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
-    private String username = null, password = null;
+    private String username = null, password = null,bi = null,email = null;
+    private int age;
 
     @Override
     public String execute() throws RemoteException
     {
+        this.getFundStarterBean().addUser(username,password,bi,age,email);
         return SUCCESS;
     }
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -30,15 +31,17 @@ public class SignUpAction extends ActionSupport implements SessionAware
         this.password = password;
     }
 
+    public void setBi(String bi) { this.bi = bi;}
+
+    public void setEmail(String email) { this.email = email;}
+
+
+    public void setAge(int age) { this.age = age;}
+
     public FundStarterBean getFundStarterBean() {
-        if(!session.containsKey("fundStarterBean"))
-            this.setFundStarterBean(new FundStarterBean());
         return (FundStarterBean) session.get("fundStarterBean");
     }
 
-    public void setFundStarterBean(FundStarterBean fundStarterBean) {
-        this.session.put("fundStarterBean", fundStarterBean);
-    }
 
     @Override
     public void setSession(Map<String, Object> session) {

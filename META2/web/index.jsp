@@ -86,7 +86,7 @@
             <div class="col-md-4">
                 <h3><strong>Authors</strong></h3>
                 <ul>
-                    <li> João Gonçalves 2012143747</li>
+                    <li>João Gonçalves 2012143747</li>
                     <li>João Subtil 2012151975</li>
                 </ul>
             </div>
