@@ -13,22 +13,93 @@
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <body>
-    <s:form action="login" method="post"  class = "form-horizontal" role = "form">
-        <div class="form-group" id = "login-form">
-              <label  class="control-label col-sm-4" for = "username"> <s:text name="Username:" /></label>
-               <div class="col-sm-4">
-                    <s:textfield name="username" class="form-control"/>
-               </div>
+
+    <div class = "main">
+        <div class = "container">
+            <h1>FundStarter</h1>
         </div>
-        <div class="form-group">
-          <label class="control-label col-sm-4" for = "password"> <s:text name="Password:" /></label>
-              <div class="col-sm-4">
-                  <s:textfield name="password" class="form-control" />
-              </div>
-          </div>
-          <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="login-btn"/>
-    </s:form>
-    </form>
+    </div>
+    <div class = "supporting-login">
+        <div class = "container">
+            <h2>Login</h2>
+            <s:form action="login" method="post"  class = "form-horizontal" role = "form">
+                <div class="form-group" id = "login-form">
+                      <label  class="control-label col-sm-4" for = "username"> <s:text name="Username" /></label>
+                       <div class="col-sm-4">
+                            <s:textfield name="username" class="form-control"/>
+                       </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for = "password"> <s:text name="Password" /></label>
+                      <div class="col-sm-4">
+                          <s:password name="password" class="form-control" />
+                      </div>
+                  </div>
+                  <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="login-btn"/>
+            </s:form>
+        </form>
+        </div>
+    </div>
+    <div class = "supporting-register">
+        <div class = "container">
+            <h2>Sign Up</h2>
+        </div>
+        <s:form action="signUp" method="post"  class = "form-horizontal" role = "form">
+            <div class="form-group" id = "register-form">
+                <label  class="control-label col-sm-4" for = "username"> <s:text name="Username" /></label>
+                <div class="col-sm-4">
+                    <s:textfield name="username" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for = "password"> <s:text name="Password" /></label>
+                <div class="col-sm-4">
+                    <s:textfield name="password" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for = "password"> <s:text name="BI" /></label>
+                <div class="col-sm-4">
+                    <s:textfield name="bi" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for = "password"> <s:text name="Age" /></label>
+                <div class="col-sm-4">
+                    <s:textfield name="age" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for = "password"> <s:text name="e-mail" /></label>
+                <div class="col-sm-4">
+                    <s:textfield name="email" class="form-control" />
+                </div>
+            </div>
+            <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="register-btn"/>
+        </s:form>
+        </form>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4">
+                <h3><strong>Authors</strong></h3>
+                <ul>
+                    <li> João Gonçalves 2012143747</li>
+                    <li>João Subtil 2012151975</li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4">
+                <h3><strong>FundStarter</strong></h3>
+                <ul>
+                    <li>Sistemas Distribuídos 2015/2016</li>
+                </ul>
+            </div>
+        </div>
+    </div>
   </body>
 </html>
 

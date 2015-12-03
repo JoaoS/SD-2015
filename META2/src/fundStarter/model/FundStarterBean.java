@@ -1,13 +1,9 @@
 package fundStarter.model;
 import fundStarter.DataServer.*;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.ArrayList;
 
 
 public class FundStarterBean {
@@ -19,9 +15,6 @@ public class FundStarterBean {
 
     public FundStarterBean() {
         try {
-
-            //server = (DataServer_I) Naming.lookup("DataServer");
-            //System.setSecurityManager(new RMISecurityManager());
             server = (DataServer_I) LocateRegistry.getRegistry("localhost",5000).lookup("DataServer");
         }
         catch(NotBoundException |RemoteException e) {
@@ -39,8 +32,6 @@ public class FundStarterBean {
     }
 
     public int checkLogin() throws RemoteException  {
-        System.out.println("texto= "+this.server.checkLogin(this.username,this.password));
-
         return this.server.checkLogin(this.username,this.password);
     }
 

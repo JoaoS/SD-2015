@@ -1,10 +1,76 @@
-#login-form
+#login-form, #register-form
 {
     margin-top: 5em;
 }
 
+
+
 #login-btn
 {
     margin-top: 2.5em;
+    background-color:#04A8B1;
+    border-color:#04A8B1;
 }
 
+.main
+{
+    height: 45em;
+    background-image:url('http://thenextweb.com/wp-content/blogs.dir/1/files/2015/07/crowdfunding1.jpg');
+    background-size: 100% 100%;
+    text-align:center;
+    color:#FFF;
+}
+
+.main h1
+{
+    font-size: 5em;
+}
+
+.supporting-login h2
+{
+    font-size: 3em;
+    margin-top: 1.5em;
+    text-align:center;
+    color:#04A8B1;
+}
+
+.supporting-register h2
+{
+    font-size: 3em;
+    margin-top: 1.5em;
+    text-align:center;
+    color:#FFF;
+}
+
+.supporting-register
+{
+    margin-top: 2.5em;
+    background-color:#04A8B1;
+    color:#FFF;
+    height: 40em;
+
+
+}
+
+#register-btn
+{
+    margin-top: 2.5em;
+    background-color: #FFF;
+    color:#04A8B1;
+}
+
+.footer {
+    background-color: #FFF;
+    padding: 20px 0px 80px;
+    color:#04A8B1;
+}
+
+.footer ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.footer li {
+    color: #04A8B1;
+    font-weight: 600;
+}

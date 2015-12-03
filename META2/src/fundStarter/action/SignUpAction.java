@@ -8,8 +8,9 @@ import org.apache.struts2.interceptor.SessionAware;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class LoginAction extends ActionSupport implements SessionAware
+public class SignUpAction extends ActionSupport implements SessionAware
 {
+
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
     private String username = null, password = null;
@@ -17,26 +18,7 @@ public class LoginAction extends ActionSupport implements SessionAware
     @Override
     public String execute() throws RemoteException
     {
-        // any username is accepted without confirmation (should check using RMI)
-        if(this.username != null && !username.equals(""))
-        {
-            System.out.println("herre");
-            this.getFundStarterBean().setUsername(this.username);
-            this.getFundStarterBean().setPassword(this.password);
-            if(this.getFundStarterBean().checkLogin() > 0)
-            {
-                session.put("username", username);
-                session.put("password",password);
-                session.put("loggedin", true);
-                return SUCCESS;
-            }
-            else
-                return LOGIN;
-
-        }
-        else
-            return LOGIN;
-
+        return SUCCESS;
     }
 
 
@@ -62,5 +44,4 @@ public class LoginAction extends ActionSupport implements SessionAware
     public void setSession(Map<String, Object> session) {
         this.session = session;
     }
-
 }
