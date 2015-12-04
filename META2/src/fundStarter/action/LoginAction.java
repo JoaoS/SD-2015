@@ -4,6 +4,7 @@ package fundStarter.action;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.FundStarterBean;
 import org.apache.struts2.interceptor.SessionAware;
+import sun.invoke.empty.Empty;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -20,7 +21,6 @@ public class LoginAction extends ActionSupport implements SessionAware
         // any username is accepted without confirmation (should check using RMI)
         if(this.username != null && !username.equals(""))
         {
-            System.out.println("herre");
             this.getFundStarterBean().setUsername(this.username);
             this.getFundStarterBean().setPassword(this.password);
             if(this.getFundStarterBean().checkLogin() > 0)
@@ -35,7 +35,7 @@ public class LoginAction extends ActionSupport implements SessionAware
 
         }
         else
-            return LOGIN;
+            return NONE;
 
     }
 

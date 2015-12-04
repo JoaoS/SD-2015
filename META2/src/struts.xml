@@ -33,6 +33,7 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         <action name="login" class="fundStarter.action.LoginAction" method="execute">
             <result name="success">/menuIni.jsp</result>
             <result name="login">/index.jsp</result>
+            <result name="none">/empty.jsp</result>
         </action>
 
         <action name="signUp" class="fundStarter.action.SignUpAction" method="execute">
