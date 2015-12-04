@@ -16,6 +16,15 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
       <script src="app.js" type="text/javascript"></script>
   <body>
+  <h1> <c:out value = "${session.loggedin}"/><br>
+
+  </h1>
+  <c:if test="${session != null && session.login_error != null}">
+      <div class="alert alert-danger">
+          <strong>Login failed:</strong> Wrong username or password
+      </div>
+  </c:if>
+
     <div class = "main">
         <div class = "container">
             <h1>FundStarter</h1>
