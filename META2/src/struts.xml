@@ -15,6 +15,16 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
 
     <package name="fundStarter" extends="struts-default">
 
+        <interceptors>
+            <interceptor name="FundStarterInterceptor" class="fundStarter.interceptor.FundStarterInterceptor" />
+            <interceptor-stack name="FundStarterStack">
+                <interceptor-ref name="FundStarterInterceptor"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="FundStarterStack" />
+
 
         <default-action-ref name="index" />
 
@@ -32,6 +42,7 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         </action>
 
         <action name="login" class="fundStarter.action.LoginAction" method="execute">
+            <interceptor-ref name="defaultStack" />
             <result name="success">/menuIni.jsp</result>
         </action>
 
