@@ -16,15 +16,18 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
       <script src="app.js" type="text/javascript"></script>
   <body>
-  <h1> <c:out value = "${session.loggedin}"/><br>
-
-  </h1>
-  <c:if test="${session != null && session.login_error != null}">
-      <div class="alert alert-danger">
-          <strong>Login failed:</strong> Wrong username or password
-      </div>
-  </c:if>
-
+      <c:if test="${session != null && session.login_error != null}">
+          <div class="alert alert-danger">
+              <strong>Login failed:</strong> Wrong username or password
+          </div>
+          <c:remove var="login_error"/>
+      </c:if>
+      <c:if test="${session != null && session.signup_error != null}">
+          <div class="alert alert-danger">
+              <strong>Sign Up failed:</strong> <c:out value = "${session.signup_error}"/>
+          </div>
+          <c:remove var="signup_error"/>
+      </c:if>
     <div class = "main">
         <div class = "container">
             <h1>FundStarter</h1>
@@ -81,7 +84,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-4" for = "password"> <s:text name="e-mail" /></label>
+                <label class="control-label col-sm-4" for = "password"> <s:text name="email" /></label>
                 <div class="col-sm-4">
                     <s:textfield name="email" class="form-control" />
                 </div>
