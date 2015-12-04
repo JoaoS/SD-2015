@@ -13,6 +13,7 @@ public class LoginAction extends ActionSupport implements SessionAware
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
     private String username = null, password = null;
+    private String error;
 
     @Override
     public String execute() throws RemoteException
@@ -30,7 +31,12 @@ public class LoginAction extends ActionSupport implements SessionAware
                 return SUCCESS;
             }
             else
+            {
+                error = "Login failed. Wrong username or password";
+                session.put("login_error",error);
                 return LOGIN;
+            }
+
         }
         else
             return LOGIN;
