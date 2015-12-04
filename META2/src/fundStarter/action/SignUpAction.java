@@ -39,7 +39,13 @@ public class SignUpAction extends ActionSupport implements SessionAware
     public void setAge(int age) { this.age = age;}
 
     public FundStarterBean getFundStarterBean() {
+        if(!session.containsKey("fundStarterBean"))
+            this.setFundStarterBean(new FundStarterBean());
         return (FundStarterBean) session.get("fundStarterBean");
+    }
+
+    public void setFundStarterBean(FundStarterBean fundStarterBean) {
+        this.session.put("fundStarterBean", fundStarterBean);
     }
 
 

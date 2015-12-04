@@ -20,7 +20,6 @@ public class LoginAction extends ActionSupport implements SessionAware
         // any username is accepted without confirmation (should check using RMI)
         if(this.username != null && !username.equals(""))
         {
-            System.out.println("herre");
             this.getFundStarterBean().setUsername(this.username);
             this.getFundStarterBean().setPassword(this.password);
             if(this.getFundStarterBean().checkLogin() > 0)
@@ -32,7 +31,6 @@ public class LoginAction extends ActionSupport implements SessionAware
             }
             else
                 return LOGIN;
-
         }
         else
             return LOGIN;
