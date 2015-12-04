@@ -43,10 +43,17 @@ public class FundStarterBean {
         return this.server.checkLogin(this.username,this.password);
     }
 
+    public String checkSignUp(String username,String password,String bi, int age, String email) throws RemoteException  {
+        return this.server.checkSignUp(username,password,bi,age,email);
+    }
+
     public boolean addUser(String username,String password,String bi,int age, String email) throws RemoteException
     {
         return this.server.addUser(username,password,bi,age,email);
     }
+
+
+
 
 
 }
