@@ -163,25 +163,25 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 {
                     if(!auxDate.before(today))
                     {
-                        result += "ID : "+ rt.getLong(1) + " Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + "\n";
+                        result += "ID : "+ rt.getLong(1) + "| Project : " + rt.getString(2) + "| Target value : " + rt.getLong(3) + "| Current value : " + rt.getLong(4) + "\n";
                     }
                 }
                 else if(current == 0)
                 {
                     if(auxDate.before(today))
                     {
-                        result += "ID : "+ rt.getLong(1) + " Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + "\n";
+                        result += "ID : "+ rt.getLong(1) + "| Project : " + rt.getString(2) + "| Target value : " + rt.getLong(3) + "| Current value : " + rt.getLong(4) + "\n";
                     }
                 }
                 else
                 {
                     if(rt.getInt(6) == 0)
                     {
-                        result += "ID : "+ rt.getLong(1) + " Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Status: In course.\n";
+                        result += "ID : "+ rt.getLong(1) + "| Project : " + rt.getString(2) + "| Target value : " + rt.getLong(3) + "| Current value : " + rt.getLong(4) + "| Status: In course.\n";
                     }
                     else
                     {
-                        result += "ID : "+ rt.getLong(1) + " Project : " + rt.getString(2) + " Target value : " + rt.getLong(3) + " Current value : " + rt.getLong(4) + " Status: Finished with success.\n";
+                        result += "ID : "+ rt.getLong(1) + "| Project : " + rt.getString(2) + "| Target value : " + rt.getLong(3) + "| Current value : " + rt.getLong(4) + "| Status: Finished with success.\n";
                     }
                 }
             }
@@ -198,6 +198,24 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         }
         return result;
+    }
+
+    public long getNumberProjects() throws RemoteException {
+
+        ResultSet rt = null;
+        String result = "";
+        long n = -1;
+        try {
+            String s = "SELECT max(id_project) from project";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next()) {
+                n = rt.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return n;
     }
 
     public String viewProject(long idProject) throws RemoteException
@@ -331,11 +349,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                     auxDate = formatter.parse(rt.getString(4));
                     if(auxDate.before(today))
                     {
-                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: Finished with success.";
+                        result += "\nReward ID : " + rt.getLong(1) + "| Description : " + rt.getString(2) + " | Project : " + rt.getString(3) + "| Pledge value : " + rt.getFloat(5) + "| Status: Finished with success.";
                     }
                     else
                     {
-                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: In course.";
+                        result += "\nReward ID : " + rt.getLong(1) + " | Description : " + rt.getString(2) + " | Project : " + rt.getString(3) + " | Pledge value : " + rt.getFloat(5) + " | Status: In course.";
                     }
                 }
                 while(rt.next())
@@ -347,11 +365,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                     auxDate = formatter.parse(rt.getString(4));
                     if(auxDate.before(today))
                     {
-                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: Finished with success.";
+                        result += "\nReward ID : " + rt.getLong(1) + " | Description : " + rt.getString(2) + " | Project : " + rt.getString(3) + " | Pledge value : " + rt.getFloat(5) + " | Status: Finished with success.";
                     }
                     else
                     {
-                        result += "\nReward ID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Project : " + rt.getString(3) + " Pledge value : " + rt.getFloat(5) + " Status: In course.";
+                        result += "\nReward ID : " + rt.getLong(1) + " | Description : " + rt.getString(2) + " | Project : " + rt.getString(3) + " | Pledge value : " + rt.getFloat(5) + " | Status: In course.";
                     }
                 }
             }

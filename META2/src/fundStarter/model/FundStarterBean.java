@@ -52,8 +52,24 @@ public class FundStarterBean {
         return this.server.addUser(username,password,bi,age,email);
     }
 
+    public String listProjects(int current) throws RemoteException
+    {
+        return this.server.listProjects(current);
+    }
 
+    public long checkAccountBalance() throws RemoteException
+    {
+        return this.server.checkAccountBalance(username);
+    }
 
+    public String checkRewards() throws RemoteException
+    {
+        return this.server.checkRewards(username);
+    }
 
+    public long getNumberProjects() throws RemoteException
+    {
+        return this.server.getNumberProjects();
+    }
 
 }
