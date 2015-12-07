@@ -3,16 +3,16 @@ package fundStarter.DataServer;
 /**
  * Created by joaosubtil on 03/12/15.
  */
-import javax.print.DocFlavor;
-        import java.io.FileInputStream;
+import fundStarter.commons.*;
+
+import java.io.FileInputStream;
         import java.io.IOException;
         import java.io.InputStream;
         import java.rmi.*;
         import java.rmi.registry.LocateRegistry;
         import java.rmi.registry.Registry;
         import java.rmi.server.UnicastRemoteObject;
-        import java.text.ParseException;
-        import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
         import java.util.*;
         import java.sql.*;
         import java.util.Date;
@@ -394,7 +394,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
 
-    public boolean addProject(String username,String name,String description,String limitDate,long targetValue, String enterprise,ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException
+    public boolean addProject(String username, String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException
     {
         PreparedStatement ps;
         ResultSet rt = null;

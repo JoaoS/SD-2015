@@ -1,18 +1,17 @@
-package fundStarter.DataServer;
+package fundStarter.commons;
 
 import java.io.Serializable;
 
 /**
  * Created by joaogoncalves on 17/10/15.
  */
-public class Alternative implements Serializable {
-
+public class Reward implements Serializable {
     private String description;
-    private double divisor;
+    private double minValue;
 
-    public Alternative(String description, float divisor) {
+    public Reward(String description, double minValue) {
         this.description = description;
-        this.divisor = divisor;
+        this.minValue = minValue;
     }
 
     public String getDescription() {
@@ -23,11 +22,11 @@ public class Alternative implements Serializable {
         this.description = description;
     }
 
-    public double getDivisor() {
-        return divisor;
+    public double getMinValue() {
+        return minValue;
     }
 
-    public void setDivisor(double divisor) {
-        this.divisor = divisor;
+    public void setMinValue(long minValue) {
+        this.minValue = minValue;
     }
 }

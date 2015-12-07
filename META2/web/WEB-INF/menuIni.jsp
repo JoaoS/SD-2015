@@ -254,17 +254,20 @@
                         </ul>
                     </c:forEach>
                     <div class = "row">
-                        <form role="form">
+                        <s:form action="addRewardAction" method="post"  >
                             <div class="form-group">
                                 <label for="sel2">Add rewards to project</label>
-                                <select class="form-control" id="sel2">
+                                <select name="idSelected" class="form-control" id="sel2">
                                     <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
-                                        <option><c:out value="${i}"/></option>
+                                        <option value="${i}">
+                                            <c:out value="${i}"/>
+                                        </option>
                                     </c:forEach>
                                 </select>
                                 <br>
                             </div>
-                        </form>
+                            <s:submit type="button" id="idReward"/>
+                        </s:form>
                     </div>
                     <div class = "row">
                         <form role="form">
@@ -327,3 +330,9 @@
     </div>
 </body>
 </html>
+<!-- todo
+admin menu
+view details of project
+create project
+
+-->

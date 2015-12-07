@@ -1,7 +1,6 @@
 package fundStarter.DataServer;
 
-import fundStarter.DataServer.Alternative;
-import fundStarter.DataServer.Reward;
+import fundStarter.commons.*;
 
 import java.rmi.*;
 import java.util.ArrayList;

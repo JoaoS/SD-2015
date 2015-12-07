@@ -51,5 +51,12 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
 
+
+        <action name="addRewardAction" class="fundStarter.action.AddRewardAction" method="execute">
+            <interceptor-ref name="defaultStack" />
+            <result name="success">/WEB-INF/empty.jsp</result>
+        </action>
+
+
     </package>
 </struts>
