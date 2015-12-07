@@ -701,13 +701,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             s = "SELECT id_project,name FROM project WHERE id_user = '" + idUser + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
-            result += "\nProjects that you administrate:";
             if(rt.next())
             {
-                result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
+                result += "\nID : " + rt.getLong(1) + " | Name: " + rt.getString(2);
                 while(rt.next())
                 {
-                    result += "\nID : " + rt.getLong(1) + " Name: " + rt.getString(2);
+                    result += "\nID : " + rt.getLong(1) + " | Name: " + rt.getString(2);
                 }
             }
             else

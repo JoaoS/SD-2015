@@ -72,4 +72,8 @@ public class FundStarterBean {
         return this.server.getNumberProjects();
     }
 
+    public String showAdminProjects() throws RemoteException
+    {
+        return this.server.showAdminProjects(username);
+    }
 }

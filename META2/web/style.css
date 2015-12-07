@@ -120,7 +120,7 @@ ul.nav.nav-pills.nav-stacked> li > a
 }
 
 
-#home,#menu1,#menu2,#menu3,#menu4,#menu5
+#home,#menu1,#menu2,#menu3,#menu4,#menu5,#menu6
 {
     text-align: center;
 }
@@ -168,4 +168,29 @@ ul.nav.nav-pills.nav-stacked> li > a
 .form-group
 {
     margin: 3em;
+}
+
+.input_fields_rewards
+{
+    margin-top:5em;
+    align:center;
+
+}
+.input_fields_alternatives
+{
+    margin-top:5em;
+    align:center;
+
+}
+
+#menu5 p
+{
+    margin-top: 2em;
+}
+
+#chat-button
+{
+    margin-top: 2.5em;
+    background-color:#04A8B1;
+    border-color:#04A8B1;
 }

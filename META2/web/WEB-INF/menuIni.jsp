@@ -13,6 +13,70 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var max_fields      = 20; //maximum input boxes allowed
+            var wrapper         = $(".input_fields_rewards"); //Fields wrapper
+            var add_button      = $(".add_field_button"); //Add button ID
+            var add_button2 = $(".add_field_button2");
+            var wrapper2 = $(".input_fields_alternatives");
+            var x = 1; //initlal text box count
+            $(add_button).click(function(e){ //on add input button click
+                e.preventDefault();
+                if(x < max_fields){ //max input box allowed
+                    x++; //text box increment
+                    $(wrapper).append(
+                            '<div class = "row"> ' +
+                            '<label class="control-label col-sm-3" for = "reward_description2">Reward</label> ' +
+                            '<div class = "col-sm-3">' +
+                            '<s:textfield name="reward_description2" class="form-control" />' +
+                            '</div>' +
+                            '<label class="control-label col-sm-2" for = "min_pledge2">Minimum pledge</label>' +
+                            '<div class = "col-sm-2">' +
+                            '<s:textfield name = "min_pledge2" class = "form-control"/>' +
+                            '</div>' +
+                            '<div class = "col-sm-1"><a href="#" class="remove_field">Remove</a></div>' +
+                            '</div>'); //add input box
+                }
+            });
+
+            var y = 1; //initlal text box count
+            $(add_button2).click(function(e){ //on add input button click
+                e.preventDefault();
+                if(y < max_fields){ //max input box allowed
+                    y++; //text box increment
+                    $(wrapper2).append(
+                            '<div class = "row"> ' +
+                            '<label class="control-label col-sm-3" for = "alternative_description2">Alternative</label> ' +
+                            '<div class = "col-sm-3">' +
+                            '<s:textfield name="alternative_description2" class="form-control" />' +
+                            '</div>' +
+                            '<label class="control-label col-sm-2" for = "divisor2">Divisor</label>' +
+                            '<div class = "col-sm-2">' +
+                            '<s:textfield name = "divisor2" class = "form-control"/>' +
+                            '</div>' +
+                            '<div class = "col-sm-1"><a href="#" class="remove_field">Remove</a></div>' +
+                            '</div>'); //add input box
+                }
+            });
+
+            $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+                e.preventDefault();
+                //$(this).parent('div').remove();
+                $(this).parent('div').parent().remove();
+                x--;
+            })
+
+            $(wrapper2).on("click",".remove_field", function(e){ //user click on remove text
+                e.preventDefault();
+                //$(this).parent('div').remove();
+                $(this).parent('div').parent().remove();
+                x--;
+            })
+
+
+        });
+    </script>
 </head>
 <body>
     <div class = "header">
@@ -70,16 +134,6 @@
                 </div>
                 <div id="menu2" class="tab-pane fade">
                     <h3>View details of a project</h3>
-                    <c:set var="temp" value="one
-                    two"/>
-                    <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
-                    <c:forEach items = "${fn:split(fundStarterBean.listProjects(2),newline)}" var = "value">
-                        <ul class = "list-group">
-                            <c:forEach items = "${fn:split(value,'|')}" var = "value2">
-                                <li class = "list-group-item"><c:out value="${value2}"/></li>
-                            </c:forEach>
-                        </ul>
-                    </c:forEach>
                     <form role="form">
                         <div class="form-group">
                             <label for="sel1">Which project do you want to view the details ?</label>
@@ -91,6 +145,16 @@
                             <br>
                         </div>
                     </form>
+                    <c:set var="temp" value="one
+                    two"/>
+                    <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
+                    <c:forEach items = "${fn:split(fundStarterBean.listProjects(2),newline)}" var = "value">
+                        <ul class = "list-group">
+                            <c:forEach items = "${fn:split(value,'|')}" var = "value2">
+                                <li class = "list-group-item"><c:out value="${value2}"/></li>
+                            </c:forEach>
+                        </ul>
+                    </c:forEach>
                 </div>
                 <div id="menu3" class="tab-pane fade">
                     <h3>Check Account Balance</h3>
@@ -142,15 +206,102 @@
                                 <s:textfield name="enterprise" class="form-control" />
                             </div>
                         </div>
-                        <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>     <!--Falta rewards e alternatives !!!!-->
+                        <div class="input_fields_rewards">
+                            <div class = "row">
+                                <label class="control-label col-sm-3" for = "reward_description"> <s:text name="Reward" /></label>
+                                <div class = "col-sm-3">
+                                    <s:textfield name="reward_description" class="form-control" />
+                                </div>
+                                <label class="control-label col-sm-2" for = "min_pledge"> <s:text name="Minimum pledge" /></label>
+                                <div class = "col-sm-2">
+                                    <s:textfield name = "min_pledge" class = "form-control"/>
+                                </div>
+                                <div class = "col-sm-1">
+                                    <button class="add_field_button">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input_fields_alternatives">
+                            <div class = "row">
+                                <label class="control-label col-sm-3" for = "alternative_description"> <s:text name="Alternative" /></label>
+                                <div class = "col-sm-3">
+                                    <s:textfield name="alternative_description" class="form-control" />
+                                </div>
+                                <label class="control-label col-sm-2" for = "divisor"> <s:text name="Divisor*" /></label>
+                                <div class = "col-sm-2">
+                                    <s:textfield name = "divisor" class = "form-control"/>
+                                </div>
+                                <div class = "col-sm-1">
+                                    <button class="add_field_button2">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>
+                        <p>* Divisor(Nr votes of pledge = ceil(pledge value/(divisor * minimum value of pledge).</p>
                     </s:form>
                 </div>
                 <div id="menu6" class="tab-pane fade">
                     <h3>Administrator menu</h3>
-                    <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                    <h5>Projects that you administrate</h5>
+                    <c:set var="temp" value="one
+                    two"/>
+                    <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
+                    <c:forEach items = "${fn:split(fundStarterBean.showAdminProjects(),newline)}" var = "value">
+                        <ul class = "list-group">
+                            <c:forEach items = "${fn:split(value,'|')}" var = "value2">
+                                <li class = "list-group-item"><c:out value="${value2}"/></li>
+                            </c:forEach>
+                        </ul>
+                    </c:forEach>
+                    <div class = "row">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="sel2">Add rewards to project</label>
+                                <select class="form-control" id="sel2">
+                                    <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
+                                        <option><c:out value="${i}"/></option>
+                                    </c:forEach>
+                                </select>
+                                <br>
+                            </div>
+                        </form>
+                    </div>
+                    <div class = "row">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="sel3">Remove rewards from project</label>
+                                <select class="form-control" id="sel3">
+                                    <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
+                                        <option><c:out value="${i}"/></option>
+                                    </c:forEach>
+                                </select>
+                                <br>
+                            </div>
+                        </form>
+                    </div>
+                    <div class = "row">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label for="sel4">Cancel project</label>
+                                    <select class="form-control" id="sel4">
+                                        <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
+                                            <option><c:out value="${i}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+                                </div>
+                            </form>
+                        </div>
+                    <div class = row>
+                        <div class = "col-md-4">
+                        </div>
+                        <div class = "col-md-4">
+                            <button type="button" class="btn btn-primary btn-block" id = "chat-button">Reply to supporter's messages</button>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
     <div class="footer-menuIni">
