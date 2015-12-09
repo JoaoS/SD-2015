@@ -726,6 +726,50 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
+    public String getAdminProjectIds(String username) throws RemoteException
+    {
+        ResultSet rt = null;
+        long idUser = -1;
+        String result = "";
+        try {
+            // fetch id_user
+            String s = "SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                idUser = rt.getLong(1);
+            }
+            //fetch projects
+            s = "SELECT id_project FROM project WHERE id_user = '" + idUser + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                //dot to facilitate jsp parsing
+                result += "\nID : " + rt.getLong(1)+"." ;
+                while(rt.next())
+                {
+                    result += "\nID : " + rt.getLong(1)+".";
+                }
+            }
+            else
+            {
+                result += "\nYou do not administrate any project.";
+            }
+        }catch (Exception e) {
+            try {
+                System.out.println("\nException at showAdminProjects.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred listing your projects.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
     public String addReward(long idProject,Reward r,String username) throws RemoteException
     {
         PreparedStatement ps;

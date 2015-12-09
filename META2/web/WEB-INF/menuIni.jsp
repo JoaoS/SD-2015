@@ -86,6 +86,10 @@
         <div class = "cold-md-1">
             <a class  ="btn btn-primary" id = "logout-btn" href ="#">Logout</a>
         </div>
+        <!--
+        todo será necessario adicionar aqui um espaço para ver as notificações(websockets)???
+
+        -->
     </div>
     <div class = "supporting">
           <div class = "row">
@@ -249,24 +253,28 @@
                     <c:forEach items = "${fn:split(fundStarterBean.showAdminProjects(),newline)}" var = "value">
                         <ul class = "list-group">
                             <c:forEach items = "${fn:split(value,'|')}" var = "value2">
-                                <li class = "list-group-item"><c:out value="${value2}"/></li>
+                                <li class = "list-group-item">
+                                    <c:out value="${value2}"/></li>
                             </c:forEach>
                         </ul>
                     </c:forEach>
                     <div class = "row">
-                        <s:form action="addRewardAction" method="post"  >
+                        <s:form action="gotoRewardpageAction" method="post"  >
                             <div class="form-group">
                                 <label for="sel2">Add rewards to project</label>
                                 <select name="idSelected" class="form-control" id="sel2">
-                                    <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
-                                        <option value="${i}">
+
+                                    <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                       <option value="${i}">
                                             <c:out value="${i}"/>
                                         </option>
+
                                     </c:forEach>
+
                                 </select>
                                 <br>
                             </div>
-                            <s:submit type="button" id="idReward"/>
+                            <s:submit type="button" id="idReward" value="Add Reward"/>
                         </s:form>
                     </div>
                     <div class = "row">

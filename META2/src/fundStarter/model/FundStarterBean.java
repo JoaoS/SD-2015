@@ -1,5 +1,6 @@
 package fundStarter.model;
 import fundStarter.DataServer.*;
+import fundStarter.commons.Reward;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -14,6 +15,9 @@ public class FundStarterBean {
     private String bi;
     private int age;
     private String email;
+    private String idSelected;
+
+
 
     public FundStarterBean() {
         try {
@@ -24,6 +28,9 @@ public class FundStarterBean {
         }
     }
 
+    public String getUsername() {
+        return username;
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -38,6 +45,14 @@ public class FundStarterBean {
     public void setAge(int age) {this.age = age;}
 
     public void setEmail(String email) {this.email = email;}
+
+    public String getIdSelected() {
+        return idSelected;
+    }
+
+    public void setIdSelected(String idSelected) {
+        this.idSelected = idSelected;
+    }
 
     public int checkLogin() throws RemoteException  {
         return this.server.checkLogin(this.username,this.password);
@@ -69,11 +84,22 @@ public class FundStarterBean {
 
     public long getNumberProjects() throws RemoteException
     {
+
         return this.server.getNumberProjects();
     }
 
     public String showAdminProjects() throws RemoteException
     {
+        getAdminProjectIds();
         return this.server.showAdminProjects(username);
+    }
+    public String getAdminProjectIds() throws RemoteException
+    {
+        return this.server.getAdminProjectIds(username);
+    }
+
+    public String addRewards(Long id, Reward r, String username)throws RemoteException
+    {
+        return  this.server.addReward(id, r,username);
     }
 }
