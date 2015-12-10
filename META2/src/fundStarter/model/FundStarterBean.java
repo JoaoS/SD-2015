@@ -22,7 +22,6 @@ public class FundStarterBean {
     private long alternativeVotedId;
     private float pledgeValue;
 
-    public int vazio=10;
 
     public FundStarterBean() {
         try {

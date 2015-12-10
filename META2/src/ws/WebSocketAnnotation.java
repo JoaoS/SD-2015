@@ -1,4 +1,4 @@
-package fundStarter.websockets;
+package ws;
 
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -12,7 +12,7 @@ import javax.websocket.OnError;
 import javax.websocket.Session;
 
 
-@ServerEndpoint(value = "/websockets")
+@ServerEndpoint(value = "/ws")
 public class WebSocketAnnotation {
     private static final AtomicInteger sequence = new AtomicInteger(1);
     private final String username;
