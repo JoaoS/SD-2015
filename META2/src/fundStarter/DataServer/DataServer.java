@@ -833,10 +833,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             result += "Rewards of this project: \n";
             if(rt.next())
             {
-                result += "\nReward ID: " + rt.getLong(1) + " Description : " + rt.getString(2);
+                result += "\nReward ID: " + rt.getLong(1) + "| Description : " + rt.getString(2);
                 while (rt.next())
                 {
-                    result += "\nReward ID: " + rt.getLong(1) + " Description : " + rt.getString(2);
+                    result += "\nReward ID: " + rt.getLong(1) + "| Description : " + rt.getString(2);
                 }
             }
             else
