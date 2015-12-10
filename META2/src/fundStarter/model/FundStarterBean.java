@@ -102,4 +102,21 @@ public class FundStarterBean {
     {
         return  this.server.addReward(id, r,username);
     }
+
+    public String listRewards() throws RemoteException
+    {
+        String s[]=this.getIdSelected().split(" ");
+        Long l=Long.parseLong(s[2]);
+       return this.server.listRewardsProject(l);
+    }
+    public String removeRewards(long idProject,long idReward,String username) throws RemoteException
+    {
+        return this.server.removeReward(idProject,idReward,username);
+    }
+
+    public String cancelProject(long idProject) throws RemoteException
+    {
+        return this.server.cancelProject(idProject);
+    }
+
 }

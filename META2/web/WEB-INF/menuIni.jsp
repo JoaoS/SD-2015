@@ -77,8 +77,23 @@
 
         });
     </script>
+
 </head>
 <body>
+    <!-- notificaçoes accoes admin-->
+    <c:if test="${session != null && session.success != null}">
+        <div class="alert alert-success">
+            <strong>Sucessfull:</strong><c:out value = "${session.success}"/>
+        </div>
+        <c:remove var="success"/>
+    </c:if>
+    <c:if test="${session != null && session.error != null}">
+        <div class="alert alert-danger">
+            <strong>Error:</strong><c:out value = "${session.error}"/>
+        </div>
+        <c:remove var="error"/>
+    </c:if>
+    <!--fim dos alerts-->
     <div class = "header">
         <div class = "col-md-11">
             <h1>FundStarter</h1>
@@ -263,14 +278,11 @@
                             <div class="form-group">
                                 <label for="sel2">Add rewards to project</label>
                                 <select name="idSelected" class="form-control" id="sel2">
-
                                     <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
                                        <option value="${i}">
                                             <c:out value="${i}"/>
                                         </option>
-
                                     </c:forEach>
-
                                 </select>
                                 <br>
                             </div>
@@ -278,30 +290,38 @@
                         </s:form>
                     </div>
                     <div class = "row">
-                        <form role="form">
+                        <s:form action="gotoRemovePage" role="form">
                             <div class="form-group">
                                 <label for="sel3">Remove rewards from project</label>
-                                <select class="form-control" id="sel3">
-                                    <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
-                                        <option><c:out value="${i}"/></option>
+                                <select name="idSelected" class="form-control" id="sel3">
+                                    <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                        <option value="${i}">
+                                            <c:out value="${i}"/>
+                                        </option>
                                     </c:forEach>
                                 </select>
                                 <br>
                             </div>
-                        </form>
+                            <s:submit type="button" id="idReward" value="Remove Reward"/>
+
+                        </s:form>
                     </div>
                     <div class = "row">
-                            <form role="form">
+                            <s:form action="cancelProjectAction" role="form" method="post">
                                 <div class="form-group">
                                     <label for="sel4">Cancel project</label>
-                                    <select class="form-control" id="sel4">
-                                        <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
-                                            <option><c:out value="${i}"/></option>
+                                    <select name="idSelected" class="form-control" id="sel4">
+                                        <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                            <option value="${i}">
+                                                <c:out value="${i}"/>
+                                            </option>
                                         </c:forEach>
                                     </select>
                                     <br>
                                 </div>
-                            </form>
+                                <s:submit type="button" id="idReward" value="Cancel Project"/>
+
+                            </s:form>
                         </div>
                     <div class = row>
                         <div class = "col-md-4">

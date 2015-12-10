@@ -33,16 +33,28 @@ public class AddRewardAction extends ActionSupport implements SessionAware {
     public String addRewardToProject() throws Exception {
 
         if (description != null && value != 0){
-            System.out.println("indice da cena2 ="+idSelected);
-
             Reward rew = new Reward(description,value);
             // id, reward, username
             String s[]=this.getFundStarterBean().getIdSelected().split(" ");
-            System.out.println("aqui="+s[2]);
             Long l=Long.parseLong(s[2]);
-            this.getFundStarterBean().addRewards(l,rew,this.getFundStarterBean().getUsername());
+            if ("Reward added successfully.".equalsIgnoreCase(this.getFundStarterBean().addRewards(l,rew,this.getFundStarterBean().getUsername())))
+            {
+                System.out.println("Reward added");
+                this.getFundStarterBean().setIdSelected("");
+                session.put("success", "Reward added sucessfully");
+                return SUCCESS;
 
-            System.out.println("Reward added");
+
+            }
+            else
+            {
+                System.out.println("error");
+                String error = "Failed to add reward";
+                session.put("error",error);
+                return SUCCESS;
+            }
+
+
         }
 
         return SUCCESS;
