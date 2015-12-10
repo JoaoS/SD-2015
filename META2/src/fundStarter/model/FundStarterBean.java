@@ -22,6 +22,8 @@ public class FundStarterBean {
     private long alternativeVotedId;
     private float pledgeValue;
 
+    public int vazio=10;
+
     public FundStarterBean() {
         try {
             server = (DataServer_I) LocateRegistry.getRegistry("localhost",5000).lookup("DataServer");
@@ -121,7 +123,6 @@ public class FundStarterBean {
         return  this.server.addReward(id, r,username);
     }
 
-<<<<<<< HEAD
     public String viewProject() throws RemoteException
     {
         return this.server.viewProject(viewDetailsId);
@@ -137,10 +138,12 @@ public class FundStarterBean {
         return this.server.contributeToProject(viewDetailsId,username,pledgeValue,alternativeVotedId);
     }
 
-    public boolean addProject(String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws  RemoteException
-    {
-        return this.server.addProject(username,name,description,limitDate,targetValue,enterprise,rewards,alternatives);
-=======
+    public boolean addProject(String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws  RemoteException {
+        return this.server.addProject(username, name, description, limitDate, targetValue, enterprise, rewards, alternatives);
+
+    }
+
+
     public String listRewards() throws RemoteException
     {
         String s[]=this.getIdSelected().split(" ");
@@ -155,7 +158,9 @@ public class FundStarterBean {
     public String cancelProject(long idProject) throws RemoteException
     {
         return this.server.cancelProject(idProject);
->>>>>>> 2002d0fa34abe413bfd39a84c3a3d28e92532fe9
     }
+
+
+
 
 }
