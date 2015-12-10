@@ -42,11 +42,18 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
             Reward r = new Reward(rewardDescriptionList.get(i),minPledgeList.get(i));
             rewards.add(r);
         }
-        for(int i=0;i<alternativeDescriptionList.size();i++)
-        {
-            Alternative a = new Alternative(alternativeDescriptionList.get(i),divisorList.get(i));
-            alternatives.add(a);
+
+
+        //if it does not have alternatives
+        if (!alternativeDescriptionList.get(0).equals("")){
+
+            for(int i=0;i<alternativeDescriptionList.size();i++)
+            {
+                Alternative a = new Alternative(alternativeDescriptionList.get(i),divisorList.get(i));
+                alternatives.add(a);
+            }
         }
+
         this.getFundStarterBean().addProject(projectName,description, projectDate,targetValue,enterprise,rewards,alternatives);
         return  SUCCESS;
     }
