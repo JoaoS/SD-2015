@@ -54,14 +54,22 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
 
         <!-- new page to add reward-->
         <action name="gotoRewardpageAction" class="fundStarter.action.AddRewardAction" method="gotoRewardpage">
-            <interceptor-ref name="defaultStack" />
             <result name="success">/WEB-INF/addreward.jsp</result>
         </action>
         <action name="addRewardToProject" class="fundStarter.action.AddRewardAction" method="addRewardToProject">
-            <interceptor-ref name="defaultStack" />
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
 
+        <action name="viewDetails" class="fundStarter.action.ViewDetailsAction" method="execute">
+            <result name="success">/WEB-INF/viewDetailsMenu.jsp</result>
+        </action>
 
+        <action name="contributeProject" class="fundStarter.action.ContributeProjectAction" method="execute">
+            <result name="success">/WEB-INF/viewDetailsMenu.jsp</result>
+        </action>
+
+        <action name="createProject" class="fundStarter.action.CreateProjectAction" method="execute">
+            <result name="success">/WEB-INF/menuIni.jsp</result>
+        </action>
     </package>
 </struts>

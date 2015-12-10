@@ -231,11 +231,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             {
                 if(rt.getInt(6) == 0)
                 {
-                    result +=  "Project : " + rt.getString(1) + "\nDescription: " + rt.getString(2) +  "\nTarget value : " + rt.getLong(3) + "\nCurrent value : " + rt.getLong(4) +"\nLimit date : "+ rt.getString(5) +"\nStatus: In course.\n";
+                    result +=  "Project : " + rt.getString(1) + " | Description: " + rt.getString(2) +  " | Target value : " + rt.getLong(3) + " | Current value : " + rt.getLong(4) +" | Limit date : "+ rt.getString(5) +" | Status: In course.\n";
                 }
                 else
                 {
-                    result +=  "Project : " + rt.getString(1) + "\nDescription: " + rt.getString(2) +  "\nTarget value : " + rt.getLong(3) + "\nCurrent value : " + rt.getLong(4) +"\nLimit date : "+ rt.getString(5) +"\nStatus: Finished with success.\n";
+                    result +=  "Project : " + rt.getString(1) + " | Description: " + rt.getString(2) +  " | Target value : " + rt.getLong(3) + " | Current value : " + rt.getLong(4) +" | Limit date : "+ rt.getString(5) +" | Status: Finished with success.\n";
                 }
                 //fetch rewards
                 result += "\nRewards :\n";
@@ -244,10 +244,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 connection.commit();
                 if(rt.next())
                 {
-                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Minimum value : " + rt.getDouble(3);
+                    result += "\nID : " + rt.getLong(1) + " | Description : " + rt.getString(2) + " | Minimum value : " + rt.getDouble(3);
                     while(rt.next())
                     {
-                        result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2) + " Minimum value : " + rt.getDouble(3);
+                        result += "\nID : " + rt.getLong(1) + " | Description : " + rt.getString(2) + " | Minimum value : " + rt.getDouble(3);
                     }
                 }
                 else
@@ -261,10 +261,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 connection.commit();
                 if(rt.next())
                 {
-                    result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
+                    result += "\nID : " + rt.getLong(1) + " | Description : " + rt.getString(2);
                     while(rt.next())
                     {
-                        result += "\nID : " + rt.getLong(1) + " Description : " + rt.getString(2);
+                        result += "\nID : " + rt.getLong(1) + " | Description : " + rt.getString(2);
                     }
                 }
                 else
@@ -431,7 +431,6 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 ps.setDouble(2, rewards.get(i).getMinValue());
                 ps.setLong(3, idProject);
                 ps.execute();
-
             }
             //insert alternatives
             for(int i =0;i<alternatives.size();i++)
@@ -1211,6 +1210,32 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         }
         return true;
+    }
+
+    public String getAlternativeIdsProject(long idProject) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        String result = "";
+        try {
+            String s = "SELECT id_alternative FROM alternative WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                result += String.valueOf(rt.getLong(1)) + "\n";
+            }
+        } catch (SQLException e) {
+            try {
+                System.out.println("\nException at getAlternativeIdsProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Error occurred while accessing alternatives of this project.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
     }
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException

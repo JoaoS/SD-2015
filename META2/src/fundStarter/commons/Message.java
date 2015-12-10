@@ -1,7 +1,5 @@
 package fundStarter.commons;
 
-import fundStarter.commons.Alternative;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

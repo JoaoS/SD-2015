@@ -30,6 +30,6 @@ public interface DataServer_I extends Remote {
     public String cancelProject(long idProject,String username) throws RemoteException;
     public long getNumberProjects() throws RemoteException;
     public String getAdminProjectIds(String username) throws RemoteException;
-
+    public String getAlternativeIdsProject(long idProject) throws RemoteException;
 
 }

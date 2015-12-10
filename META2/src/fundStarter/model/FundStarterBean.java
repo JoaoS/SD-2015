@@ -1,10 +1,12 @@
 package fundStarter.model;
 import fundStarter.DataServer.*;
+import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 
 
 public class FundStarterBean {
@@ -16,8 +18,9 @@ public class FundStarterBean {
     private int age;
     private String email;
     private String idSelected;
-
-
+    private long viewDetailsId;
+    private long alternativeVotedId;
+    private float pledgeValue;
 
     public FundStarterBean() {
         try {
@@ -52,6 +55,21 @@ public class FundStarterBean {
 
     public void setIdSelected(String idSelected) {
         this.idSelected = idSelected;
+    }
+
+    public long getViewDetailsId() { return viewDetailsId;}
+
+    public void setViewDetailsId(long viewDetailsId) {this.viewDetailsId = viewDetailsId;}
+
+    public long getAlternativeVotedId() {return alternativeVotedId;}
+
+    public float getPledgeValue() {return pledgeValue;}
+
+    public void setPledgeValue(float pledgeValue) {this.pledgeValue = pledgeValue;}
+
+    public void setAlternativeVotedId(long alternativeVotedId) {
+        System.out.println("Alternative :"+ alternativeVotedId);
+        this.alternativeVotedId = alternativeVotedId;
     }
 
     public int checkLogin() throws RemoteException  {
@@ -102,4 +120,25 @@ public class FundStarterBean {
     {
         return  this.server.addReward(id, r,username);
     }
+
+    public String viewProject() throws RemoteException
+    {
+        return this.server.viewProject(viewDetailsId);
+    }
+
+    public String getAlternativeIdsProject() throws RemoteException
+    {
+        return this.server.getAlternativeIdsProject(viewDetailsId);
+    }
+
+    public String contributeToProject() throws RemoteException
+    {
+        return this.server.contributeToProject(viewDetailsId,username,pledgeValue,alternativeVotedId);
+    }
+
+    public boolean addProject(String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws  RemoteException
+    {
+        return this.server.addProject(username,name,description,limitDate,targetValue,enterprise,rewards,alternatives);
+    }
+
 }

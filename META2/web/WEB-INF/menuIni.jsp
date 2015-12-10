@@ -27,13 +27,13 @@
                     x++; //text box increment
                     $(wrapper).append(
                             '<div class = "row"> ' +
-                            '<label class="control-label col-sm-3" for = "reward_description2">Reward</label> ' +
+                            '<label class="control-label col-sm-3" for = "rewardDescriptionList">Reward</label> ' +
                             '<div class = "col-sm-3">' +
-                            '<s:textfield name="reward_description2" class="form-control" />' +
+                            '<s:textfield name="rewardDescriptionList" class="form-control" />' +
                             '</div>' +
-                            '<label class="control-label col-sm-2" for = "min_pledge2">Minimum pledge</label>' +
+                            '<label class="control-label col-sm-2" for = "minPledgeList">Minimum pledge</label>' +
                             '<div class = "col-sm-2">' +
-                            '<s:textfield name = "min_pledge2" class = "form-control"/>' +
+                            '<s:textfield name = "minPledgeList" class = "form-control"/>' +
                             '</div>' +
                             '<div class = "col-sm-1"><a href="#" class="remove_field">Remove</a></div>' +
                             '</div>'); //add input box
@@ -47,13 +47,13 @@
                     y++; //text box increment
                     $(wrapper2).append(
                             '<div class = "row"> ' +
-                            '<label class="control-label col-sm-3" for = "alternative_description2">Alternative</label> ' +
+                            '<label class="control-label col-sm-3" for = "alternativeDescriptionList">Alternative</label> ' +
                             '<div class = "col-sm-3">' +
-                            '<s:textfield name="alternative_description2" class="form-control" />' +
+                            '<s:textfield name="alternativeDescriptionList" class="form-control" />' +
                             '</div>' +
-                            '<label class="control-label col-sm-2" for = "divisor2">Divisor</label>' +
+                            '<label class="control-label col-sm-2" for = "divisorList">Divisor</label>' +
                             '<div class = "col-sm-2">' +
-                            '<s:textfield name = "divisor2" class = "form-control"/>' +
+                            '<s:textfield name = "divisorList" class = "form-control"/>' +
                             '</div>' +
                             '<div class = "col-sm-1"><a href="#" class="remove_field">Remove</a></div>' +
                             '</div>'); //add input box
@@ -138,16 +138,17 @@
                 </div>
                 <div id="menu2" class="tab-pane fade">
                     <h3>View details of a project</h3>
-                    <form role="form">
+                    <form role="form" action = "viewDetails">
                         <div class="form-group">
                             <label for="sel1">Which project do you want to view the details ?</label>
-                            <select class="form-control" id="sel1">
+                            <select name = "viewDetailsId" class="form-control" id="sel1">
                                 <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
-                                    <option><c:out value="${i}"/></option>
+                                    <option value="${i}"><c:out value="${i}"/></option>
                                 </c:forEach>
                             </select>
                             <br>
                         </div>
+                        <s:submit type="button" class="btn btn-primary btn-md center-block" id="viewDetails-btn"/>
                     </form>
                     <c:set var="temp" value="one
                     two"/>
@@ -179,11 +180,11 @@
                 </div>
                 <div id="menu5" class="tab-pane fade">
                     <h3>Create project</h3>
-                    <s:form  method="post"  class = "form-horizontal" role = "form">                    <!-- FALTA A ACTION!!!!!!!!!!!!! -->
+                    <s:form  method="post"  class = "form-horizontal" role = "form" action = "createProject">
                         <div class="form-group" id = "register-form">
-                            <label  class="control-label col-sm-4" for = "username"> <s:text name="Name" /></label>
+                            <label  class="control-label col-sm-4" for = "projectName"> <s:text name="Name" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="name" class="form-control"/>
+                                <s:textfield name="projectName" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -193,15 +194,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for = "date"> <s:text name="Date (dd/MM/yyyy HH)" /></label>
+                            <label class="control-label col-sm-4" for = "projectDate"> <s:text name="Date (dd/MM/yyyy HH)" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="date" class="form-control" format="dd/MM/yyyy HH"/>
+                                <s:textfield name="projectDate" class="form-control" format="dd/MM/yyyy HH"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for = "target_value"> <s:text name="Target" /></label>
+                            <label class="control-label col-sm-4" for = "targetValue"> <s:text name="Target value" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="target_value" class="form-control" />
+                                <s:textfield name="targetValue" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -212,13 +213,13 @@
                         </div>
                         <div class="input_fields_rewards">
                             <div class = "row">
-                                <label class="control-label col-sm-3" for = "reward_description"> <s:text name="Reward" /></label>
+                                <label class="control-label col-sm-3" for = "rewardDescriptionList"> <s:text name="Reward" /></label>
                                 <div class = "col-sm-3">
-                                    <s:textfield name="reward_description" class="form-control" />
+                                    <s:textfield name="rewardDescriptionList" class="form-control" />
                                 </div>
-                                <label class="control-label col-sm-2" for = "min_pledge"> <s:text name="Minimum pledge" /></label>
+                                <label class="control-label col-sm-2" for = "minPledgeList"> <s:text name="Minimum pledge" /></label>
                                 <div class = "col-sm-2">
-                                    <s:textfield name = "min_pledge" class = "form-control"/>
+                                    <s:textfield name = "minPledgeList" class = "form-control"/>
                                 </div>
                                 <div class = "col-sm-1">
                                     <button class="add_field_button">+</button>
@@ -227,13 +228,13 @@
                         </div>
                         <div class="input_fields_alternatives">
                             <div class = "row">
-                                <label class="control-label col-sm-3" for = "alternative_description"> <s:text name="Alternative" /></label>
+                                <label class="control-label col-sm-3" for = "alternativeDescriptionList"> <s:text name="Alternative" /></label>
                                 <div class = "col-sm-3">
-                                    <s:textfield name="alternative_description" class="form-control" />
+                                    <s:textfield name="alternativeDescriptionList" class="form-control" />
                                 </div>
-                                <label class="control-label col-sm-2" for = "divisor"> <s:text name="Divisor*" /></label>
+                                <label class="control-label col-sm-2" for = "divisorList"> <s:text name="Divisor*" /></label>
                                 <div class = "col-sm-2">
-                                    <s:textfield name = "divisor" class = "form-control"/>
+                                    <s:textfield name = "divisorList" class = "form-control"/>
                                 </div>
                                 <div class = "col-sm-1">
                                     <button class="add_field_button2">+</button>
@@ -263,18 +264,16 @@
                             <div class="form-group">
                                 <label for="sel2">Add rewards to project</label>
                                 <select name="idSelected" class="form-control" id="sel2">
-
                                     <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
                                        <option value="${i}">
                                             <c:out value="${i}"/>
                                         </option>
-
                                     </c:forEach>
 
                                 </select>
                                 <br>
                             </div>
-                            <s:submit type="button" id="idReward" value="Add Reward"/>
+                            <s:submit type="button" class="btn btn-primary btn-md center-block" id="idReward" value="Add Reward"/>
                         </s:form>
                     </div>
                     <div class = "row">
@@ -302,13 +301,9 @@
                                     <br>
                                 </div>
                             </form>
-                        </div>
+                    </div>
                     <div class = row>
-                        <div class = "col-md-4">
-                        </div>
-                        <div class = "col-md-4">
                             <button type="button" class="btn btn-primary btn-block" id = "chat-button">Reply to supporter's messages</button>
-                        </div>
                     </div>
                     </div>
                 </div>
@@ -340,7 +335,8 @@
 </html>
 <!-- todo
 admin menu
-view details of project
-create project
-
+nos dropdowns do project mostrar so os que existem e nao o max(n_project) !!!!!!!!!!
+nos dropdowns do admin mostrar so os projectos do admin !!!!!
+quando nao ha alternativas no contribute !!!!!!!!!!
+acções e websockets nos comments !!!!!!
 -->
