@@ -361,4 +361,5 @@ nos dropdowns do project mostrar so os que existem e nao o max(n_project) !!!!!!
 nos dropdowns do admin mostrar so os projectos do admin !!!!!
 quando nao ha alternativas no contribute !!!!!!!!!!
 acções e websockets nos comments !!!!!!
+create projectr crasha -> fazer o que se fez para as alternatves para os rewards
 -->

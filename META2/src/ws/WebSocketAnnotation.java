@@ -27,8 +27,6 @@ public class WebSocketAnnotation {
     public void start(Session session) {
         this.session = session;
         users.add(this);
-        String message = "*" + username + "* connected.";
-        sendMessage(message);
     }
 
     @OnClose
@@ -42,7 +40,7 @@ public class WebSocketAnnotation {
         // one should never trust the client, and sensitive HTML
         // characters should be replaced with &lt; &gt; &quot; &amp;
         String sendMessage = new StringBuffer(message).toString();
-        sendMessage("[" + username + "] " + sendMessage);
+        sendMessage(sendMessage);
     }
 
     @OnError
