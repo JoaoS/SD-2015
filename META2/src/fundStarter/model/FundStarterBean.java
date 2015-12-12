@@ -69,7 +69,6 @@ public class FundStarterBean {
     public void setPledgeValue(float pledgeValue) {this.pledgeValue = pledgeValue;}
 
     public void setAlternativeVotedId(long alternativeVotedId) {
-        System.out.println("Alternative :"+ alternativeVotedId);
         this.alternativeVotedId = alternativeVotedId;
     }
 
@@ -142,7 +141,6 @@ public class FundStarterBean {
 
     }
 
-
     public String listRewards() throws RemoteException
     {
         String s[]=this.getIdSelected().split(" ");
@@ -159,7 +157,14 @@ public class FundStarterBean {
         return this.server.cancelProject(idProject);
     }
 
+    public String commentProject(String comment) throws RemoteException
+    {
+        return this.server.commentProject(viewDetailsId,username,comment);
+    }
 
 
-
+    public String showCommentsProject() throws RemoteException
+    {
+        return this.server.showCommentsProject(viewDetailsId,0);
+    }
 }

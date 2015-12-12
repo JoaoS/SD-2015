@@ -75,8 +75,6 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
 
-
-
         <action name="viewDetails" class="fundStarter.action.ViewDetailsAction" method="execute">
             <result name="success">/WEB-INF/viewDetailsMenu.jsp</result>
         </action>
@@ -88,5 +86,10 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         <action name="createProject" class="fundStarter.action.CreateProjectAction" method="execute">
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
+
+        <action name="commentProject" class="fundStarter.action.CommentProjectAction" method="execute">
+            <result name="success">/WEB-INF/viewDetailsMenu.jsp</result>
+        </action>
+
     </package>
 </struts>

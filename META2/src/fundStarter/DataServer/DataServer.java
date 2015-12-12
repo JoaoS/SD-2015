@@ -594,6 +594,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         String result = "";
         ResultSet rt2;
+        System.out.println("Show comments project.");
         try
         {
             if(mode == 0)

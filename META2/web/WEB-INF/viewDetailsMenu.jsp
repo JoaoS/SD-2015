@@ -19,8 +19,10 @@
 
         window.onload = function() {
             connect('ws://' + window.location.host + '/ws');
+            var string = "${fundStarterBean.showCommentsProject()}";
             document.getElementById("userComment").focus();
         }
+
 
         function connect(host) { // connect to the host websocket
             if ('WebSocket' in window)
@@ -40,7 +42,7 @@
         function onOpen(event) {
             document.getElementById('userComment').onkeydown = function(key) {
                 if (key.keyCode == 13)
-                    doSend(); // call doSend() on enter key
+                    doSend();
             };
         }
 
@@ -49,7 +51,7 @@
         }
 
         function onMessage(message) {
-            writeToCommentsBox(message.data);
+            writeToCommentsBox(message);
         }
 
         function onError(event) {
@@ -58,25 +60,54 @@
         }
 
         function doSend() {
-            var message = document.getElementById('userComment').value;
-            if (message != '')
-                websocket.send(message); // send the message
-            document.getElementById('userComment').value = '';
+            var message = JSON.stringify({"from" : "${session.fundStarterBean.username}", "text" : document.getElementById('userComment').value, "date": getFormattedDate()});
+            if (document.getElementById('userComment').value  != '')
+                websocket.send(message);
         }
 
-        function writeToCommentsBox(text) {
+        function getFormattedDate()
+        {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth().toString();
+            month = month.length > 1 ? month : '0' + month;
+            var day = now.getDay().toString();
+            day = day.length > 1 ? day : '0' + day;
+            var hour = now.getHours().toString();
+            hour = hour.length > 1 ? hour : '0' + hour;
+            var min = now.getMinutes().toString();
+            min = min.length > 1 ? min : '0' + min;
+            return " " + day + "/" + month + "/" + year + " " + hour + ":" + min;
+        }
+
+
+        function writeToCommentsBox(message) {
+            var jsonObj = JSON.parse(message.data);
             var commentsBox = document.getElementById('comments-box');
-            var line = document.createElement('div');
-            line.style.wordWrap = 'break-word';
-            //line.innerHTML = '<strong class="pull-left primary-font">Taylor</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>14 mins ago</small></br><li class="ui-state-default">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>';
-            line.innerHTML = '<strong class="pull-left primary-font">' + "<c:out value="${session.username}"/>" + "</strong>" + '<small class= "pull-right text-muted"><span class="glyphicon glyphicon-time"></span>14 mins ago</small></br>';
-            commentsBox.appendChild(line);
+            var commenter = document.createElement('strong');
+            commenter.className = "pull-left primary-font";
+            commenter.style.wordWrap = 'break-word';
+            commenter.innerHTML = jsonObj.from;
+            commentsBox.appendChild(commenter);
+            var moment =  document.createElement('small');
+            moment.className = "pull-right text-muted";
+            moment.style.wordWrap = 'break-word';
+            var hour  = document.createElement('span');
+            hour.className = "glyphicon glyphicon-time";
+            hour.style.wordWrap = 'break-word';
+            hour.innerHTML = jsonObj.date;
+            moment.appendChild(hour);
+            commentsBox.appendChild(moment);
+            var br = document.createElement('br');
+            br.style.wordWrap = 'break-word';
+            commentsBox.appendChild(br);
             var comment = document.createElement('li');
             comment.className = "ui-state-default";
             comment.style.wordWrap = 'break-word';
-            comment.innerHTML = text;
+            comment.innerHTML = jsonObj.text;
             commentsBox.appendChild(comment);
             commentsBox.scrollTop = commentsBox.scrollHeight;
+            document.getElementById('userComment').value = '';
         }
 
     </script>
@@ -136,28 +167,19 @@
     <div class="container-comments">
         <div class = "col-lg-3"></div>
         <div class="col-lg-6 col-sm-6 text-center">
-            <div class="well" id = "comments-box">
+            <div class="well">
                 <h4>Comment Project</h4>
-                <div class="input-group">
-                    <input type="text" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
-	                <span class="input-group-btn">
-                        <a href="#" class="btn btn-primary btn-sm" id = "add-comment-btn"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
-                    </span>
-                </div>
+                <form role="form" action = "commentProject" method = "post">
+                    <div class="input-group">
+                            <input type="text" name = "comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
+                            <span class="input-group-btn">
+                                <a href="#" class="btn btn-primary btn-sm" id = "add-comment-btn"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
+                            </span>
+                    </div>
+                </form>
                 <hr data-brackets-id="12673">
-                <ul data-brackets-id="12674" id="sortable" class="list-unstyled ui-sortable">
-                    <strong class="pull-left primary-font">James</strong>
-                    <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span>7 mins ago</small>
-                    </br>
-                    <li class="ui-state-default">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </li>
-                    </br>
-                    <strong class="pull-left primary-font">Taylor</strong>
-                    <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
-                    </br>
-                    <li class="ui-state-default">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
-                </ul>
+                <ul data-brackets-id="12674" class="list-unstyled ui-sortable" id = "comments-box">
+               </ul>
             </div>
         </div>
     </div>

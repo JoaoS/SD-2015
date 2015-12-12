@@ -15,13 +15,10 @@ import javax.websocket.Session;
 @ServerEndpoint(value = "/ws")
 public class WebSocketAnnotation {
     private static final AtomicInteger sequence = new AtomicInteger(1);
-    private final String username;
     private Session session;
     private static final CopyOnWriteArrayList<WebSocketAnnotation> users = new CopyOnWriteArrayList<WebSocketAnnotation>();
 
-    public WebSocketAnnotation() {
-        username = "User" + sequence.getAndIncrement();
-    }
+    public WebSocketAnnotation() {}
 
     @OnOpen
     public void start(Session session) {
@@ -37,8 +34,6 @@ public class WebSocketAnnotation {
 
     @OnMessage
     public void receiveMessage(String message) {
-        // one should never trust the client, and sensitive HTML
-        // characters should be replaced with &lt; &gt; &quot; &amp;
         String sendMessage = new StringBuffer(message).toString();
         sendMessage(sendMessage);
     }
