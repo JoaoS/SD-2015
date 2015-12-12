@@ -43,14 +43,15 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
             <result>/WEB-INF/index.jsp</result>
         </action>
 
-        <!-- login and signup-->
+        <!-- login -->
         <action name="login" class="fundStarter.action.LoginAction" method="execute">
             <interceptor-ref name="defaultStack" />
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
-
+        <!--signup -->
         <action name="signUp" class="fundStarter.action.SignUpAction" method="execute">
             <result name="success">/WEB-INF/menuIni.jsp</result>
+            <result name="error">/WEB-INF/index.jsp</result>
         </action>
 
         <!-- new page to add reward-->
@@ -60,7 +61,6 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         <action name="addRewardToProject" class="fundStarter.action.AddRewardAction" method="addRewardToProject">
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
-
 
         <!--remove rewards-->
         <action name="gotoRemovePage" class="fundStarter.action.RemoveRewardAction" method="gotoRemoveReward">
@@ -74,7 +74,6 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         <action name="cancelProjectAction" class="fundStarter.action.CancelProjectAction" method="cancelProject">
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
-
 
 
         <action name="viewDetails" class="fundStarter.action.ViewDetailsAction" method="execute">

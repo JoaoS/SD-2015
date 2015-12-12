@@ -40,9 +40,11 @@ public class LoginAction extends ActionSupport implements SessionAware
             }
             else
             {
+
                 error = "Login failed. Wrong username or password";
-                session.put("login_error",error);
+                session.put("error",error);
                 return LOGIN;
+
             }
 
         }
