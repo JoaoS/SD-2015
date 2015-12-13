@@ -4,47 +4,28 @@ package fundStarter.action;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.FundStarterBean;
 import org.apache.struts2.interceptor.SessionAware;
+import sun.invoke.empty.Empty;
 
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class SignUpAction extends ActionSupport implements SessionAware
+public class ReplyMessageAction extends ActionSupport implements SessionAware
 {
-
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
-    private String username = null, password = null,bi = null,email = null;
-    private int age;
+    private String username = null, password = null;
+    private String error;
+    private String idSelected;
+
 
     @Override
     public String execute() throws RemoteException
     {
-        String error = this.getFundStarterBean().checkSignUp(username,password,bi,age,email);
-        /*if(session.get("login_error") != null)
-        {
-            session.remove("login_error");
-        }
-        if(session.get("signup_error") != null)
-        {
-            session.remove("signup_error");
-        }*/
-        if(error == null)
-        {
-            this.getFundStarterBean().addUser(username,password,bi,age,email);
-            return SUCCESS;
-        }
-        else if(error.equals("Some error occurred while signing up."))
-        {
-            return ERROR;
-        }
-        else
-        {
-            session.put("signup_error",error);
-            return LOGIN;
-        }
 
-
+        this.getFundStarterBean().setIdSelected(idSelected);
+        return SUCCESS;
     }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -54,12 +35,9 @@ public class SignUpAction extends ActionSupport implements SessionAware
         this.password = password;
     }
 
-    public void setBi(String bi) { this.bi = bi;}
+    public String getIdSelected() {return idSelected;}
 
-    public void setEmail(String email) { this.email = email;}
-
-
-    public void setAge(int age) { this.age = age;}
+    public void setIdSelected(String idSelected) {this.idSelected = idSelected;}
 
     public FundStarterBean getFundStarterBean() {
         if(!session.containsKey("fundStarterBean"))
@@ -71,9 +49,9 @@ public class SignUpAction extends ActionSupport implements SessionAware
         this.session.put("fundStarterBean", fundStarterBean);
     }
 
-
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
     }
+
 }
