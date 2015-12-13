@@ -6,7 +6,7 @@ import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 import fundStarter.model.FundStarterBean;
 import org.apache.struts2.interceptor.SessionAware;
-
+import sun.invoke.empty.Empty;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;

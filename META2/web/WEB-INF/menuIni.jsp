@@ -114,16 +114,25 @@
         <div class="col-md-6">
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
-                    <h3>List current projects</h3>
+                    <h3>List current projects</h3>              <!-- if split == ID: , id = ID:-->
                     <c:set var="temp" value="one
                     two"/>
                     <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
-                    <c:forEach items="${fn:split(fundStarterBean.listProjects(1),newline)}" var="value">
-                        <ul class="list-group">
-                            <c:forEach items="${fn:split(value,'|')}" var="value2" >
-                                <li class="list-group-item" id="value+">
-                                    <c:out value="${value2}" />
-                                </li>
+                    <c:forEach items = "${fn:split(fundStarterBean.listProjects(1),newline)}" var = "value">
+                        <ul class = "list-group">
+                            <c:forEach items = "${fn:split(value,'|')}" var = "value2">
+                                <c:choose>
+                                    <c:when test="${fn:contains(value2, 'ID')}">
+                                        <c:set var = "currentValueId" value = "${value2}"/>
+                                        <li class = "list-group-item"><c:out value="${value2}"/></li>
+                                    </c:when>
+                                    <c:when test="${fn:contains(value2, 'Current value')}">
+                                        <li class = "list-group-item" id = "${currentValueId}"><c:out value="${value2}"/></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class = "list-group-item"><c:out value="${value2}"/></li>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:forEach>
                         </ul>
                     </c:forEach>

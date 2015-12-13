@@ -1,6 +1,6 @@
 package fundStarter.model;
 
-import fundStarter.DataServer.DataServer_I;
+import fundStarter.DataServer.*;
 import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 

@@ -1,7 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <head>
     <title>FundStarter</title>
@@ -19,9 +19,39 @@
 
         window.onload = function() {
             connect('ws://' + window.location.host + '/ws');
-            var string = "${fundStarterBean.showCommentsProject()}";
+            /////////////////////////
+            var resultArray = ${fundStarterBean.showCommentsProject()};
+            for(var counter = 0; counter < resultArray.length;counter++)
+            {
+                var aux = resultArray[counter];
+                var commentsBox = document.getElementById('comments-box');
+                var commenter = document.createElement('strong');
+                commenter.className = "pull-left primary-font";
+                commenter.style.wordWrap = 'break-word';
+                commenter.innerHTML = aux.from;
+                commentsBox.appendChild(commenter);
+                var moment =  document.createElement('small');
+                moment.className = "pull-right text-muted";
+                moment.style.wordWrap = 'break-word';
+                var hour  = document.createElement('span');
+                hour.className = "glyphicon glyphicon-time";
+                hour.style.wordWrap = 'break-word';
+                hour.innerHTML = aux.date;
+                moment.appendChild(hour);
+                commentsBox.appendChild(moment);
+                var br = document.createElement('br');
+                br.style.wordWrap = 'break-word';
+                commentsBox.appendChild(br);
+                var comment = document.createElement('li');
+                comment.className = "ui-state-default";
+                comment.style.wordWrap = 'break-word';
+                comment.innerHTML = aux.text;
+                commentsBox.appendChild(comment);
+                commentsBox.scrollTop = commentsBox.scrollHeight;
+            }
+            ////////////////////////
             document.getElementById("userComment").focus();
-        }
+        };
 
 
         function connect(host) { // connect to the host websocket
@@ -33,14 +63,14 @@
                 writeToCommentsBox('Get a real browser which supports WebSocket.');
                 return;
             }
-            websocket.onopen = onOpen; // set the event listeners below
-            websocket.onclose = onClose;
+            websocket.onopen    = onOpen; // set the event listeners below
+            websocket.onclose   = onClose;
             websocket.onmessage = onMessage;
-            websocket.onerror = onError;
+            websocket.onerror   = onError;
         }
 
         function onOpen(event) {
-            document.getElementById('userComment').onkeydown = function (key) {
+            document.getElementById('userComment').onkeydown = function(key) {
                 if (key.keyCode == 13)
                     doSend();
             };
@@ -113,74 +143,76 @@
     </script>
 </head>
 <body>
-<!--Header-->
-<jsp:include page="header.jsp"/>
-
-<div class="supporting-details">
+<div class = "header">
+    <div class = "col-md-11">
+        <h1>FundStarter</h1>
+    </div>
+    <div class = "cold-md-1">
+        <a class  ="btn btn-primary" id = "logout-btn" href ="#">Logout</a>
+    </div>
+</div>
+<div class = "supporting-details">
     <h3>View Details of project</h3>
-
-    <div class="row" id="menu7">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+    <div class = "row" id = "menu7">
+        <div class = "col-md-3"></div>
+        <div class = "col-md-6">
             <c:set var="temp" value="one
             two"/>
             <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
-            <c:forEach items="${fn:split(fundStarterBean.viewProject(),newline)}" var="value">
-                <ul class="list-group">
-                    <c:forEach items="${fn:split(value,'|')}" var="value2">
-                        <li class="list-group-item"><c:out value="${value2}"/></li>
+            <c:forEach items = "${fn:split(fundStarterBean.viewProject(),newline)}" var = "value">
+                <ul class = "list-group">
+                    <c:forEach items = "${fn:split(value,'|')}" var = "value2">
+                        <li class = "list-group-item"><c:out value="${value2}"/></li>
                     </c:forEach>
                 </ul>
             </c:forEach>
         </div>
     </div>
-    <div class="row">
+    <div class = "row">
         <h4>Contribute to this project</h4>
-        <s:form role="form" method="post" action="contributeProject">
-            <div class="col-md-3"></div>
-            <label class="control-label col-sm-1" for="pledge_value"> <s:text name="Pledge value"/></label>
-
-            <div class="col-md-2">
-                <s:textfield name="pledgeValue" class="form-control"/>
+        <s:form role = "form" method = "post" action="contributeProject">
+            <div class = "col-md-3"></div>
+            <label class="control-label col-sm-1" for = "pledge_value"> <s:text name="Pledge value" /></label>
+            <div class = "col-md-2">
+                <s:textfield name="pledgeValue" class="form-control" />
             </div>
-            <label class="control-label col-sm-1" for="sel5"> <s:text name="Vote for alternative"/></label>
-
-            <div class="col-md-2">
+            <label class="control-label col-sm-1" for = "sel5"> <s:text name="Vote for alternative" /></label>
+            <div class = "col-md-2">
                 <c:set var="temp" value="one
                 two"/>
                 <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
                 <select class="form-control" id="sel5" name="alternativeVotedId">
-                    <c:forEach var="value" items="${fn:split(fundStarterBean.getAlternativeIdsProject(),newline)}">
+                    <c:forEach var= "value" items = "${fn:split(fundStarterBean.getAlternativeIdsProject(),newline)}">
                         <option value="${value}"><c:out value="${value}"/></option>
                     </c:forEach>
                 </select>
             </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary" id="contribute-btn">Contribute</button>
+            <div class = "col-md-2">
+                <button class="btn btn-primary" id = "contribute-btn">Contribute</button>
             </div>
         </s:form>
     </div>
-    </div>
-    <!--comments-->
-    <div class="container-comments">
-        <div class = "col-lg-3"></div>
-        <div class="col-lg-6 col-sm-6 text-center">
-            <div class="well">
-                <h4>Comment Project</h4>
-                <form role="form" action = "commentProject" method = "post">
-                    <div class="input-group">
-                            <input type="text" name = "comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
+</div>
+<!--comments-->
+<div class="container-comments">
+    <div class = "col-lg-3"></div>
+    <div class="col-lg-6 col-sm-6 text-center">
+        <div class="well">
+            <h4>Comment Project</h4>
+            <form role="form" action = "commentProject" method = "post">
+                <div class="input-group">
+                    <input type="text" name = "comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
                             <span class="input-group-btn">
                                 <a href="#" class="btn btn-primary btn-sm" id = "add-comment-btn"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
                             </span>
-                    </div>
-                </form>
-                <hr data-brackets-id="12673">
-                <ul data-brackets-id="12674" class="list-unstyled ui-sortable" id = "comments-box">
-               </ul>
-            </div>
+                </div>
+            </form>
+            <hr data-brackets-id="12673">
+            <ul data-brackets-id="12674" class="list-unstyled ui-sortable" id = "comments-box">
+            </ul>
         </div>
     </div>
+</div>
 <div class="footer-viewDetails">
     <div class="container">
         <div class="col-md-2">

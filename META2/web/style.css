@@ -3,7 +3,8 @@
     height: 10em;
     border: 1px solid #B22222;
 }
-.header
+
+.notifications-header
 {
     height:20em;
     background-color:#04A8B1;
@@ -119,6 +120,11 @@ ul.nav.nav-pills.nav-stacked> li > a
     margin-top:6em;
 }
 
+.header
+{
+    height:5em;
+    background-color:#04A8B1;
+}
 
 
 .header h1

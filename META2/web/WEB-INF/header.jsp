@@ -74,7 +74,7 @@
 </script>
 
 
-<div class="header">
+<div class="notifications-header">
     <div class="col-md-10">
         <h1>FundStarter</h1>
     </div>
