@@ -9,46 +9,21 @@ import sun.invoke.empty.Empty;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class LoginAction extends ActionSupport implements SessionAware
+public class ReplyMessageAction extends ActionSupport implements SessionAware
 {
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
     private String username = null, password = null;
     private String error;
+    private String idSelected;
+
 
     @Override
     public String execute() throws RemoteException
     {
-        /*if(session.get("login_error") != null)
-        {
-            session.remove("login_error");
-        }
-        if(session.get("signup_error") != null)
-        {
-            session.remove("signup_error");
-        }*/
-        if(this.username != null && !username.equals(""))
-        {
-            this.getFundStarterBean().setUsername(this.username);
-            this.getFundStarterBean().setPassword(this.password);
-            if(this.getFundStarterBean().checkLogin() > 0)
-            {
-                session.put("username", username);
-                session.put("password",password);
-                session.put("loggedin", true);
-                return SUCCESS;
-            }
-            else
-            {
-                error = "Login failed. Wrong username or password";
-                session.put("login_error",error);
-                return LOGIN;
-            }
 
-        }
-        else
-            return NONE;
-
+        this.getFundStarterBean().setIdSelected(idSelected);
+        return SUCCESS;
     }
 
 
@@ -59,6 +34,10 @@ public class LoginAction extends ActionSupport implements SessionAware
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getIdSelected() {return idSelected;}
+
+    public void setIdSelected(String idSelected) {this.idSelected = idSelected;}
 
     public FundStarterBean getFundStarterBean() {
         if(!session.containsKey("fundStarterBean"))

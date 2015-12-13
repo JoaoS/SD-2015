@@ -33,12 +33,14 @@ public class SignUpAction extends ActionSupport implements SessionAware
             this.getFundStarterBean().addUser(username,password,bi,age,email);
             return SUCCESS;
         }
-
+        else if(error.equals("Some error occurred while signing up."))
+        {
+            return ERROR;
+        }
         else
         {
-
-            session.put("error",error);
-            return ERROR;
+            session.put("signup_error",error);
+            return LOGIN;
         }
 
 

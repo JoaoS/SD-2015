@@ -4,6 +4,7 @@ package fundStarter.DataServer;
  * Created by joaosubtil on 03/12/15.
  */
 import fundStarter.commons.*;
+import org.json.simple.JSONObject;
 
 import java.io.FileInputStream;
         import java.io.IOException;
@@ -594,7 +595,6 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         String result = "";
         ResultSet rt2;
-        System.out.println("Show comments project.");
         try
         {
             if(mode == 0)
@@ -645,6 +645,101 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         }
         return result;
     }
+
+
+    public ArrayList<String> showCommentsProject2(long idProject,int mode) throws RemoteException       // mode --> 0 to user, 1 to admin
+    {
+        ResultSet rt = null;
+        String result = "";
+        ResultSet rt2;
+        String idMessage,username,comment,date;
+        String splits[],splits2[];
+        JSONObject obj = new JSONObject();
+        ArrayList<String> comments = new ArrayList<>();
+        try
+        {
+            if(mode == 0)
+            {
+                // fetch id_user
+                String s = "SELECT id_message,text FROM MESSAGE WHERE id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                while (rt.next())
+                {
+                    ///////////////////////////////////////////
+                    idMessage = String.valueOf(rt.getLong(1));
+                    splits = rt.getString(2).split(":",2);
+                    username = splits[0];
+                    splits2 = splits[1].split("\n\t\t");
+                    comment = splits2[0];
+                    date = splits2[1];
+                    obj = new JSONObject();
+                    obj.put("idMessage", idMessage);
+                    obj.put("from", username);
+                    obj.put("text", comment);
+                    obj.put("date", date);
+                    comments.add(obj.toString());
+                    ///////////////////////////////////////////
+                    s = "SELECT id_reply,text FROM REPLY WHERE id_message = '" + rt.getLong(1) + "'order by id_reply";
+                    rt2 = connection.createStatement().executeQuery(s);
+                    while(rt2.next())
+                    {
+                        idMessage = String.valueOf(rt2.getLong(1));
+                        splits = rt2.getString(2).split(":",2);
+                        username = splits[0];
+                        splits2 = splits[1].split("\n\t\t");
+                        comment = splits2[0];
+                        date = splits2[1];
+                        obj = new JSONObject();
+                        obj.put("idReply", idMessage);
+                        obj.put("from", username);
+                        obj.put("text", comment);
+                        obj.put("date", date);
+                        comments.add(obj.toString());
+                    }
+                }
+            }
+            else
+            {
+                // fetch id_user
+                String s = "SELECT id_message,text FROM MESSAGE WHERE id_project = '" + idProject + "'";
+                rt = connection.createStatement().executeQuery(s);
+                connection.commit();
+                while (rt.next())
+                {
+                    idMessage = String.valueOf(rt.getLong(1));
+                    splits = rt.getString(2).split(":",2);
+                    username = splits[0];
+                    splits2 = splits[1].split("\n\t\t");
+                    comment = splits2[0];
+                    date = splits2[1];
+                    obj = new JSONObject();
+                    obj.put("idMessage", idMessage);
+                    obj.put("from", username);
+                    obj.put("text", comment);
+                    obj.put("date", date);
+                    comments.add(obj.toString());
+                    s = "SELECT id_reply,text FROM REPLY WHERE id_message = '" + rt.getLong(1) + "'order by id_reply";
+                    rt2 = connection.createStatement().executeQuery(s);
+                    while(rt2.next())
+                    {
+                        result += "\n" + rt2.getString(2) + "\n";
+                    }
+                }
+            }
+        }catch (Exception e) {
+            try {
+                System.out.println("\nException at showCommentsProject2.\n");
+                e.printStackTrace();
+                connection.rollback();
+                comments.add("Some error occurred listing previous messages.");
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return comments;
+    }
+
 
     public String commentProject(long idProject,String username,String comment) throws RemoteException
     {
@@ -1238,6 +1333,35 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         }
         return result;
     }
+
+
+    public String getMessagesProjectIds(long idProject) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        String result = "";
+        try {
+            String s = "SELECT id_message FROM message WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            while(rt.next())
+            {
+                result += String.valueOf(rt.getLong(1)) + "\n";
+            }
+        } catch (SQLException e) {
+            try {
+                System.out.println("\nException at getAlternativeIdsProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Error occurred while accessing messages of this project.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
+
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {

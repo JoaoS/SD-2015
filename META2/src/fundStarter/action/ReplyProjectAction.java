@@ -8,20 +8,19 @@ import org.apache.struts2.interceptor.SessionAware;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class CommentProjectAction extends ActionSupport implements SessionAware
+public class ReplyProjectAction extends ActionSupport implements SessionAware
 {
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
     private String username = null, password = null;
     private String error;
-    private String comment = null;
+    private String reply = null;
+    private long messageSelected;
 
     @Override
     public String execute() throws RemoteException
     {
-        String msg = (String)session.get("username");
-        msg = msg + ":" + comment;
-        this.getFundStarterBean().commentProject(msg);
+        this.getFundStarterBean().replyMessage(reply,messageSelected);
         return SUCCESS;
     }
 
@@ -34,9 +33,21 @@ public class CommentProjectAction extends ActionSupport implements SessionAware
 
     public void setPassword(String password) {this.password = password;}
 
-    public String getComment() {return comment;}
+    public String getReply() {
+        return reply;
+    }
 
-    public void setComment(String comment) {this.comment = comment;}
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+    public long getMessageSelected() {
+        return messageSelected;
+    }
+
+    public void setMessageSelected(long messageSelected) {
+        this.messageSelected = messageSelected;
+    }
 
     public FundStarterBean getFundStarterBean() {
         if(!session.containsKey("fundStarterBean"))

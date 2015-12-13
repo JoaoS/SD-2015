@@ -163,8 +163,30 @@ public class FundStarterBean {
     }
 
 
-    public String showCommentsProject() throws RemoteException
+    public ArrayList<String> showCommentsProject() throws RemoteException
     {
-        return this.server.showCommentsProject(viewDetailsId,0);
+        return this.server.showCommentsProject2(viewDetailsId,0);
+    }
+
+    public ArrayList<String> showCommentsProjectAdmin() throws RemoteException
+    {
+        String s[]=this.getIdSelected().split(" ");
+        Long l=Long.parseLong(s[2]);
+        return this.server.showCommentsProject2(l,0);
+    }
+
+
+    public String getMessagesProjectIds() throws RemoteException
+    {
+        String s[]=this.getIdSelected().split(" ");
+        Long l=Long.parseLong(s[2]);
+        return this.server.getMessagesProjectIds(l);
+    }
+
+    public String replyMessage(String reply, long messageSelected) throws RemoteException
+    {
+        String s[]=this.getIdSelected().split(" ");
+        Long l=Long.parseLong(s[2]);
+        return this.server.replyMessage(l,username,messageSelected,reply);
     }
 }

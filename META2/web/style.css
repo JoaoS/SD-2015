@@ -244,7 +244,8 @@ ul.nav.nav-pills.nav-stacked> li > a
     align:center;
 }
 
-.footer-viewDetails {
+.footer-viewDetails,.footer-reply-messages
+{
     margin-top:32.5em;
     background-color: #04A8B1;
     padding: 20px 0px 80px;
@@ -259,7 +260,7 @@ ul.nav.nav-pills.nav-stacked> li > a
     margin-bottom:2em;
 }
 
-#add-comment-btn
+#add-comment-btn,#add-reply-btn
 {
     background-color:#04A8B1;
     border-color:#04A8B1;
@@ -273,7 +274,15 @@ ul.nav.nav-pills.nav-stacked> li > a
     margin-bottom: 2em;
 }
 
+#replies
+{
+    text-align:right;
+}
 
+.input-group
+{
+    display:inline-block;
+}
 
 
 
