@@ -1,8 +1,10 @@
 package fundStarter.DataServer;
 
-import fundStarter.commons.*;
+import fundStarter.commons.Alternative;
+import fundStarter.commons.Reward;
 
-import java.rmi.*;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface DataServer_I extends Remote {

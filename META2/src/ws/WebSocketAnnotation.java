@@ -1,15 +1,10 @@
 package ws;
 
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.websocket.server.ServerEndpoint;
-import javax.websocket.OnOpen;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnError;
-import javax.websocket.Session;
 
 
 @ServerEndpoint(value = "/ws")

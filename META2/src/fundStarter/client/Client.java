@@ -5,13 +5,17 @@ package fundStarter.client;
  */
 
 
-import fundStarter.commons.*;
+import fundStarter.commons.Alternative;
+import fundStarter.commons.Guide;
+import fundStarter.commons.Message;
+import fundStarter.commons.Reward;
 
-import java.net.*;
 import java.io.*;
+import java.net.Socket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Properties;
 
 public class Client {
 

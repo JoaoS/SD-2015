@@ -82,14 +82,9 @@
     </script>
 </head>
 <body>
-<div class="header">
-    <div class="col-md-11">
-        <h1>FundStarter</h1>
-    </div>
-    <div class="cold-md-1">
-        <a class="btn btn-primary" id="logout-btn" href="#">Logout</a>
-    </div>
-</div>
+<!--Header-->
+<jsp:include page="header.jsp"/>
+
 <div class="supporting-details">
     <h3>View Details of project</h3>
 

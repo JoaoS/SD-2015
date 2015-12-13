@@ -4,7 +4,7 @@ package fundStarter.action;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.FundStarterBean;
 import org.apache.struts2.interceptor.SessionAware;
-import sun.invoke.empty.Empty;
+import ws.GenericNotification;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -24,6 +24,8 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
         this.getFundStarterBean().setAlternativeVotedId(alternativeVotedId);
         this.getFundStarterBean().setPledgeValue(pledgeValue);
         this.getFundStarterBean().contributeToProject();
+
+        GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project");
         return  SUCCESS;
     }
 

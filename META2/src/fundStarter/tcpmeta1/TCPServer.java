@@ -1,7 +1,7 @@
 package fundStarter.tcpmeta1;
 
 
-import fundStarter.DataServer.*;
+import fundStarter.DataServer.DataServer_I;
 import fundStarter.commons.Message;
 
 import java.io.*;

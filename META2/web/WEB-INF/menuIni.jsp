@@ -114,8 +114,10 @@
                     <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
                     <c:forEach items="${fn:split(fundStarterBean.listProjects(1),newline)}" var="value">
                         <ul class="list-group">
-                            <c:forEach items="${fn:split(value,'|')}" var="value2">
-                                <li class="list-group-item"><c:out value="${value2}"/></li>
+                            <c:forEach items="${fn:split(value,'|')}" var="value2" >
+                                <li class="list-group-item" id="value+">
+                                    <c:out value="${value2}" />
+                                </li>
                             </c:forEach>
                         </ul>
                     </c:forEach>
@@ -305,7 +307,7 @@
                                 </select>
                                 <br>
                             </div>
-                            <s:submit type="button" id="idReward" value="Remove Reward"/>
+                            <s:submit type="button" id="idReward" value="Remove Reward" class="btn btn-primary btn-md center-block"/>
 
                         </s:form>
                     </div>
@@ -322,7 +324,7 @@
                                 </select>
                                 <br>
                             </div>
-                            <s:submit type="button" id="idReward" value="Cancel Project"/>
+                            <s:submit type="button" id="idReward" value="Cancel Project" class="btn btn-primary btn-md center-block"/>
 
                         </s:form>
                     </div>

@@ -43,8 +43,6 @@ public class AddRewardAction extends ActionSupport implements SessionAware {
                 this.getFundStarterBean().setIdSelected("");
                 session.put("success", "Reward added sucessfully");
                 return SUCCESS;
-
-
             }
             else
             {
@@ -53,7 +51,6 @@ public class AddRewardAction extends ActionSupport implements SessionAware {
                 session.put("error",error);
                 return SUCCESS;
             }
-
 
         }
 

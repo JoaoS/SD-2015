@@ -1,5 +1,6 @@
 package fundStarter.model;
-import fundStarter.DataServer.*;
+
+import fundStarter.DataServer.DataServer_I;
 import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 
@@ -21,6 +22,8 @@ public class FundStarterBean {
     private long viewDetailsId;
     private long alternativeVotedId;
     private float pledgeValue;
+
+//array de users online
 
 
     public FundStarterBean() {

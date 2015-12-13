@@ -3,21 +3,29 @@ package fundStarter.DataServer;
 /**
  * Created by joaosubtil on 03/12/15.
  */
-import fundStarter.commons.*;
 
+import fundStarter.commons.Alternative;
+import fundStarter.commons.Reward;
+
+import javax.jms.Session;
+import javax.swing.*;
 import java.io.FileInputStream;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.rmi.*;
-        import java.rmi.registry.LocateRegistry;
-        import java.rmi.registry.Registry;
-        import java.rmi.server.UnicastRemoteObject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-        import java.util.*;
-        import java.sql.*;
-        import java.util.Date;
-        import java.util.logging.Level;
-        import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataServer extends UnicastRemoteObject implements DataServer_I
 {
@@ -1309,7 +1317,6 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             //-----------------connect to database-----------------
             DataServer ds = new DataServer();
             ds.connectDb();
-
 
             //-----------------bind remote object-----------------
             Registry r = LocateRegistry.createRegistry(rmiPort);
