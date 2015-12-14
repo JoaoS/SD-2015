@@ -8,7 +8,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <html>
 <head>
     <title>FundStarter add Reward</title>
@@ -39,11 +39,11 @@
                     <div class = "row" required>
                         <label class="control-label col-sm-3" for = "description"> <s:text name="Reward " /></label>
                         <div class = "col-sm-3">
-                            <s:textfield name="description" class="form-control" required="true" />
+                            <s:textfield name="description" class="form-control" required = "true" />
                         </div>
                         <label class="control-label col-sm-2" for = "value"> <s:text name="Pledge value" /></label>
                         <div class = "col-sm-2">
-                            <s:textfield name = "value" class = "form-control" required="true" />
+                            <s:textfield name = "value" class = "form-control" required = "true" />
                         </div>
                     </div>
                 </div>
@@ -57,8 +57,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>Jo„o GonÁalves 2012143747</li>
-                <li>Jo„o Subtil 2012151975</li>
+                <li>Jo√£o Gon√ßalves 2012143747</li>
+                <li>Jo√£o Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -66,7 +66,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÌdos 2015/2016</li>
+                <li>Sistemas Distribu√≠dos 2015/2016</li>
             </ul>
         </div>
     </div>

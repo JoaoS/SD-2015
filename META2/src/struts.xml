@@ -93,5 +93,14 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
             <result name="success">/WEB-INF/viewDetailsMenu.jsp</result>
         </action>
 
+        <action name="replyMessageAction" class="fundStarter.action.ReplyMessageAction" method="execute">
+            <result name="success">/WEB-INF/replyMessages.jsp</result>
+        </action>
+
+        <action name="replyProject" class="fundStarter.action.ReplyProjectAction" method="execute">
+            <result name="success">/WEB-INF/replyMessages.jsp</result>
+        </action>
+
+
     </package>
 </struts>

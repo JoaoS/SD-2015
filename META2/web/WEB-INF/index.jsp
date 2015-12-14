@@ -1,6 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -40,13 +40,13 @@
                 <div class="form-group" id = "login-form">
                       <label  class="control-label col-sm-4" for = "username"> <s:text name="Username" /></label>
                        <div class="col-sm-4">
-                            <s:textfield name="username" class="form-control"/>
+                            <s:textfield name="username" class="form-control" required = "true"/>
                        </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4" for = "password"> <s:text name="Password" /></label>
                       <div class="col-sm-4">
-                          <s:password name="password" class="form-control" />
+                          <s:password name="password" class="form-control" required = "true" />
                       </div>
                   </div>
                   <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="login-btn"/>
@@ -62,31 +62,31 @@
             <div class="form-group" id = "register-form">
                 <label  class="control-label col-sm-4" for = "username"> <s:text name="Username" /></label>
                 <div class="col-sm-4">
-                    <s:textfield name="username" class="form-control"/>
+                    <s:textfield name="username" class="form-control" required = "true"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-4" for = "password"> <s:text name="Password" /></label>
                 <div class="col-sm-4">
-                    <s:textfield name="password" class="form-control" />
+                    <s:textfield name="password" class="form-control" required = "true"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-4" for = "password"> <s:text name="BI" /></label>
                 <div class="col-sm-4">
-                    <s:textfield name="bi" class="form-control" />
+                    <s:textfield name="bi" class="form-control" required = "true"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-4" for = "password"> <s:text name="Age" /></label>
                 <div class="col-sm-4">
-                    <s:textfield name="age" class="form-control" />
+                    <s:textfield name="age" class="form-control" required = "true"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-4" for = "password"> <s:text name="email" /></label>
                 <div class="col-sm-4">
-                    <s:textfield name="email" class="form-control" />
+                    <s:textfield name="email" class="form-control" required = "true" />
                 </div>
             </div>
             <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="register-btn"/>
@@ -100,8 +100,8 @@
             <div class="col-md-4">
                 <h3><strong>Authors</strong></h3>
                 <ul>
-                    <li>Jo„o GonÁalves 2012143747</li>
-                    <li>Jo„o Subtil 2012151975</li>
+                    <li>Jo√£o Gon√ßalves 2012143747</li>
+                    <li>Jo√£o Subtil 2012151975</li>
                 </ul>
             </div>
             <div class="col-md-2">
@@ -109,7 +109,7 @@
             <div class="col-md-4">
                 <h3><strong>FundStarter</strong></h3>
                 <ul>
-                    <li>Sistemas DistribuÌdos 2015/2016</li>
+                    <li>Sistemas Distribu√≠dos 2015/2016</li>
                 </ul>
             </div>
         </div>

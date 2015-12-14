@@ -4,12 +4,6 @@
     border: 1px solid #B22222;
 }
 
-.notifications-header
-{
-    height:20em;
-    background-color:#04A8B1;
-    display: inline;
-}
 
 
 #login-form, #register-form
@@ -65,7 +59,7 @@
 .supporting-register h2
 {
     font-size: 3em;
-    margin-top: 1.5em;
+    margin-top: 0.5em;
     text-align:center;
     color:#FFF;
 }
@@ -75,7 +69,7 @@
     margin-top: 2.5em;
     background-color:#04A8B1;
     color:#FFF;
-    height: 40em;
+    height: 42.5em;
 
 
 }
@@ -218,7 +212,7 @@ ul.nav.nav-pills.nav-stacked> li > a
     border-color:#04A8B1;
 }
 
-#idReward
+#idReward,#reply-btn
 {
     margin-top: 2em;
     background-color:#04A8B1;
@@ -299,5 +293,29 @@ ul.nav.nav-pills.nav-stacked> li > a
     display:inline-block;
 }
 
+#notifications-container
+{
+    width: 20em;
+}
 
+#notifications-history {
+    height: 50%;
+    border: 0.5em solid #04A8B1;
+    padding: 5px;
+    font-family: Courier, monospace;
+    font-size: .9em;
+    overflow-y: scroll;
+    width: 100%;
+    border-radius: 2em;
+}
 
+#notifications-label
+{
+    background-color: #04A8B1;
+
+}
+
+#notifications-h1
+{
+    margin-left:1em;
+}

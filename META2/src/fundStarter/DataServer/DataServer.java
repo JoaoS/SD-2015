@@ -210,22 +210,30 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
-    public long getNumberProjects() throws RemoteException {
+    public String getNumberProjects() throws RemoteException {
 
         ResultSet rt = null;
+        PreparedStatement ps;
         String result = "";
-        long n = -1;
         try {
-            String s = "SELECT max(id_project) from project";
+            String s = "SELECT id_project FROM project order by id_project";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
-            if (rt.next()) {
-                n = rt.getLong(1);
+            while(rt.next())
+            {
+                result += rt.getLong(1) + "\n";
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                System.out.println("\nException at getNumberProjects.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Error occurred while accessing ids of projects.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        return n;
+        return result;
     }
 
     public String viewProject(long idProject) throws RemoteException
@@ -1340,6 +1348,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        if(result.equals(""))
+        {
+            result += "There are no alternatives for this project.";
+        }
         return result;
     }
 
@@ -1359,7 +1371,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         } catch (SQLException e) {
             try {
-                System.out.println("\nException at getAlternativeIdsProject.\n");
+                System.out.println("\nException at getMessagesProjectIds.\n");
                 e.printStackTrace();
                 connection.rollback();
                 return "Error occurred while accessing messages of this project.";

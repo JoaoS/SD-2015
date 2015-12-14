@@ -8,7 +8,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <html>
 <head>
     <title>FundStarter add Reward</title>
@@ -149,12 +149,12 @@
 
 
         function writeToCommentsBox(message) {
-            var jsonObj = JSON.parse(message.data);
+            var aux = JSON.parse(message.data);
             var commentsBox = document.getElementById('replies-box');
-            var commenter = document.createElement('strong');
+            /*var commenter = document.createElement('strong');
             commenter.className = "pull-left primary-font";
             commenter.style.wordWrap = 'break-word';
-            commenter.innerHTML = aux.from + " Message ID:" + aux.idMessage;
+            commenter.innerHTML = jsonObj.from + " Message ID:" + aux.idMessage;
             commentsBox.appendChild(commenter);
             var moment =  document.createElement('small');
             moment.className = "pull-right text-muted";
@@ -174,7 +174,60 @@
             comment.style.wordWrap = 'break-word';
             comment.innerHTML = jsonObj.text;
             commentsBox.appendChild(comment);
-            commentsBox.scrollTop = commentsBox.scrollHeight;
+            commentsBox.scrollTop = commentsBox.scrollHeight;*/
+            if(aux.hasOwnProperty("idReply"))
+            {
+                var commenter = document.createElement('strong');
+                commenter.className = "pull-right primary-font";
+                commenter.style.wordWrap = 'break-word';
+                commenter.innerHTML = aux.from;
+                commentsBox.appendChild(commenter);
+                var moment =  document.createElement('small');
+                moment.className = "pull-left text-muted";
+                moment.style.wordWrap = 'break-word';
+                var hour  = document.createElement('span');
+                hour.className = "glyphicon glyphicon-time";
+                hour.style.wordWrap = 'break-word';
+                hour.innerHTML = aux.date;
+                moment.appendChild(hour);
+                commentsBox.appendChild(moment);
+                var br = document.createElement('br');
+                br.style.wordWrap = 'break-word';
+                commentsBox.appendChild(br);
+                var comment = document.createElement('li');
+                comment.className = "ui-state-default";
+                comment.id = "replies";
+                comment.style.wordWrap = 'break-word';
+                comment.innerHTML = aux.text;
+                commentsBox.appendChild(comment);
+                commentsBox.scrollTop = commentsBox.scrollHeight;
+            }
+            else
+            {
+                var commenter = document.createElement('strong');
+                commenter.className = "pull-left primary-font";
+                commenter.style.wordWrap = 'break-word';
+                commenter.innerHTML = aux.from + " Message ID:" + aux.idMessage;
+                commentsBox.appendChild(commenter);
+                var moment =  document.createElement('small');
+                moment.className = "pull-right text-muted";
+                moment.style.wordWrap = 'break-word';
+                var hour  = document.createElement('span');
+                hour.className = "glyphicon glyphicon-time";
+                hour.style.wordWrap = 'break-word';
+                hour.innerHTML = aux.date;
+                moment.appendChild(hour);
+                commentsBox.appendChild(moment);
+                var br = document.createElement('br');
+                br.style.wordWrap = 'break-word';
+                commentsBox.appendChild(br);
+                var comment = document.createElement('li');
+                comment.className = "ui-state-default";
+                comment.style.wordWrap = 'break-word';
+                comment.innerHTML = aux.text;
+                commentsBox.appendChild(comment);
+                commentsBox.scrollTop = commentsBox.scrollHeight;
+            }
             document.getElementById('replyComment').value = '';
         }
     </script>
@@ -212,7 +265,7 @@
                                                 </select>
                                             </span>
                                              <span class="input-group-btn">
-                                                <a href="#" class="btn btn-primary btn-sm" id = "add-reply-btn"><span class="glyphicon glyphicon-comment"></span> Add reply</a>
+                                                <button class="btn btn-primary btn-sm" id = "add-reply-btn"><span class="glyphicon glyphicon-comment"></span> Add reply</button>
                                             </span>
                 </div>
             </form>
@@ -229,8 +282,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>Jo„o GonÁalves 2012143747</li>
-                <li>Jo„o Subtil 2012151975</li>
+                <li>Jo√£o Gon√ßalves 2012143747</li>
+                <li>Jo√£o Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -238,7 +291,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÌdos 2015/2016</li>
+                <li>Sistemas Distribu√≠dos 2015/2016</li>
             </ul>
         </div>
     </div>

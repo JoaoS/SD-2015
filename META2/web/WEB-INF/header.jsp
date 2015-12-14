@@ -5,7 +5,7 @@
   Time: 17:31
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <script type="text/javascript">
 
     var websocket = null;
@@ -18,7 +18,7 @@
     function connect(host) { // connect to the host websocket
         if ('WebSocket' in window)
             websocket = new WebSocket(host);
-        //isto é para o firefox
+        //isto Ã© para o firefox
         else if ('MozWebSocket' in window)
             websocket = new MozWebSocket(host);
         else {
@@ -74,23 +74,21 @@
 </script>
 
 
-<div class="notifications-header">
-    <div class="col-md-10">
+<div class="header">
+    <div class="col-md-11">
         <h1>FundStarter</h1>
     </div>
-    <div class="col-md-1">
+    <!--<div class="col-md-1">
 
         <div id="container12"><div id="history"></div>
         </div>
         <p><input type="text" placeholder="type to chat" id="chat"></p>
-    </div>
-
-    <!--<div class="cold-md-1">
+    </div>-->
+    <div class="cold-md-1">
         <a class="btn btn-primary" id="logout-btn" href="#">Logout</a>
     </div>
-    -->
     <!--
-    todo será necessario adicionar aqui um espaço para ver as notificações(websockets)???
+    todo serÃ¡ necessario adicionar aqui um espaÃ§o para ver as notificaÃ§Ãµes(websockets)???
 
     -->
 

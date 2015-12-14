@@ -1,7 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <html>
 <head>
     <title>FundStarter</title>
@@ -77,7 +77,7 @@
 
         });
 
-        //funÁ„o de teste !!!!!
+        //fun√ß√£o de teste !!!!!
        /* window.onload = function()
         {
             document.getElementById("ID : 4").innerHTML = "Current value : 400000000";
@@ -87,7 +87,7 @@
 </head>
 <body>
 
-<!-- notificaÁoes erros e sucess-->
+<!-- notifica√ßoes erros e sucess-->
 <jsp:include page="notificationsHeader.jsp"/>
 <!--fim dos alerts-->
 
@@ -167,8 +167,11 @@
                         <div class="form-group">
                             <label for="sel1">Which project do you want to view the details ?</label>
                             <select name = "viewDetailsId" class="form-control" id="sel1">
-                                <c:forEach var= "i" begin="1" end="${fundStarterBean.getNumberProjects()}">
-                                    <option value="${i}"><c:out value="${i}"/></option>
+                                <c:set var="temp" value="one
+                                two"/>
+                                <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
+                                <c:forEach items = "${fn:split(fundStarterBean.getNumberProjects(),newline)}" var = "value">>
+                                    <option value="${value}"><c:out value="${value}"/></option>
                                 </c:forEach>
                             </select>
                             <br>
@@ -220,25 +223,25 @@
                         <div class="form-group" id = "register-form">
                             <label  class="control-label col-sm-4" for = "projectName"> <s:text name="Name" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="projectName" class="form-control"/>
+                                <s:textfield name="projectName" class="form-control" required = "true"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4" for = "description"> <s:text name="Description (max. 400 characters)" /></label>
                             <div class="col-sm-4">
-                                <s:textarea name="description" class="form-control" />
+                                <s:textarea name="description" class="form-control" required = "true"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4" for = "projectDate"> <s:text name="Date (dd/MM/yyyy HH)" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="projectDate" class="form-control" format="dd/MM/yyyy HH"/>
+                                <s:textfield name="projectDate" class="form-control" format="dd/MM/yyyy HH" required = "true"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4" for = "targetValue"> <s:text name="Target value" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="targetValue" class="form-control" />
+                                <s:textfield name="targetValue" class="form-control" required = "true" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -251,11 +254,11 @@
                             <div class = "row">
                                 <label class="control-label col-sm-3" for = "rewardDescriptionList"> <s:text name="Reward" /></label>
                                 <div class = "col-sm-3">
-                                    <s:textfield name="rewardDescriptionList" class="form-control" />
+                                    <s:textfield name="rewardDescriptionList" class="form-control" required = "true"/>
                                 </div>
                                 <label class="control-label col-sm-2" for = "minPledgeList"> <s:text name="Minimum pledge" /></label>
                                 <div class = "col-sm-2">
-                                    <s:textfield name = "minPledgeList" class = "form-control"/>
+                                    <s:textfield name = "minPledgeList" class = "form-control" required = "true"/>
                                 </div>
                                 <div class = "col-sm-1">
                                     <button class="add_field_button">+</button>
@@ -266,7 +269,7 @@
                             <div class = "row">
                                 <label class="control-label col-sm-3" for = "alternativeDescriptionList"> <s:text name="Alternative" /></label>
                                 <div class = "col-sm-3">
-                                    <s:textfield name="alternativeDescriptionList" class="form-control" />
+                                    <s:textfield name="alternativeDescriptionList" class="form-control"/>
                                 </div>
                                 <label class="control-label col-sm-2" for = "divisorList"> <s:text name="Divisor*" /></label>
                                 <div class = "col-sm-2">
@@ -278,7 +281,7 @@
                             </div>
                         </div>
                         <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>
-                        <p>* Divisor(Nr votes of pledge = ceil(pledge value/(divisor * minimum value of pledge).</p>
+                        <p> <strong>* Divisor(Nr votes of pledge = ceil(pledge value/(divisor * minimum value of pledge).</strong></p>
                     </s:form>
                 </div>
                 <div id="menu6" class="tab-pane fade">
@@ -341,7 +344,7 @@
                                     </select>
                                     <br>
                                 </div>
-                                <s:submit type="button" id="idReward" value="Cancel Project"/>
+                                <s:submit type="button" id="idReward" value="Cancel Project" class="btn btn-primary btn-md center-block"/>
 
                             </s:form>
                     </div>
@@ -358,31 +361,46 @@
                                 </select>
                                 <br>
                             </div>
-                            <s:submit type="button" id = "reply-btn" value="Submit"/>
+                            <s:submit type="button" id = "reply-btn" value="Reply to messages" class="btn btn-primary btn-md center-block"/>
                         </s:form>
                     </div>
                 </div>
             </div>
         </div>
-          </div>
+        <div class = "col-md-2">
+            <h1 id = "notifications-h1"><span class="label label-default" id = "notifications-label">Notifications</span></h1>
+            <div id="notifications-container"><div id="notifications-history"></div></div>
+        </div>
+    </div>
+
+    </div>
+<div class="footer-menuIni">
+    <div class="container">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <h3><strong>Authors</strong></h3>
+            <ul class = "list-unstyled">
+                <li>Jo√£o Gon√ßalves 2012143747</li>
+                <li>Jo√£o Subtil 2012151975</li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <h3><strong>FundStarter</strong></h3>
+            <ul class = "list-unstyled">
+                <li>Sistemas Distribu√≠dos 2015/2016</li>
+            </ul>
+        </div>
     </div>
 </div>
-
-<!--Footer-->
-<jsp:include page="footer.jsp"/>
-
 </body>
 </html>
 <!-- todo
-admin menu
-nos dropdowns do project mostrar so os que existem e nao o max(n_project) !!!!!!!!!!
-nos dropdowns do admin mostrar so os projectos do admin !!!!!
-quando nao ha alternativas no contribute !!!!!!!!!!
-acÁıes e websockets nos comments !!!!!!
-create projectr crasha -> fazer o que se fez para as alternatves para os rewards
-chat nao aceita acentos !
-protecÁ„o no chat caso nao haja mensagens
-falta verificar se as replies aparecem nos comentarios em viewDetailsMenu
-botoes de adicionar replies e comments nao funciona, so carregando enter È que envia
-meter comentarios do admin do lado direito nos comentarios do viewDetails como esta no admin menu
+quando nao ha alternativas no contribute !!!!!!!!!! -> contribute crasha !!!!!!!
+create projectr crasha -> fazer o que se fez para as alternatves para os rewards -> se as lists de alternatives e rewards ja tiverem definidas ? fazer reset depois de enviar
+protec√ß√£o no chat caso nao haja mensagens
+botao de logout
+ver warnings que t√™m de ser gerados !!!!!!!!!!!
 -->

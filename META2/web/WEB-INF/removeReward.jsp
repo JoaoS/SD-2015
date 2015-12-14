@@ -8,7 +8,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <html>
 <head>
     <title>FundStarter remove Reward</title>
@@ -33,8 +33,6 @@
 </div>
 
 <!--List a all rewards from a project-->
-
-
 <c:set var="temp" value="one
 two"/>
 <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
@@ -59,14 +57,6 @@ two"/>
     <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>
 </s:form>
 
-
-
-
-
-
-
-
-
 <div class="footer-menuIni">
     <div class="container">
         <div class="col-md-2">
@@ -74,8 +64,8 @@ two"/>
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>Jo„o GonÁalves 2012143747</li>
-                <li>Jo„o Subtil 2012151975</li>
+                <li>Jo√£o Gon√ßalves 2012143747</li>
+                <li>Jo√£o Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -83,7 +73,7 @@ two"/>
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÌdos 2015/2016</li>
+                <li>Sistemas Distribu√≠dos 2015/2016</li>
             </ul>
         </div>
     </div>

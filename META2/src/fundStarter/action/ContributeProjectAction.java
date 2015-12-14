@@ -16,13 +16,20 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
     private Map<String, Object> session;
     private String username = null, password = null;
     private String error;
-    private long alternativeVotedId;
+    private String alternativeVotedId;
     private float pledgeValue;
 
     @Override
     public String execute() throws RemoteException
     {
-        this.getFundStarterBean().setAlternativeVotedId(alternativeVotedId);
+        if(alternativeVotedId.equalsIgnoreCase("There are no alternatives for this project."))
+        {
+            this.getFundStarterBean().setAlternativeVotedId(0);
+        }
+        else
+        {
+            this.getFundStarterBean().setAlternativeVotedId(Long.valueOf(alternativeVotedId));
+        }
         this.getFundStarterBean().setPledgeValue(pledgeValue);
         this.getFundStarterBean().contributeToProject();
 
@@ -54,9 +61,9 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
         this.session = session;
     }
 
-    public long getAlternativeVotedId() {return alternativeVotedId;}
+    public String getAlternativeVotedId() {return alternativeVotedId;}
 
-    public void setAlternativeVotedId(long alternativeVotedId) {this.alternativeVotedId = alternativeVotedId;}
+    public void setAlternativeVotedId(String alternativeVotedId) {this.alternativeVotedId = alternativeVotedId;}
 
     public float getPledgeValue() {return pledgeValue;}
 

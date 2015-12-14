@@ -1,7 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
     <title>FundStarter</title>
@@ -25,7 +25,60 @@
             {
                 var aux = resultArray[counter];
                 var commentsBox = document.getElementById('comments-box');
-                var commenter = document.createElement('strong');
+                if(aux.hasOwnProperty("idReply"))
+                {
+                    var commenter = document.createElement('strong');
+                    commenter.className = "pull-right primary-font";
+                    commenter.style.wordWrap = 'break-word';
+                    commenter.innerHTML = aux.from;
+                    commentsBox.appendChild(commenter);
+                    var moment =  document.createElement('small');
+                    moment.className = "pull-left text-muted";
+                    moment.style.wordWrap = 'break-word';
+                    var hour  = document.createElement('span');
+                    hour.className = "glyphicon glyphicon-time";
+                    hour.style.wordWrap = 'break-word';
+                    hour.innerHTML = aux.date;
+                    moment.appendChild(hour);
+                    commentsBox.appendChild(moment);
+                    var br = document.createElement('br');
+                    br.style.wordWrap = 'break-word';
+                    commentsBox.appendChild(br);
+                    var comment = document.createElement('li');
+                    comment.className = "ui-state-default";
+                    comment.id = "replies";
+                    comment.style.wordWrap = 'break-word';
+                    comment.innerHTML = aux.text;
+                    commentsBox.appendChild(comment);
+                    commentsBox.scrollTop = commentsBox.scrollHeight;
+                }
+                else
+                {
+                    var commenter = document.createElement('strong');
+                    commenter.className = "pull-left primary-font";
+                    commenter.style.wordWrap = 'break-word';
+                    commenter.innerHTML = aux.from;
+                    commentsBox.appendChild(commenter);
+                    var moment =  document.createElement('small');
+                    moment.className = "pull-right text-muted";
+                    moment.style.wordWrap = 'break-word';
+                    var hour  = document.createElement('span');
+                    hour.className = "glyphicon glyphicon-time";
+                    hour.style.wordWrap = 'break-word';
+                    hour.innerHTML = aux.date;
+                    moment.appendChild(hour);
+                    commentsBox.appendChild(moment);
+                    var br = document.createElement('br');
+                    br.style.wordWrap = 'break-word';
+                    commentsBox.appendChild(br);
+                    var comment = document.createElement('li');
+                    comment.className = "ui-state-default";
+                    comment.style.wordWrap = 'break-word';
+                    comment.innerHTML = aux.text;
+                    commentsBox.appendChild(comment);
+                    commentsBox.scrollTop = commentsBox.scrollHeight;
+                }
+                /*var commenter = document.createElement('strong');
                 commenter.className = "pull-left primary-font";
                 commenter.style.wordWrap = 'break-word';
                 commenter.innerHTML = aux.from;
@@ -47,7 +100,7 @@
                 comment.style.wordWrap = 'break-word';
                 comment.innerHTML = aux.text;
                 commentsBox.appendChild(comment);
-                commentsBox.scrollTop = commentsBox.scrollHeight;
+                commentsBox.scrollTop = commentsBox.scrollHeight;*/
             }
             ////////////////////////
             document.getElementById("userComment").focus();
@@ -203,7 +256,7 @@
                 <div class="input-group">
                     <input type="text" name = "comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
                             <span class="input-group-btn">
-                                <a href="#" class="btn btn-primary btn-sm" id = "add-comment-btn"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
+                                <button class="btn btn-primary btn-sm" id = "add-comment-btn"><span class="glyphicon glyphicon-comment"></span> Add Comment</button>
                             </span>
                 </div>
             </form>
@@ -220,8 +273,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>Jo„o GonÁalves 2012143747</li>
-                <li>Jo„o Subtil 2012151975</li>
+                <li>Jo√£o Gon√ßalves 2012143747</li>
+                <li>Jo√£o Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -229,7 +282,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÌdos 2015/2016</li>
+                <li>Sistemas Distribu√≠dos 2015/2016</li>
             </ul>
         </div>
     </div>

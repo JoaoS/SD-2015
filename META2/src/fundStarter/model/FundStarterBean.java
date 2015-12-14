@@ -103,7 +103,7 @@ public class FundStarterBean {
         return this.server.checkRewards(username);
     }
 
-    public long getNumberProjects() throws RemoteException
+    public String getNumberProjects() throws RemoteException
     {
 
         return this.server.getNumberProjects();
