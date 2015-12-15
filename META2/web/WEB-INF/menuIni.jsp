@@ -398,9 +398,6 @@
 </body>
 </html>
 <!-- todo
-quando nao ha alternativas no contribute !!!!!!!!!! -> contribute crasha !!!!!!!
-create projectr crasha -> fazer o que se fez para as alternatves para os rewards -> se as lists de alternatives e rewards ja tiverem definidas ? fazer reset depois de enviar
-protecção no chat caso nao haja mensagens
-botao de logout
 ver warnings que têm de ser gerados !!!!!!!!!!!
+testar inserir campos vazios e caso seja necessario fazer interceptors
 -->

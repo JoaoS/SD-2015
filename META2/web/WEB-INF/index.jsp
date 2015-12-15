@@ -16,18 +16,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </head>
   <body>
-      <c:if test="${session != null && session.login_error != null}">
-          <div class="alert alert-danger">
-              <strong>Login failed:</strong> Wrong username or password
-          </div>
-          <c:remove var="login_error"/>
-      </c:if>
-      <c:if test="${session != null && session.signup_error != null}">
-          <div class="alert alert-danger">
-              <strong>Sign Up failed:</strong> <c:out value = "${session.signup_error}"/>
-          </div>
-          <c:remove var="signup_error"/>
-      </c:if>
+    <jsp:include page="notificationsHeader.jsp"/>
     <div class = "main">
         <div class = "container">
             <h1>FundStarter</h1>

@@ -36,13 +36,14 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
     @Override
     public String execute() throws RemoteException
     {
-        for(int i = 0;i<rewardDescriptionList.size();i++)
-        {
-            Reward r = new Reward(rewardDescriptionList.get(i),minPledgeList.get(i));
-            rewards.add(r);
+        //if it does not have rewards
+        if (!rewardDescriptionList.get(0).equals("")){
+            for(int i = 0;i<rewardDescriptionList.size();i++)
+            {
+                Reward r = new Reward(rewardDescriptionList.get(i),minPledgeList.get(i));
+                rewards.add(r);
+            }
         }
-
-
         //if it does not have alternatives
         if (!alternativeDescriptionList.get(0).equals("")){
 
@@ -52,8 +53,11 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
                 alternatives.add(a);
             }
         }
-
         this.getFundStarterBean().addProject(projectName,description, projectDate,targetValue,enterprise,rewards,alternatives);
+        //////////////////////
+        rewards.clear();
+        alternatives.clear();
+        /////////////////////
         return  SUCCESS;
     }
 

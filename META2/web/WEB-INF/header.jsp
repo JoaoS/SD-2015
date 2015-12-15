@@ -85,7 +85,9 @@
         <p><input type="text" placeholder="type to chat" id="chat"></p>
     </div>-->
     <div class="cold-md-1">
-        <a class="btn btn-primary" id="logout-btn" href="#">Logout</a>
+        <form role = "form" method = "post" action = "logout">
+            <button class="btn btn-primary" id="logout-btn">Logout</button>
+        </form>
     </div>
     <!--
     todo será necessario adicionar aqui um espaço para ver as notificações(websockets)???
