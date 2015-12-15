@@ -20,30 +20,16 @@ public class SignUpAction extends ActionSupport implements SessionAware
     public String execute() throws RemoteException
     {
         String error = this.getFundStarterBean().checkSignUp(username,password,bi,age,email);
-        /*if(session.get("login_error") != null)
-        {
-            session.remove("login_error");
-        }
-        if(session.get("signup_error") != null)
-        {
-            session.remove("signup_error");
-        }*/
         if(error == null)
         {
             this.getFundStarterBean().addUser(username,password,bi,age,email);
             return SUCCESS;
         }
-        else if(error.equals("Some error occurred while signing up."))
-        {
-            return ERROR;
-        }
         else
         {
-            session.put("signup_error",error);
-            return LOGIN;
+            session.put("error",error);
+            return ERROR;
         }
-
-
     }
 
     public void setUsername(String username) {

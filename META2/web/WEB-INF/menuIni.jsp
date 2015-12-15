@@ -382,8 +382,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>JoÃ£o GonÃ§alves 2012143747</li>
-                <li>JoÃ£o Subtil 2012151975</li>
+                <li>João Gonçalves 2012143747</li>
+                <li>João Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -391,7 +391,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÃ­dos 2015/2016</li>
+                <li>Sistemas Distribuídos 2015/2016</li>
             </ul>
         </div>
     </div>
@@ -399,9 +399,6 @@
 </body>
 </html>
 <!-- todo
-quando nao ha alternativas no contribute !!!!!!!!!! -> contribute crasha !!!!!!!
-create projectr crasha -> fazer o que se fez para as alternatves para os rewards -> se as lists de alternatives e rewards ja tiverem definidas ? fazer reset depois de enviar
-protecÃ§Ã£o no chat caso nao haja mensagens
-botao de logout
-ver warnings que tÃªm de ser gerados !!!!!!!!!!!
+ver warnings que têm de ser gerados !!!!!!!!!!!
+testar inserir campos vazios e caso seja necessario fazer interceptors
 -->

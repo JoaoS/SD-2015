@@ -37,8 +37,6 @@ public class LoginAction extends ActionSupport implements SessionAware
             this.getFundStarterBean().setPassword(this.password);
             if(this.getFundStarterBean().checkLogin() > 0)
             {
-                session.put("username", username);
-                session.put("password",password);
                 session.put("loggedin", true);
                 return SUCCESS;
             }

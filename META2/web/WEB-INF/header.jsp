@@ -18,7 +18,9 @@
         <p><input type="text" placeholder="type to notifications-label" id="notifications-label"></p>
     </div>-->
     <div class="cold-md-1">
-        <a class="btn btn-primary" id="logout-btn" href="#">Logout</a>
+        <form role = "form" method = "post" action = "logout">
+            <button class="btn btn-primary" id="logout-btn">Logout</button>
+        </form>
     </div>
     <!--
     todo serÃ¡ necessario adicionar aqui um espaÃ§o para ver as notificaÃ§Ãµes(websockets)???
