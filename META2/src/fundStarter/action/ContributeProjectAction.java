@@ -32,8 +32,10 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
         }
         this.getFundStarterBean().setPledgeValue(pledgeValue);
         this.getFundStarterBean().contributeToProject();
-
-        GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project");
+        String originUser=this.getFundStarterBean().getUsername();
+        System.out.println("originuser="+originUser+"\n\n\n");
+        System.out.println("session Username="+this.session.get("username"));
+        GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project",originUser );
         return  SUCCESS;
     }
 

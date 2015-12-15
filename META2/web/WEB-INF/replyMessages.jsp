@@ -275,6 +275,8 @@
         </div>
     </div>
 </div>
+<!--websocket notifications box-->
+<jsp:include page="websocketbox.jsp"/>
 <div class="footer-reply-messages">
     <div class="container">
         <div class="col-md-2">
@@ -282,8 +284,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>João Gonçalves 2012143747</li>
-                <li>João Subtil 2012151975</li>
+                <li>JoÃ£o GonÃ§alves 2012143747</li>
+                <li>JoÃ£o Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -291,7 +293,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas Distribuídos 2015/2016</li>
+                <li>Sistemas DistribuÃ­dos 2015/2016</li>
             </ul>
         </div>
     </div>

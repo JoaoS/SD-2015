@@ -26,6 +26,11 @@ public class LoginAction extends ActionSupport implements SessionAware
         {
             session.remove("signup_error");
         }*/
+
+
+        /*
+        * todo ver se esta sessao já contém alguma coisa
+        * */
         if(this.username != null && !username.equals(""))
         {
             this.getFundStarterBean().setUsername(this.username);
