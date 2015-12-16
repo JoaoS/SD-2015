@@ -24,35 +24,25 @@
 </head>
 <body>
 
+<jsp:include page="header.jsp"/>
 
-<div class="header">
-    <div class="col-md-11">
-        <h1>FundStarter</h1>
-    </div>
-    <div class="cold-md-1">
-        <a class="btn btn-primary" id="logout-btn" href="#">Logout</a>
-    </div>
-</div>
-<div>
-    <h3>Add reward to Project</h3>
-    <div class = "row">
-        <div class = "col-md-9">
-            <s:form action="addRewardToProject" method="post" class="form-horizontal" role="form">
+<div class = "add-reward-main">
+            <h3>Add reward to Project</h3>
+            <s:form action="addRewardToProject"  method="post"  class = "form-horizontal" role = "form" >
                 <div class="input_fields_rewards">
-                    <div class="row" required>
-                        <label class="control-label col-sm-3" for="description"> <s:text name="Reward "/></label>
-
-                        <div class="col-sm-3">
-                            <s:textfield name="description" class="form-control" required="true"/>
+                    <div class = "row" required>
+                        <div class = "col-sm-2"></div>
+                        <label class="control-label col-sm-1" for = "description"> <s:text name="Reward " /></label>
+                        <div class = "col-sm-3">
+                            <s:textfield name="description" class="form-control" required = "true" />
                         </div>
-                        <label class="control-label col-sm-2" for="value"> <s:text name="Pledge value"/></label>
-
-                        <div class="col-sm-2">
-                            <s:textfield name="value" class="form-control" required="true"/>
+                        <label class="control-label col-sm-1" for = "value"> <s:text name="Pledge value" /></label>
+                        <div class = "col-sm-2">
+                            <s:textfield name = "value" class = "form-control" required = "true" pattern="[0-9]*" title="Only positive numbers"/>
                         </div>
                     </div>
                 </div>
-                <s:submit type="button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>
+                <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="add-reward-btn"/>
             </s:form>
         </div>
         <div class = "col-md-2">
@@ -68,17 +58,17 @@
         </div>
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
-            <ul class="list-unstyled">
-                <li>JoÃ£o GonÃ§alves 2012143747</li>
-                <li>JoÃ£o Subtil 2012151975</li>
+            <ul class = "list-unstyled">
+                <li>João Gonçalves 2012143747</li>
+                <li>João Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
         </div>
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
-            <ul class="list-unstyled">
-                <li>Sistemas DistribuÃ­dos 2015/2016</li>
+            <ul class = "list-unstyled">
+                <li>Sistemas Distribuídos 2015/2016</li>
             </ul>
         </div>
     </div>

@@ -106,6 +106,10 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
             <result name="success">/WEB-INF/index.jsp</result>
         </action>
 
+        <action name="menuIni" class="fundStarter.action.MenuIniAction" method="execute">
+            <result name="success">/WEB-INF/menuIni.jsp</result>
+        </action>
+
 
     </package>
 </struts>

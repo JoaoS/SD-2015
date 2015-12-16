@@ -23,38 +23,37 @@
 </head>
 <body>
 
-<div class="header">
-    <div class="col-md-11">
-        <h1>FundStarter</h1>
-    </div>
-    <div class="cold-md-1">
-        <a class="btn btn-primary" id="logout-btn" href="#">Logout</a>
-    </div>
-</div>
-
-<!--List a all rewards from a project-->
-<c:set var="temp" value="one
-two"/>
-<c:set var="newline" value="${fn:substring(temp,3,4)}"/>
-<c:forEach items="${fn:split(fundStarterBean.listRewards(),newline)}" var="value">
-    <ul class="list-group">
-        <c:forEach items="${fn:split(value,'|')}" var="value2">
-            <li class="list-group-item"><c:out value="${value2}"/></li>
+<jsp:include page="header.jsp"/>
+<div class = "row" id = "remove-rewards-main">
+    <div class = "col-md-3"></div>
+    <div class = "col-md-6">
+        <!--List a all rewards from a project-->
+        <c:set var="temp" value="one
+        two"/>
+        <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
+        <c:forEach items = "${fn:split(fundStarterBean.listRewards(),newline)}" var = "value">
+            <ul class = "list-group">
+                <c:forEach items = "${fn:split(value,'|')}" var = "value2">
+                    <li class = "list-group-item"><c:out value="${value2}"/></li>
+                </c:forEach>
+            </ul>
         </c:forEach>
-    </ul>
-</c:forEach>
-<div class="row">
-    <div class="col-md-9">
-        <s:form action="removeRewardFromProject" method="post" class="form-horizontal" role="form">
-            <div class="input_fields_rewards">
-                <div class="row">
-                    <label class="control-label col-sm-3" for="idtoRemove"> <s:text name="Reward to remove "/></label>
 
-                    <div class="col-sm-3">
-                        <s:textfield name="idtoRemove" class="form-control"/>
-                    </div>
 
-                </div>
+        <s:form action="removeRewardFromProject" method="post" role = "form" >
+            <c:set var="temp" value="one
+            two"/>
+            <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
+            <div class="form-group">
+                <label for="sel7">Remove reward with id</label>
+                <select name= "idtoRemove" class="form-control" id="sel7">
+                    <c:forEach items="${fn:split(fundStarterBean.getRewardsProjectIds(),newline)}" var="i">
+                        <option value="${i}">
+                            <c:out value="${i}"/>
+                        </option>
+                    </c:forEach>
+                </select>
+                <br>
             </div>
             <s:submit type="button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>
         </s:form>
@@ -69,17 +68,17 @@ two"/>
         </div>
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
-            <ul class="list-unstyled">
-                <li>JoÃ£o GonÃ§alves 2012143747</li>
-                <li>JoÃ£o Subtil 2012151975</li>
+            <ul class = "list-unstyled">
+                <li>João Gonçalves 2012143747</li>
+                <li>João Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
         </div>
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
-            <ul class="list-unstyled">
-                <li>Sistemas DistribuÃ­dos 2015/2016</li>
+            <ul class = "list-unstyled">
+                <li>Sistemas Distribuídos 2015/2016</li>
             </ul>
         </div>
     </div>

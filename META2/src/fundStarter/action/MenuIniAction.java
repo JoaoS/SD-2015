@@ -8,7 +8,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class LoginAction extends ActionSupport implements SessionAware
+public class MenuIniAction extends ActionSupport implements SessionAware
 {
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
@@ -18,35 +18,7 @@ public class LoginAction extends ActionSupport implements SessionAware
     @Override
     public String execute() throws RemoteException
     {
-        //ensure this is only connected user
-        this.setFundStarterBean(new FundStarterBean());
-        session.clear();
-
-
-        /*
-        * todo ver se esta sessao já contém alguma coisa
-        * */
-        if(this.username != null && !username.equals(""))
-        {
-            this.getFundStarterBean().setUsername(this.username);
-            this.getFundStarterBean().setPassword(this.password);
-            if(this.getFundStarterBean().checkLogin() > 0)
-            {
-                session.put("username", username);
-                session.put("password",password);
-                session.put("loggedin", true);
-                return SUCCESS;
-            }
-            else
-            {
-                error = "Login failed. Wrong username or password";
-                session.put("login_error",error);
-                return LOGIN;
-            }
-
-        }
-        else
-            return NONE;
+      return SUCCESS;
 
     }
 

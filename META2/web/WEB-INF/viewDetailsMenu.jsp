@@ -145,7 +145,9 @@
         function doSend() {
             var message = JSON.stringify({"from" : "${session.fundStarterBean.username}", "text" : document.getElementById('userComment').value, "date": getFormattedDate()});
             if (document.getElementById('userComment').value  != '')
+            {
                 websocket.send(message);
+            }
         }
 
         function getFormattedDate()
@@ -196,15 +198,7 @@
     </script>
 </head>
 <body>
-<div class = "header">
-    <div class = "col-md-11">
-        <h1>FundStarter</h1>
-    </div>
-    <div class = "cold-md-1">
-        <a class  ="btn btn-primary" id = "logout-btn" href ="#">Logout</a>
-    </div>
-</div>
-
+<jsp:include page="header.jsp"/>
 
 <div class = "supporting-details">
     <h3>View Details of project</h3>
@@ -256,7 +250,7 @@
             <h4>Comment Project</h4>
             <form role="form" action = "commentProject" method = "post">
                 <div class="input-group">
-                    <input type="text" name = "comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
+                    <input type="text" name = "comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." required="true" />
                             <span class="input-group-btn">
                                 <button class="btn btn-primary btn-sm" id = "add-comment-btn"><span class="glyphicon glyphicon-comment"></span> Add Comment</button>
                             </span>
@@ -277,8 +271,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>JoÃ£o GonÃ§alves 2012143747</li>
-                <li>JoÃ£o Subtil 2012151975</li>
+                <li>João Gonçalves 2012143747</li>
+                <li>João Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -286,7 +280,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÃ­dos 2015/2016</li>
+                <li>Sistemas Distribuídos 2015/2016</li>
             </ul>
         </div>
     </div>

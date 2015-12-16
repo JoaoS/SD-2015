@@ -20,7 +20,11 @@ public class ReplyProjectAction extends ActionSupport implements SessionAware
     @Override
     public String execute() throws RemoteException
     {
-        this.getFundStarterBean().replyMessage(reply,messageSelected);
+        String error = this.getFundStarterBean().replyMessage(reply,messageSelected);
+        if(!error.equals("Replied with success"))
+        {
+            session.put("error","Error replying to message");
+        }
         return SUCCESS;
     }
 

@@ -129,7 +129,9 @@
         function doSend() {
             var message = JSON.stringify({"from" : "${session.fundStarterBean.username}", "text" : document.getElementById('replyComment').value, "date": getFormattedDate()});
             if (document.getElementById('replyComment').value  != '')
+            {
                 websocket.send(message);
+            }
         }
 
         function getFormattedDate()
@@ -151,30 +153,6 @@
         function writeToCommentsBox(message) {
             var aux = JSON.parse(message.data);
             var commentsBox = document.getElementById('replies-box');
-            /*var commenter = document.createElement('strong');
-            commenter.className = "pull-left primary-font";
-            commenter.style.wordWrap = 'break-word';
-            commenter.innerHTML = jsonObj.from + " Message ID:" + aux.idMessage;
-            commentsBox.appendChild(commenter);
-            var moment =  document.createElement('small');
-            moment.className = "pull-right text-muted";
-            moment.style.wordWrap = 'break-word';
-            var hour  = document.createElement('span');
-            hour.className = "glyphicon glyphicon-time";
-            hour.style.wordWrap = 'break-word';
-            hour.innerHTML = jsonObj.date;
-            moment.appendChild(hour);
-            commentsBox.appendChild(moment);
-            var br = document.createElement('br');
-            br.style.wordWrap = 'break-word';
-            commentsBox.appendChild(br);
-            var comment = document.createElement('li');
-            comment.className = "ui-state-default";
-            comment.id = "replies";
-            comment.style.wordWrap = 'break-word';
-            comment.innerHTML = jsonObj.text;
-            commentsBox.appendChild(comment);
-            commentsBox.scrollTop = commentsBox.scrollHeight;*/
             if(aux.hasOwnProperty("idReply"))
             {
                 var commenter = document.createElement('strong');
@@ -234,14 +212,8 @@
 </head>
 <body>
 
-<div class = "header">
-    <div class = "col-md-11">
-        <h1>FundStarter</h1>
-    </div>
-    <div class = "cold-md-1">
-        <a class  ="btn btn-primary" id = "logout-btn" href ="#">Logout</a>
-    </div>
-</div>
+<jsp:include page="header.jsp"/>
+
 
 <!--Reply to supporter's messages-->
 <div class="container-comments">
@@ -250,7 +222,12 @@
             <h4>Reply to supporter's messages</h4>
             <form role="form" action = "replyProject" method = "post">
                 <div class="input-group">
-                    <input type="text" name = "reply" id="replyComment" class="form-control input-sm chat-input" placeholder="Write your reply here..." />
+                    <c:if test = "${fn:length(fundStarterBean.getMessagesProjectIds()) >0}">
+                        <input type="text" name = "reply" id="replyComment" class="form-control input-sm chat-input" placeholder="Write your reply here..." required="required"/>
+                    </c:if>
+                    <c:if test = "${fn:length(fundStarterBean.getMessagesProjectIds()) ==0}">
+                        <input type="text" name = "reply" id="replyComment" class="form-control input-sm chat-input" placeholder="Write your reply here..." required="required" disabled = "true"/>
+                    </c:if>
                     <span>
                                                 <label for="sel6">Reply to message with id</label>
                                                 <c:set var="temp" value="one
@@ -265,7 +242,12 @@
                                                 </select>
                                             </span>
                                              <span class="input-group-btn">
-                                                <button class="btn btn-primary btn-sm" id = "add-reply-btn"><span class="glyphicon glyphicon-comment"></span> Add reply</button>
+                                                 <c:if test = "${fn:length(fundStarterBean.getMessagesProjectIds()) >0}">
+                                                     <button class="btn btn-primary btn-sm" id = "add-reply-btn"><span class="glyphicon glyphicon-comment"></span> Add reply</button>
+                                                 </c:if>
+                                                 <c:if test = "${fn:length(fundStarterBean.getMessagesProjectIds()) ==0}">
+                                                     <button class="btn btn-primary btn-sm disabled" id = "add-reply-btn"><span class="glyphicon glyphicon-comment"></span> Add reply</button>
+                                                 </c:if>
                                             </span>
                 </div>
             </form>

@@ -22,7 +22,7 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
     private String projectName;
     private String description;
     private String projectDate;
-    private long targetValue;
+    private String targetValue;
     private String enterprise;
 
     private List<String> rewardDescriptionList;
@@ -53,11 +53,28 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
                 alternatives.add(a);
             }
         }
-        this.getFundStarterBean().addProject(projectName,description, projectDate,targetValue,enterprise,rewards,alternatives);
+        String checkCreated = this.getFundStarterBean().addProject(projectName,description, projectDate,Long.parseLong(targetValue),enterprise,rewards,alternatives);
+        if(checkCreated.equals("Project created with success"))
+        {
+            session.put("success",checkCreated);
+        }
+        else
+        {
+            session.put("error",checkCreated);
+        }
         //////////////////////
         rewards.clear();
         alternatives.clear();
+        rewardDescriptionList = null;
+        minPledgeList = null;
+        alternativeDescriptionList = null;
+        divisorList = null;
         /////////////////////
+        projectName = null;
+        description = null;
+        projectDate = null;
+        enterprise = null;
+        targetValue = null;
         return  SUCCESS;
     }
 
@@ -82,9 +99,9 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
 
     public void setProjectDate(String projectDate) {this.projectDate = projectDate;}
 
-    public long getTargetValue() {return targetValue;}
+    public String getTargetValue() {return targetValue;}
 
-    public void setTargetValue(long targetValue) {this.targetValue = targetValue;}
+    public void setTargetValue(String targetValue) {this.targetValue = targetValue;}
 
     public String getEnterprise() {return enterprise;}
 

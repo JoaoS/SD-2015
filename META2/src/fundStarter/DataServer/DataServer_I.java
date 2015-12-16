@@ -35,5 +35,6 @@ public interface DataServer_I extends Remote {
     public ArrayList<String> showCommentsProject2(long idProject,int mode) throws RemoteException;
     public String getMessagesProjectIds(long idProject) throws RemoteException;
     public String getNumberProjects() throws RemoteException;
-
-    }
+    public String addProject2(String username, String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException;
+    public String getRewardsProjectIds(long idProject) throws RemoteException;
+}

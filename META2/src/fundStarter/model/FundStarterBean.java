@@ -144,8 +144,8 @@ public class FundStarterBean {
         return this.server.contributeToProject(viewDetailsId,username,pledgeValue,alternativeVotedId);
     }
 
-    public boolean addProject(String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws  RemoteException {
-        return this.server.addProject(username, name, description, limitDate, targetValue, enterprise, rewards, alternatives);
+    public String addProject(String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws  RemoteException {
+        return this.server.addProject2(username, name, description, limitDate, targetValue, enterprise, rewards, alternatives);
 
     }
 
@@ -167,7 +167,7 @@ public class FundStarterBean {
 
     public String commentProject(String comment) throws RemoteException
     {
-        return this.server.commentProject(viewDetailsId,username,comment);
+        return this.server.commentProject(this.viewDetailsId,this.username,comment);
     }
 
 
@@ -196,5 +196,12 @@ public class FundStarterBean {
         String s[]=this.getIdSelected().split(" ");
         Long l=Long.parseLong(s[2]);
         return this.server.replyMessage(l,username,messageSelected,reply);
+    }
+
+    public String getRewardsProjectIds() throws RemoteException
+    {
+        String s[]=this.idSelected.split(" ");
+        Long l=Long.parseLong(s[2]);
+        return this.server.getRewardsProjectIds(l);
     }
 }
