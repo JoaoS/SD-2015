@@ -14,8 +14,6 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
 {
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
-    private String username = null, password = null;
-    private String error;
     private String alternativeVotedId;
     private float pledgeValue;
 
@@ -33,20 +31,16 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
         this.getFundStarterBean().setPledgeValue(pledgeValue);
         this.getFundStarterBean().contributeToProject();
         String originUser=this.getFundStarterBean().getUsername();
-        System.out.println("originuser="+originUser+"\n\n\n");
-        System.out.println("session Username="+this.session.get("username"));
-        GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project",originUser );
+
+        long idProject=this.getFundStarterBean().getViewDetailsId();
+        String contributionMessage="["+this.getFundStarterBean().getUsername()+"]Donated to project("+idProject+")";
+
+        this.getFundStarterBean().addOldWebsocketMessages(contributionMessage);
+        GenericNotification.sendNotification(contributionMessage,originUser );
+
         return  SUCCESS;
     }
 
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public FundStarterBean getFundStarterBean() {
         if(!session.containsKey("fundStarterBean"))

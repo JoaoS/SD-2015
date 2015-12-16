@@ -18,14 +18,9 @@ public class LoginAction extends ActionSupport implements SessionAware
     @Override
     public String execute() throws RemoteException
     {
-        /*if(session.get("login_error") != null)
-        {
-            session.remove("login_error");
-        }
-        if(session.get("signup_error") != null)
-        {
-            session.remove("signup_error");
-        }*/
+        //ensure this is only connected user
+        this.setFundStarterBean(new FundStarterBean());
+        session.clear();
 
 
         /*

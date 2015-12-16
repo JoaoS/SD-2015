@@ -23,7 +23,7 @@ public class FundStarterBean {
     private long alternativeVotedId;
     private float pledgeValue;
 
-//array de users online
+    private ArrayList<String> oldWebsocketMessages=new ArrayList<String>();
 
 
     public FundStarterBean() {
@@ -74,6 +74,11 @@ public class FundStarterBean {
     public void setAlternativeVotedId(long alternativeVotedId) {
         this.alternativeVotedId = alternativeVotedId;
     }
+
+    public ArrayList<String> getOldWebsocketMessages() { return oldWebsocketMessages;    }
+
+    public void addOldWebsocketMessages(String oldmsg) { this.oldWebsocketMessages.add(oldmsg); }
+
 
     public int checkLogin() throws RemoteException  {
         return this.server.checkLogin(this.username,this.password);
