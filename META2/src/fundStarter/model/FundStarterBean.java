@@ -204,4 +204,9 @@ public class FundStarterBean {
         Long l=Long.parseLong(s[2]);
         return this.server.getRewardsProjectIds(l);
     }
+
+    public String getProjectAdmin(long id) throws RemoteException {
+       return this.server.getProjectAdmin(id);
+
+    }
 }
