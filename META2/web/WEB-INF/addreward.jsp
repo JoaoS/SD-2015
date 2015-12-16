@@ -5,10 +5,10 @@
   Time: 15:33
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <html>
 <head>
     <title>FundStarter add Reward</title>
@@ -44,7 +44,13 @@
                 </div>
                 <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="add-reward-btn"/>
             </s:form>
+        </div>
+        <div class = "col-md-2">
+            <jsp:include page="websocketbox.jsp"/>
+        </div>
     </div>
+    <!--websocket notifications box-->
+</div>
 
 <div class="footer-menuIni">
     <div class="container">

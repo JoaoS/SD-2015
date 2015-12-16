@@ -76,17 +76,24 @@
 
 
         });
+
+        //funÃ§Ã£o de teste !!!!!
+       /* window.onload = function()
+        {
+            document.getElementById("ID : 4").innerHTML = "Current value : 400000000";
+        };*/
     </script>
 
 </head>
 <body>
 
-<!-- notificaçoes erros e sucess-->
+<!-- notificaÃ§oes erros e sucess-->
 <jsp:include page="notificationsHeader.jsp"/>
 <!--fim dos alerts-->
 
-<!--Header-->
+<!--header with logout button-->
 <jsp:include page="header.jsp"/>
+
 
 <div class="supporting">
     <div class="row">
@@ -383,10 +390,10 @@
                 </div>
             </div>
         </div>
-        <div class = "col-md-2">
-            <h1 id = "notifications-h1"><span class="label label-default" id = "notifications-label">Notifications</span></h1>
-            <div id="notifications-container"><div id="notifications-history"></div></div>
-        </div>
+        <!--websocket notifications box-->
+        <jsp:include page="websocketbox.jsp"/>
+
+
     </div>
 
     </div>

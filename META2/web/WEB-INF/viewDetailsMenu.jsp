@@ -262,6 +262,8 @@
         </div>
     </div>
 </div>
+<!--websocket notifications box-->
+<jsp:include page="websocketbox.jsp"/>
 <div class="footer-viewDetails">
     <div class="container">
         <div class="col-md-2">
