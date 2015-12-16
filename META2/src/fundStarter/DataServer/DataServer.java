@@ -1521,14 +1521,23 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt = null;
         PreparedStatement ps;
         String result = "";
+        long idUser=0;
         try {
             String s = "SELECT id_user FROM project WHERE id_project = '" + idProject + "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             if(rt.next())
             {
-                result += rt.getString(1);
+                idUser =  rt.getLong(1);
             }
+            s = "SELECT name FROM user WHERE id_user = '" + idUser + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                result =  rt.getString(1);
+            }
+
         } catch (SQLException e) {
             try {
                 System.out.println("\nException at getMessagesProjectIds.\n");
