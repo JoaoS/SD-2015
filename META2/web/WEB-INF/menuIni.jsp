@@ -29,11 +29,11 @@
                             '<div class = "row"> ' +
                             '<label class="control-label col-sm-3" for = "rewardDescriptionList">Reward</label> ' +
                             '<div class = "col-sm-3">' +
-                            '<s:textfield name="rewardDescriptionList" class="form-control" />' +
+                            '<s:textfield name="rewardDescriptionList" class="form-control" required = "true" />' +
                             '</div>' +
                             '<label class="control-label col-sm-2" for = "minPledgeList">Minimum pledge</label>' +
                             '<div class = "col-sm-2">' +
-                            '<s:textfield name = "minPledgeList" class = "form-control"/>' +
+                            '<s:textfield name = "minPledgeList" class = "form-control" required = "true"/>' +
                             '</div>' +
                             '<div class = "col-sm-1"><a href="#" class="remove_field">Remove</a></div>' +
                             '</div>'); //add input box
@@ -49,11 +49,11 @@
                             '<div class = "row"> ' +
                             '<label class="control-label col-sm-3" for = "alternativeDescriptionList">Alternative</label> ' +
                             '<div class = "col-sm-3">' +
-                            '<s:textfield name="alternativeDescriptionList" class="form-control" />' +
+                            '<s:textfield name="alternativeDescriptionList" class="form-control" required = "true"/>' +
                             '</div>' +
                             '<label class="control-label col-sm-2" for = "divisorList">Divisor</label>' +
                             '<div class = "col-sm-2">' +
-                            '<s:textfield name = "divisorList" class = "form-control"/>' +
+                            '<s:textfield name = "divisorList" class = "form-control" required = "true"/>' +
                             '</div>' +
                             '<div class = "col-sm-1"><a href="#" class="remove_field">Remove</a></div>' +
                             '</div>'); //add input box
@@ -76,12 +76,6 @@
 
 
         });
-
-        //função de teste !!!!!
-       /* window.onload = function()
-        {
-            document.getElementById("ID : 4").innerHTML = "Current value : 400000000";
-        };*/
     </script>
 
 </head>
@@ -166,17 +160,25 @@
                     <form role="form" action = "viewDetails">
                         <div class="form-group">
                             <label for="sel1">Which project do you want to view the details ?</label>
-                            <select name = "viewDetailsId" class="form-control" id="sel1">
-                                <c:set var="temp" value="one
-                                two"/>
-                                <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
-                                <c:forEach items = "${fn:split(fundStarterBean.getNumberProjects(),newline)}" var = "value">>
-                                    <option value="${value}"><c:out value="${value}"/></option>
-                                </c:forEach>
-                            </select>
-                            <br>
-                        </div>
-                        <s:submit type="button" class="btn btn-primary btn-md center-block" id="viewDetails-btn"/>
+                            <c:choose>
+                                    <c:when test = "${fn:contains(fundStarterBean.listProjects(2),'There are no projects')}">
+                                        <select name = "viewDetailsId" class="form-control" id="sel1" disabled>
+                                        </select>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <select name = "viewDetailsId" class="form-control" id="sel1">
+                                            <c:set var="temp" value="one
+                                            two"/>
+                                            <c:set var="newline" value="${fn:substring(temp,3,4)}"/>
+                                            <c:forEach items = "${fn:split(fundStarterBean.getNumberProjects(),newline)}" var = "value">>
+                                                <option value="${value}"><c:out value="${value}"/></option>
+                                            </c:forEach>
+                                        </select>
+                                        <br>
+                                        <s:submit type="button" class="btn btn-primary btn-md center-block" id="viewDetails-btn"/>
+                                    </c:otherwise>
+                            </c:choose>
+                            </div>
                     </form>
                     <c:set var="temp" value="one
                     two"/>
@@ -202,7 +204,15 @@
                 </div>
                 <div id="menu3" class="tab-pane fade">
                     <h3>Check Account Balance</h3>
-                    <p>You have <strong> <c:out value="${fundStarterBean.checkAccountBalance()}"/> </strong>dollars in your  account.</p>
+                    <c:set var = "accountBalance" value="${fundStarterBean.checkAccountBalance()}"/>
+                    <c:choose>
+                        <c:when test="${accountBalance > 0}">
+                            <p>You have <strong> <c:out value="${accountBalance}"/> </strong>dollars in your  account.</p>
+                        </c:when>
+                        <c:otherwise>
+                            <p>Some error occurred while listing your account balance.</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div id="menu4" class="tab-pane fade">
                     <h3>Check my rewards</h3>
@@ -235,17 +245,17 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4" for = "projectDate"> <s:text name="Date (dd/MM/yyyy HH)" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="projectDate" class="form-control" format="dd/MM/yyyy HH" required = "true"/>
+                                <s:textfield name="projectDate" class="form-control" format="dd/MM/yyyy HH" required = "true" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9][0-9]" title ="Date = dd/MM/yyyy HH"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4" for = "targetValue"> <s:text name="Target value" /></label>
                             <div class="col-sm-4">
-                                <s:textfield name="targetValue" class="form-control" required = "true" />
+                                <s:textfield name="targetValue" class="form-control" required = "true" pattern="[0-9]*" title="Only positive numbers" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for = "entreprise"> <s:text name="Enterprise" /></label>
+                            <label class="control-label col-sm-4" for = "enterprise"> <s:text name="Enterprise" /></label>
                             <div class="col-sm-4">
                                 <s:textfield name="enterprise" class="form-control" />
                             </div>
@@ -256,9 +266,9 @@
                                 <div class = "col-sm-3">
                                     <s:textfield name="rewardDescriptionList" class="form-control" required = "true"/>
                                 </div>
-                                <label class="control-label col-sm-2" for = "minPledgeList"> <s:text name="Minimum pledge" /></label>
+                                <label class="control-label col-sm-2" for = "minPledgeList"> <s:text name="Minimum pledge"  /></label>
                                 <div class = "col-sm-2">
-                                    <s:textfield name = "minPledgeList" class = "form-control" required = "true"/>
+                                    <s:textfield name = "minPledgeList" class = "form-control" required = "true" pattern="[0-9]*" title="Only positive numbers"/>
                                 </div>
                                 <div class = "col-sm-1">
                                     <button class="add_field_button">+</button>
@@ -273,7 +283,7 @@
                                 </div>
                                 <label class="control-label col-sm-2" for = "divisorList"> <s:text name="Divisor*" /></label>
                                 <div class = "col-sm-2">
-                                    <s:textfield name = "divisorList" class = "form-control"/>
+                                    <s:textfield name = "divisorList" class = "form-control" pattern="[0-9]*" title="Only positive numbers"/>
                                 </div>
                                 <div class = "col-sm-1">
                                     <button class="add_field_button2">+</button>
@@ -298,72 +308,78 @@
                             </c:forEach>
                         </ul>
                     </c:forEach>
-                    <div class = "row">
-                        <s:form action="gotoRewardpageAction" method="post"  >
-                            <div class="form-group">
-                                <label for="sel2">Add rewards to project</label>
-                                <select name="idSelected" class="form-control" id="sel2">
-                                    <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
-                                       <option value="${i}">
-                                            <c:out value="${i}"/>
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                                <br>
+                    <c:choose>
+                        <c:when test = "${fn:contains(fundStarterBean.showAdminProjects(),'You do not administrate any project.')}">
+                        </c:when>
+                        <c:otherwise>
+                            <div class = "row">
+                                <s:form action="gotoRewardpageAction" method="post"  >
+                                    <div class="form-group">
+                                        <label for="sel2">Add rewards to project</label>
+                                        <select name="idSelected" class="form-control" id="sel2">
+                                            <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                                <option value="${i}">
+                                                    <c:out value="${i}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                        <br>
+                                    </div>
+                                    <s:submit type="button" class="btn btn-primary btn-md center-block" id="idReward" value="Add Reward"/>
+                                </s:form>
                             </div>
-                            <s:submit type="button" class="btn btn-primary btn-md center-block" id="idReward" value="Add Reward"/>
-                        </s:form>
-                    </div>
-                    <div class = "row">
-                        <s:form action="gotoRemovePage" role="form">
-                            <div class="form-group">
-                                <label for="sel3">Remove rewards from project</label>
-                                <select name="idSelected" class="form-control" id="sel3">
-                                    <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
-                                        <option value="${i}">
-                                            <c:out value="${i}"/>
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                                <br>
-                            </div>
-                            <s:submit type="button" id="idReward" value="Remove Reward" class="btn btn-primary btn-md center-block"/>
+                            <div class = "row">
+                                <s:form action="gotoRemovePage" role="form">
+                                    <div class="form-group">
+                                        <label for="sel3">Remove rewards from project</label>
+                                        <select name="idSelected" class="form-control" id="sel3">
+                                            <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                                <option value="${i}">
+                                                    <c:out value="${i}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                        <br>
+                                    </div>
+                                    <s:submit type="button" id="idReward" value="Remove Reward" class="btn btn-primary btn-md center-block"/>
 
-                        </s:form>
-                    </div>
-                    <div class = "row">
-                            <s:form action="cancelProjectAction" role="form" method="post">
-                                <div class="form-group">
-                                    <label for="sel4">Cancel project</label>
-                                    <select name="idSelected" class="form-control" id="sel4">
-                                        <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
-                                            <option value="${i}">
-                                                <c:out value="${i}"/>
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                    <br>
-                                </div>
-                                <s:submit type="button" id="idReward" value="Cancel Project" class="btn btn-primary btn-md center-block"/>
-
-                            </s:form>
-                    </div>
-                    <div class = "row">
-                        <s:form action="replyMessageAction" role="form" method="post">
-                            <div class="form-group">
-                                <label for="sel7">Reply to project with id</label>
-                                <select name="idSelected" class="form-control" id="sel7">
-                                    <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
-                                        <option value="${i}">
-                                            <c:out value="${i}"/>
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                                <br>
+                                </s:form>
                             </div>
-                            <s:submit type="button" id = "reply-btn" value="Reply to messages" class="btn btn-primary btn-md center-block"/>
-                        </s:form>
-                    </div>
+                            <div class = "row">
+                                <s:form action="cancelProjectAction" role="form" method="post">
+                                    <div class="form-group">
+                                        <label for="sel4">Cancel project</label>
+                                        <select name="idSelected" class="form-control" id="sel4">
+                                            <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                                <option value="${i}">
+                                                    <c:out value="${i}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                        <br>
+                                    </div>
+                                    <s:submit type="button" id="idReward" value="Cancel Project" class="btn btn-primary btn-md center-block"/>
+
+                                </s:form>
+                            </div>
+                            <div class = "row">
+                                <s:form action="replyMessageAction" role="form" method="post">
+                                    <div class="form-group">
+                                        <label for="sel7">Reply to project with id</label>
+                                        <select name="idSelected" class="form-control" id="sel7">
+                                            <c:forEach items="${fn:split(fundStarterBean.getAdminProjectIds(),'.')}" var="i">
+                                                <option value="${i}">
+                                                    <c:out value="${i}"/>
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                        <br>
+                                    </div>
+                                    <s:submit type="button" id = "reply-btn" value="Reply to messages" class="btn btn-primary btn-md center-block"/>
+                                </s:form>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -398,6 +414,4 @@
 </body>
 </html>
 <!-- todo
-ver warnings que têm de ser gerados !!!!!!!!!!!
-testar inserir campos vazios e caso seja necessario fazer interceptors
 -->

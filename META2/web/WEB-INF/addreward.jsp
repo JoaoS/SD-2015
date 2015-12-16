@@ -24,31 +24,27 @@
 </head>
 <body>
 
-<div class = "header">
-    <div class = "col-md-11">
-        <h1>FundStarter</h1>
-    </div>
-    <div class = "cold-md-1">
-        <a class  ="btn btn-primary" id = "logout-btn" href ="#">Logout</a>
-    </div>
-</div>
+<jsp:include page="header.jsp"/>
 
+<div class = "add-reward-main">
             <h3>Add reward to Project</h3>
             <s:form action="addRewardToProject"  method="post"  class = "form-horizontal" role = "form" >
                 <div class="input_fields_rewards">
                     <div class = "row" required>
-                        <label class="control-label col-sm-3" for = "description"> <s:text name="Reward " /></label>
+                        <div class = "col-sm-2"></div>
+                        <label class="control-label col-sm-1" for = "description"> <s:text name="Reward " /></label>
                         <div class = "col-sm-3">
                             <s:textfield name="description" class="form-control" required = "true" />
                         </div>
-                        <label class="control-label col-sm-2" for = "value"> <s:text name="Pledge value" /></label>
+                        <label class="control-label col-sm-1" for = "value"> <s:text name="Pledge value" /></label>
                         <div class = "col-sm-2">
-                            <s:textfield name = "value" class = "form-control" required = "true" />
+                            <s:textfield name = "value" class = "form-control" required = "true" pattern="[0-9]*" title="Only positive numbers"/>
                         </div>
                     </div>
                 </div>
-                <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="create-project-btn"/>
+                <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="add-reward-btn"/>
             </s:form>
+    </div>
 
 <div class="footer-menuIni">
     <div class="container">

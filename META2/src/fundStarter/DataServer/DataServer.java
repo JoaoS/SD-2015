@@ -207,6 +207,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        if(result.equals(""))
+        {
+            result += "There are no projects.\n";
+        }
         return result;
     }
 
@@ -426,6 +430,14 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             {
                 idUser =  rt.getLong(1);
             }
+            //check project with same name
+            s="SELECT ID_PROJECT FROM PROJECT WHERE name = '" + name + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                System.out.println("Already exists a project with the same name");
+                return false;
+            }
             ps = connection.prepareStatement("INSERT INTO PROJECT(name,description,limit_date,target_value,enterprise,id_user) VALUES(?,?,?,?,?,?)");
             ps.setString(1,name);
             ps.setString(2,description);
@@ -474,6 +486,89 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         }
         return true;
     }
+
+
+
+    public String addProject2(String username, String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException
+    {
+        PreparedStatement ps;
+        ResultSet rt = null;
+        long idUser = -1;
+        long idProject = -1;
+        try
+        {   //check administrator
+            String s="SELECT ID_USER FROM USER WHERE name = '" + username + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                idUser =  rt.getLong(1);
+            }
+            //check project with same name
+            s="SELECT ID_PROJECT FROM PROJECT WHERE name = '" + name + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                return "Already exists a project with the same name";
+            }
+            ps = connection.prepareStatement("INSERT INTO PROJECT(name,description,limit_date,target_value,enterprise,id_user) VALUES(?,?,?,?,?,?)");
+            ps.setString(1,name);
+            ps.setString(2,description);
+            ps.setString(3,limitDate);
+            ps.setLong(4, targetValue);
+            ps.setString(5,enterprise);
+            ps.setLong(6,idUser);
+            ps.execute();
+            //fetch project id
+            s="SELECT ID_project FROM project WHERE name = '" + name + "'";
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                idProject =  rt.getLong(1);
+            }
+            //insert rewards
+            for(int i =0;i<rewards.size();i++)
+            {
+                if(rewards.get(i).getMinValue() <0)
+                {
+                    connection.rollback();
+                    return "Invalid minimum pledge value";
+                }
+                ps = connection.prepareStatement("INSERT INTO REWARD(description,min_value,id_project) VALUES(?,?,?)");
+                ps.setString(1,rewards.get(i).getDescription());
+                ps.setDouble(2, rewards.get(i).getMinValue());
+                ps.setLong(3, idProject);
+                ps.execute();
+            }
+            //insert alternatives
+            for(int i =0;i<alternatives.size();i++)
+            {
+                if(alternatives.get(i).getDivisor() <0)
+                {
+                    connection.rollback();
+                    return "Invalid divisor";
+                }
+                ps = connection.prepareStatement("INSERT INTO ALTERNATIVE(description,divisor,id_project) VALUES(?,?,?)");
+                ps.setString(1, alternatives.get(i).getDescription());
+                ps.setDouble(2, alternatives.get(i).getDivisor());
+                ps.setLong(3, idProject);
+                ps.execute();
+
+            }
+            connection.commit();
+
+        }catch(SQLException e){
+            try {
+                System.out.println("\nException at addProject.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Error creating project";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return "Project created with success";
+    }
+
 
 
     public String checkProject(String name) throws RemoteException
@@ -911,6 +1006,10 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
             if(idAdmin == idUser)
             {
+                if(r.getMinValue() <0)
+                {
+                    return "Invalid pledge value";
+                }
                 ps = connection.prepareStatement("INSERT INTO REWARD(description,min_value,id_project) VALUES(?,?,?)");
                 ps.setString(1, r.getDescription());
                 ps.setDouble(2, r.getMinValue());
@@ -966,7 +1065,41 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return result += "\n\nID of the reward that you want to remove:";
+        return result;
+    }
+
+    public String getRewardsProjectIds(long idProject) throws RemoteException
+    {
+        ResultSet rt = null;
+        String result = "";
+        try {
+            // fetch id_rewards
+            String s = "SELECT id_reward FROM reward WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                result += "ID : " + rt.getLong(1) + "\n";
+                while (rt.next())
+                {
+                    result += "ID : " + rt.getLong(1) + "\n";
+                }
+            }
+            else
+            {
+                result += "This project has no rewards.\n";
+            }
+        }catch (Exception e) {
+            try {
+                System.out.println("\nException at getRewardsProjectIds.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Some error occurred listing the rewards of the choosen project.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
     }
 
     public String removeReward(long idProject,long idReward,String username) throws RemoteException
@@ -1261,7 +1394,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         }catch (Exception e) {
             try {
-                System.out.println("\nException at contributeToProject.\n");
+                System.out.println("\nException at replyMessage.\n");
                 e.printStackTrace();
                 connection.rollback();
                 return "Some error occurred sending the message.";

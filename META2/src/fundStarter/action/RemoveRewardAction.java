@@ -15,11 +15,13 @@ public class RemoveRewardAction extends ActionSupport implements SessionAware {
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
     private String idSelected = null;
-    private int idtoRemove=0;
+    private String idtoRemove;
 
 
     public String gotoRemoveReward()throws RemoteException{
 
+        String s[]=this.idSelected.split(" ");
+        Long l=Long.parseLong(s[2]);
         this.getFundStarterBean().setIdSelected(this.idSelected);
         return SUCCESS;
 
@@ -28,13 +30,13 @@ public class RemoveRewardAction extends ActionSupport implements SessionAware {
 
     public String removeReward() throws RemoteException{
 
-        if(idtoRemove!=0){
+
             String s[]=this.getFundStarterBean().getIdSelected().split(" ");
             Long l=Long.parseLong(s[2]);
-
+            s = idtoRemove.split(" ");
+            Long l2 = Long.parseLong(s[2]);
             //removeReward(long idProject,long idReward,String username)
-            if ("Reward removed successfully.".equalsIgnoreCase(this.getFundStarterBean().
-                    removeRewards(l,idtoRemove,this.getFundStarterBean().getUsername())))
+            if ("Reward removed successfully.".equalsIgnoreCase(this.getFundStarterBean().removeRewards(l,l2,this.getFundStarterBean().getUsername())))
             {
                 System.out.println("Reward removed");
                 this.getFundStarterBean().setIdSelected("");
@@ -50,11 +52,6 @@ public class RemoveRewardAction extends ActionSupport implements SessionAware {
                 session.put("error",error);
                 return SUCCESS;
             }
-        }
-
-        System.out.println("remove_id is null");
-    return SUCCESS;
-
     }
 
 
@@ -64,11 +61,11 @@ public class RemoveRewardAction extends ActionSupport implements SessionAware {
 
 
 
-    public int getIdtoRemove() {
+    public String getIdtoRemove() {
         return idtoRemove;
     }
 
-    public void setIdtoRemove(int idtoRemove) {
+    public void setIdtoRemove(String idtoRemove) {
         this.idtoRemove = idtoRemove;
     }
 

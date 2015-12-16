@@ -23,6 +23,7 @@ public class SignUpAction extends ActionSupport implements SessionAware
         if(error == null)
         {
             this.getFundStarterBean().addUser(username,password,bi,age,email);
+            session.put("success","Signed up successfully");
             return SUCCESS;
         }
         else

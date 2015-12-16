@@ -21,7 +21,11 @@ public class CommentProjectAction extends ActionSupport implements SessionAware
     {
         String msg = (String)session.get("username");
         msg = msg + ":" + comment;
-        this.getFundStarterBean().commentProject(msg);
+        String error = this.getFundStarterBean().commentProject(msg);
+        if(!error.equals("Commented with success"))
+        {
+            session.put("error",error);
+        }
         return SUCCESS;
     }
 

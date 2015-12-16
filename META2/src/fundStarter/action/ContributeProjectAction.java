@@ -22,6 +22,7 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
     @Override
     public String execute() throws RemoteException
     {
+        String error;
         if(alternativeVotedId.equalsIgnoreCase("There are no alternatives for this project."))
         {
             this.getFundStarterBean().setAlternativeVotedId(0);
@@ -31,9 +32,16 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
             this.getFundStarterBean().setAlternativeVotedId(Long.valueOf(alternativeVotedId));
         }
         this.getFundStarterBean().setPledgeValue(pledgeValue);
-        this.getFundStarterBean().contributeToProject();
-
-        GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project");
+        error = this.getFundStarterBean().contributeToProject();
+        if(!error.equals("Donation made successfully."))
+        {
+            session.put("error",error);
+        }
+        else
+        {
+            session.put("success",error);
+            GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project");
+        }
         return  SUCCESS;
     }
 
