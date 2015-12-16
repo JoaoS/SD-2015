@@ -38,7 +38,25 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
         else
         {
             session.put("success",error);
+
+            //send message and update message history
+
+            long idProject=this.getFundStarterBean().getViewDetailsId();
+            String contributionMessage="["+this.getFundStarterBean().getUsername()+"]Donated to your project("+idProject+")";
+            String originUser=this.getFundStarterBean().getUsername();
+
+            this.getFundStarterBean().addOldWebsocketMessages(contributionMessage);
+            GenericNotification.donationNotification(contributionMessage,originUser,idProject);
+
+            //ver o nome dos admins daquele projecto
+
+
             //GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project");
+        }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return  SUCCESS;
     /*

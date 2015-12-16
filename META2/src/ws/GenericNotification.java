@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,9 +19,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServerEndpoint(value = "/wsGeneric", configurator = GetHttpSessionData.class)
 public class GenericNotification {
 
-    private static String username=null;
+    private static String username = null;
     public static CopyOnWriteArrayList<SessionKeeper> onlineUsers = new CopyOnWriteArrayList<SessionKeeper>();
-    private static Session session;
+    private Session session;
 
     public GenericNotification() {
 
@@ -30,22 +31,24 @@ public class GenericNotification {
     @OnOpen
     public void start(Session session, EndpointConfig config) {
 
-        this.session=session;
+        this.session = session;
         HttpSession sessionaux = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         FundStarterBean beanS = (FundStarterBean) sessionaux.getAttribute("fundStarterBean");
-        this.username=beanS.getUsername();
-        System.out.println("created websocket for:\nusername="+beanS.getUsername()+"\narraySize="+onlineUsers.size());
-        onlineUsers.add(new SessionKeeper(session,beanS.getUsername(),sessionaux,beanS));
+        this.username = beanS.getUsername();
+        System.out.println("created websocket for:\nusername=" + beanS.getUsername() + "\narraySize=" + onlineUsers.size());
+        onlineUsers.add(new SessionKeeper(session, beanS.getUsername(), sessionaux, beanS));
+        sendMessage(beanS.getOldWebsocketMessages(), beanS);
 
     }
 
     @OnClose
     public void end() {
         // clean up once the WebSocket connection is closed
-        for(int i=0;i<onlineUsers.size();i++){
-            if(onlineUsers.get(i).getUsername()==username){
+        for (int i = 0; i < onlineUsers.size(); i++) {
+            if (onlineUsers.get(i).getSession() == session) {
+                System.out.println("Removed User:\n=" + onlineUsers.get(i).getUsername());
                 onlineUsers.remove(i);
-                System.out.println("removed user in="+i);
+
             }
         }
     }
@@ -65,28 +68,48 @@ public class GenericNotification {
         t.printStackTrace();
     }
 
+    private static void sendMessage(ArrayList<String> oldMessages, FundStarterBean beanS) {
 
-    private static void sendMessage(String text,String username) {
+        for (int i = 0; i < oldMessages.size(); i++) {
+            sendMessage(oldMessages.get(i), beanS.getUsername(), (long) 0);
+
+        }
+
+    }
+
+    /*
+    * se mandar username é porque é para o historico, senao é para doação e tenho de ver os admins
+    * */
+    private static void sendMessage(String text, String toUsername, Long idproject) {
         // uses *this* object's session to call sendText()
-        int i=0;
+        int i = 0;
         try {
-            for(i = 0;i<onlineUsers.size();i++)
-            {
-                //send messages only to other users
-                if(onlineUsers.get(i).getUsername().equals(username)){
-                    continue;
-                }
-                //ver se aquele user é  admin do projecto
-                SessionKeeper aux=onlineUsers.get(i);
-                String s=aux.beanS.getAdminProjectIds();
-                String s2[]=s.split(":");
+            for (i = 0; i < onlineUsers.size(); i++) {
 
-                System.out.println("notification sent to="+onlineUsers.get(i).getUsername());
-                onlineUsers.get(i).getSession().getBasicRemote().sendText(text);
+                //toUsername é usado para mandar o historico de mensagens ao utilizador correspondente
+
+
+                if (onlineUsers.get(i).getUsername().equals(toUsername)) {
+                    onlineUsers.get(i).getSession().getBasicRemote().sendText(text);
+                }
+                if (toUsername==null){
+                    //ver se aquele user é  admin do projecto
+                    SessionKeeper aux = onlineUsers.get(i);
+                    String s = aux.beanS.getAdminProjectIds();
+                    String s2[] = s.split(": ");
+                    String s3[]=s2[1].split(".");
+                    System.out.println("split size="+s2.length);
+
+
+                    System.out.println("notification sent to=" + onlineUsers.get(i).getUsername());
+                    onlineUsers.get(i).getSession().getBasicRemote().sendText(text);
+
+                }
+
 
             }
 
-        }  catch (IOException | IllegalStateException e0) {
+        } catch (IOException | IllegalStateException e0) {
             // clean up once the WebSocket connection is closed
             try {
                 onlineUsers.get(i).getSession().close();
@@ -96,10 +119,10 @@ public class GenericNotification {
         }
     }
 
-    public static void sendNotification(String messsage,String username){
+    public static void donationNotification(String messsage, String fromUsername, Long idproject) {
 
-        System.out.println("message generated by="+username);
-        sendMessage(messsage,username);
+        System.out.println("message generated by=" + fromUsername);
+        sendMessage(messsage, null, idproject);
 
     }
 
