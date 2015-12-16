@@ -1516,6 +1516,34 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
 
+    public String getProjectAdmin(long idProject) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        String result = "";
+        try {
+            String s = "SELECT id_user FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                result += rt.getString(1);
+            }
+        } catch (SQLException e) {
+            try {
+                System.out.println("\nException at getMessagesProjectIds.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return "Error occurred while accessing messages of this project.";
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
+
+
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
