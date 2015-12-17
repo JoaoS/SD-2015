@@ -29,7 +29,7 @@ public class LoginTumblrAction extends ActionSupport implements SessionAware {
         Token requestToken = service.getRequestToken();
         url = service.getAuthorizationUrl(requestToken);
         this.setTumblrBean(new TumblrBean(service));
-        //this.setTumblrBeanRequestToken(requestToken);
+        this.setTumblrBeanRequestToken(requestToken);
         return "redirect";
     }
 
