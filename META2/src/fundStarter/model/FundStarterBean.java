@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class FundStarterBean {
 
 
         try {
+            System.getProperties().put("java.security.policy", "security.policy");
+            System.setSecurityManager(new RMISecurityManager());
             server = (DataServer_I) LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(remoteName);
         }
         catch(NotBoundException |RemoteException e) {
