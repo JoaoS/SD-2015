@@ -64,8 +64,8 @@ public class FundStarterBean {
 
 
         try {
-            System.getProperties().put("java.security.policy", "security.policy");
-            System.setSecurityManager(new RMISecurityManager());
+            //System.getProperties().put("java.security.policy", "security.policy");
+            //System.setSecurityManager(new RMISecurityManager());
             server = (DataServer_I) LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(remoteName);
         }
         catch(NotBoundException |RemoteException e) {
