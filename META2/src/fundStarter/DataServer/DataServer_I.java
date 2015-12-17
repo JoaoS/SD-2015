@@ -38,4 +38,6 @@ public interface DataServer_I extends Remote {
     public String addProject2(String username, String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException;
     public String getRewardsProjectIds(long idProject) throws RemoteException;
     public String getProjectAdmin(long idProject) throws RemoteException;
+    public long getCurrentValue(long idProject) throws RemoteException;
+
 }

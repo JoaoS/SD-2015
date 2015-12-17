@@ -4,6 +4,7 @@ package fundStarter.action;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.FundStarterBean;
 import org.apache.struts2.interceptor.SessionAware;
+import ws.GenericNotification;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -26,6 +27,19 @@ public class CommentProjectAction extends ActionSupport implements SessionAware
         {
             session.put("error",error);
         }
+
+        //send message and update message history
+
+        long idProject=this.getFundStarterBean().getViewDetailsId();
+        String contributionMessage="["+this.getFundStarterBean().getUsername()+"] commented your project("+idProject+")";
+        // String originUser=this.getFundStarterBean().getUsername();
+        String projectAdmin=this.getFundStarterBean().getProjectAdmin(idProject);
+
+        GenericNotification.commentNotification(contributionMessage,projectAdmin);
+
+
+
+
         return SUCCESS;
     }
 

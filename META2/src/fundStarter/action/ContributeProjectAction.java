@@ -43,32 +43,20 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
 
             long idProject=this.getFundStarterBean().getViewDetailsId();
             String contributionMessage="["+this.getFundStarterBean().getUsername()+"]Donated to your project("+idProject+")";
-            String originUser=this.getFundStarterBean().getUsername();
+           // String originUser=this.getFundStarterBean().getUsername();
+            String projectAdmin=this.getFundStarterBean().getProjectAdmin(idProject);
 
-            this.getFundStarterBean().addOldWebsocketMessages(contributionMessage);
-            GenericNotification.donationNotification(contributionMessage,originUser,idProject);
+            //enviar id e valor novo do projecto
+            //fazer split na getCurrentValue
+            //mandar o valor actual do projecto em baixo (getCurrentValue no dataserver)
+            Long projectValue=this.getFundStarterBean().getProjectValue(idProject);
 
-            //ver o nome dos admins daquele projecto
+            GenericNotification.donationNotification(contributionMessage,projectAdmin,"UPDT|ID : "+idProject+"|"+projectValue);
 
-
-            //GenericNotification.sendNotification("["+this.getFundStarterBean().getUsername()+"]Donated to project");
         }
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return  SUCCESS;
-    /*
-
-        long idProject=this.getFundStarterBean().getViewDetailsId();
-        String contributionMessage="["+this.getFundStarterBean().getUsername()+"]Donated to project("+idProject+")";
-
-        this.getFundStarterBean().addOldWebsocketMessages(contributionMessage);
-        GenericNotification.sendNotification(contributionMessage,originUser );
 
         return  SUCCESS;
-        */
+
     }
 
 

@@ -195,11 +195,11 @@
                             <c:forEach items = "${fn:split(value,'|')}" var = "value2">
                                 <c:choose>
                                     <c:when test="${fn:contains(value2, 'ID')}">
-                                        <c:set var = "currentValueId" value = "${value2}"/>
+                                        <c:set var = "currentValueId" value = "a${value2}"/>
                                         <li class = "list-group-item"><c:out value="${value2}"/></li>
                                     </c:when>
                                     <c:when test="${fn:contains(value2, 'Current value')}">
-                                        <li class = "list-group-item" id = "${currentValueId}"><c:out value="${value2}"/></li>
+                                        <li class = "list-group-item" id="${currentValueId}" ><c:out value="${value2}"/></li>
                                     </c:when>
                                     <c:otherwise>
                                         <li class = "list-group-item"><c:out value="${value2}"/></li>
