@@ -32,7 +32,6 @@ public class TumblrCallbackAction extends ActionSupport implements SessionAware 
         TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
         OAuthService service = tumblrBean.getService();
         Verifier verifier = new Verifier(verifierString);
-        Token t = tumblrBean.getRequestToken();
         Token accessToken = service.getAccessToken(tumblrBean.getRequestToken(), verifier);
         tumblrBean.setAccessToken(accessToken);
         return SUCCESS;
