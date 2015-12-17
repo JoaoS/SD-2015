@@ -4,10 +4,14 @@ import fundStarter.DataServer.*;
 import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
+import java.util.Properties;
 
 
 public class FundStarterBean {
@@ -27,8 +31,39 @@ public class FundStarterBean {
 
 
     public FundStarterBean() {
+
+        int rmiPort=0;
+        String rmiIp=null,remoteName=null;
+
+        Properties prop = new Properties();
+        InputStream input = null;
         try {
-            server = (DataServer_I) LocateRegistry.getRegistry("localhost",5000).lookup("DataServer");
+            input = new FileInputStream("tcpProp.properties");
+            prop.load(input);
+
+            rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
+            remoteName=prop.getProperty("rmiName");
+            rmiIp=prop.getProperty("rmiIp");
+
+        } catch (IOException ex) {
+            System.out.println("Error loading DataServer properties file. The default values were set");
+            rmiPort=5000;
+            remoteName="DataServer";
+            rmiIp="localhost";
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        try {
+            server = (DataServer_I) LocateRegistry.getRegistry(rmiIp,rmiPort).lookup(remoteName);
         }
         catch(NotBoundException |RemoteException e) {
             e.printStackTrace();
