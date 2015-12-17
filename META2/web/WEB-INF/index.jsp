@@ -8,12 +8,16 @@
     <title>FundStarter Home Page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <link rel='stylesheet' href='../style.css'/>
+      <link rel='stylesheet' href='../bootstrap-social.css'/>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- jQuery library -->
+      <!--font awesome -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
   </head>
   <body>
     <jsp:include page="notificationsHeader.jsp"/>
@@ -40,7 +44,11 @@
                   </div>
                   <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="login-btn"/>
             </s:form>
-        </form>
+            <s:form action="loginTumblr" method = "post" role = "form">
+                <button class="btn btn-lg btn-social btn-tumblr" id = "tumblr-btn">
+                    <span class="fa fa-tumblr"></span> Login with tumblr
+                </button>
+            </s:form>
         </div>
     </div>
     <div class = "supporting-register">

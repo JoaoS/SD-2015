@@ -110,6 +110,16 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
             <result name="success">/WEB-INF/menuIni.jsp</result>
         </action>
 
+        <action name="loginTumblr" class="fundStarter.action.LoginTumblrAction" method="execute">
+            <interceptor-ref name="defaultStack" />
+            <result name="redirect" type = "redirect">${url}</result>
+        </action>
+
+        <action name="tumblrCallbackAction" class="fundStarter.action.TumblrCallbackAction" method="execute">
+            <interceptor-ref name="defaultStack" />
+            <result name="success">/WEB-INF/menuIni.jsp</result>
+        </action>
+
 
     </package>
 </struts>

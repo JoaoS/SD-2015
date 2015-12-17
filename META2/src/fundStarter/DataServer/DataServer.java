@@ -1550,9 +1550,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         }
         return result;
     }
-
-
-
+    
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
