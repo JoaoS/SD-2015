@@ -60,8 +60,13 @@
             var aux2=text.split("|");
             var projectValue=aux2[2];
             var updtID=aux2[1];
-            window.alert(updtID);
+           //window.alert(updtID);
+            //-document.getElementById(updtID).innerHTML = "Current value : "+projectValue;
             document.getElementById(updtID).innerHTML = "Current value : "+projectValue;
+            var s="a"+updtID;
+            document.getElementById(s).innerHTML = "Current value : "+projectValue;
+
+
 
         }
         else{
