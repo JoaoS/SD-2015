@@ -209,4 +209,8 @@ public class FundStarterBean {
        return this.server.getProjectAdmin(id);
 
     }
+
+    public  long getProjectValue(long id)throws RemoteException{
+        return this.server.getCurrentValue(id);
+    }
 }

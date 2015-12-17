@@ -1551,7 +1551,32 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
+    public long getCurrentValue(long idProject) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        long currentValue =-1;
+        try {
+            String s = "SELECT current_value FROM project WHERE id_project = '" + idProject + "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if(rt.next())
+            {
+                currentValue =  rt.getLong(1);
+            }
 
+        } catch (SQLException e) {
+            try {
+                System.out.println("\nException at getCurrentValue.\n");
+                e.printStackTrace();
+                connection.rollback();
+                return currentValue;
+            } catch (SQLException ex) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return currentValue;
+    }
 
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException

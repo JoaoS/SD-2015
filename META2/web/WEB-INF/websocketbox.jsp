@@ -55,12 +55,25 @@
 
 
     function writeToHistory(text) {
-        var history = document.getElementById('notifications-history');
-        var line = document.createElement('p');
-        line.style.wordWrap = 'break-word';
-        line.innerHTML = text;
-        history.appendChild(line);
-        history.scrollTop = history.scrollHeight;
+        var aux=text.substr(0,4);
+        if (aux=='UPDT'){
+            var aux2=text.split("|");
+            var projectValue=aux2[2];
+            var updtID=aux2[1];
+            window.alert(updtID);
+            document.getElementById(updtID).innerHTML = "Current value : "+projectValue;
+
+        }
+        else{
+            var history = document.getElementById('notifications-history');
+            var line = document.createElement('p');
+            line.style.wordWrap = 'break-word';
+            line.innerHTML = text;
+            history.appendChild(line);
+            history.scrollTop = history.scrollHeight;
+
+        }
+
     }
 
 </script>

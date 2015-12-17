@@ -80,8 +80,7 @@ public class GenericNotification {
                 if (onlineUsers.get(i).getUsername().equals(username)){
 
                     for (int j=0;j<oldMessages.size();j++){
-                        onlineUsers.get(i).getSession().getBasicRemote().sendText(oldMessages.get(i));
-
+                        onlineUsers.get(i).getSession().getBasicRemote().sendText(oldMessages.get(j));
                     }
                 }
             }
@@ -93,12 +92,75 @@ public class GenericNotification {
                 e1.printStackTrace();
             }
         }
+    }
+
+    public static void donationNotification(String message, String toAdmin, String updateHtml) {
+
+        //actualizar o html
+        int i = 0;
+        try {
+            for (i = 0; i < onlineUsers.size(); i++) {
+
+                //se o admin está online mando notificacao para ele
+               if (onlineUsers.get(i).getUsername().equals(toAdmin)){
+                   //mandar mensagem
+                   onlineUsers.get(i).getSession().getBasicRemote().sendText(message);
+                   //guardar no historico
+                   onlineUsers.get(i).getBeanS().addOldWebsocketMessages(message);
+
+               }
 
 
+                //actualizar os valores em toda a gente
+                onlineUsers.get(i).getSession().getBasicRemote().sendText(updateHtml);
+
+            }
+        } catch (IOException | IllegalStateException e0) {
+            // clean up once the WebSocket connection is closed
+            try {
+                onlineUsers.get(i).getSession().close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+    }
+    /*
+    * igual á de cima mas não actualiza os valores do projecto
+    * */
+    public static void commentNotification(String message, String toAdmin) {
+        int i = 0;
+        try {
+            for (i = 0; i < onlineUsers.size(); i++) {
+
+                //se o admin está online mando notificacao para ele
+                if (onlineUsers.get(i).getUsername().equals(toAdmin)){
+                    //mandar mensagem
+                    onlineUsers.get(i).getSession().getBasicRemote().sendText(message);
+                    //guardar no historico
+                    onlineUsers.get(i).getBeanS().addOldWebsocketMessages(message);
+                }
+            }
+        } catch (IOException | IllegalStateException e0) {
+            // clean up once the WebSocket connection is closed
+            try {
+                onlineUsers.get(i).getSession().close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
 
     }
 
-    /*
+
+
+
+
+}
+
+
+
+/*
     * se mandar username é porque é para o historico, senao é para doação e tenho de ver os admins
     * */
     /*
@@ -140,40 +202,3 @@ public class GenericNotification {
             }
         }
     }*/
-
-    public static void donationNotification(String message, String toAdmin) {
-
-        System.out.println("admin name="+toAdmin);
-        int i = 0;
-        try {
-            for (i = 0; i < onlineUsers.size(); i++) {
-
-                //se o admin está online mando notificacao para ele
-               if (onlineUsers.get(i).getUsername().equals(toAdmin)){
-
-                   //mandar mensagem
-                   onlineUsers.get(i).getSession().getBasicRemote().sendText(message);
-
-                   //guardar no historico
-                   onlineUsers.get(i).getBeanS().addOldWebsocketMessages(message);
-
-               }
-
-            }
-
-        } catch (IOException | IllegalStateException e0) {
-            // clean up once the WebSocket connection is closed
-            try {
-                onlineUsers.get(i).getSession().close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-
-    }
-
-}
-
-
-
-
