@@ -45,7 +45,7 @@ public class FundStarterBean {
             rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
             remoteName=prop.getProperty("rmiName");
             rmiIp=prop.getProperty("rmiIp");
-
+            System.out.println("Properties loaded correctly");
         } catch (IOException ex) {
             System.out.println("Error loading DataServer properties file. The default values were set");
             rmiPort=5000;
