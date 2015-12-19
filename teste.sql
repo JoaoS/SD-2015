@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 19, 2015 at 03:15 AM
+-- Generation Time: Dec 19, 2015 at 01:48 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -26,7 +26,7 @@ CREATE TABLE `alternative` (
   `n_votes` int(11) DEFAULT '0',
   `divisor` double NOT NULL DEFAULT '1',
   `id_project` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `alternative`
@@ -36,9 +36,10 @@ INSERT INTO `alternative` (`id_alternative`, `description`, `n_votes`, `divisor`
 (36, 'ola', 0, 5, 48),
 (37, 'dois tetes', 0, 5, 49),
 (38, 'teste alternative 4', 0, 5, 50),
-(39, 'teste alternative', 0, 5, 51),
-(40, 'teste alternative', 0, 5, 52),
-(41, 'teste alternative', 0, 5, 53);
+(43, 'teste alternative', 0, 5, 55),
+(44, 'teste alternative', 0, 5, 56),
+(49, 'teste alternative', 0, 5, 61),
+(50, 'teste alternative', 0, 5, 62);
 
 --
 -- Triggers `alternative`
@@ -46,9 +47,9 @@ INSERT INTO `alternative` (`id_alternative`, `description`, `n_votes`, `divisor`
 DELIMITER $$
 CREATE TRIGGER `check_divisor` BEFORE INSERT ON `alternative`
  FOR EACH ROW BEGIN
-  IF new.divisor < 1 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Divisor must be greater or equal than 1';
+	IF new.divisor < 1 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Divisor must be greater or equal than 1';
     END IF;
 END
 $$
@@ -90,9 +91,9 @@ INSERT INTO `donation` (`id_donation`, `pledge_value`, `id_user`, `id_reward`, `
 DELIMITER $$
 CREATE TRIGGER `check_pledge_value` BEFORE INSERT ON `donation`
  FOR EACH ROW BEGIN
-  IF new.pledge_value <1 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Pledge value must be greater or equal than 1';
+	IF new.pledge_value <1 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Pledge value must be greater or equal than 1';
     END IF;
 END
 $$
@@ -126,25 +127,27 @@ CREATE TABLE `project` (
   `current_value` bigint(20) DEFAULT '0',
   `enterprise` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `id_user` bigint(20) DEFAULT NULL,
-  `accepted` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `accepted` int(11) NOT NULL DEFAULT '0',
+  `post_id` varchar(255) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `project`
 --
 
-INSERT INTO `project` (`id_project`, `name`, `description`, `limit_date`, `target_value`, `current_value`, `enterprise`, `id_user`, `accepted`) VALUES
-(43, 'cenas', 'cenas maradas', '15/01/2016 16', 15000, 7, 'cenas lda', 1, 0),
-(44, 'teste', 'teste', '15/01/2016 12', 15000, 0, 'test lda', 1, 0),
-(45, 'cenas2', 'adf', '15/01/2016 16', 15000, 0, 'cenas', 1, 0),
-(46, 'teste2', 'asdaf', '15/01/2016 12', 15000, 0, 'test lad', 1, 0),
-(47, 'teste3', 'sfg', '15/01/2016 12', 15000, 0, 'teste lad', 1, 0),
-(48, 'teste4', 'fad', '16/12/2015 14', 15000, 0, 'test', 1, 0),
-(49, 'teste20', 'dasff', '15/12/2016 12', 12234, 0, 'test la', 1, 0),
-(50, 'cenas1000', 'cenas1000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0),
-(51, 'teste1000', 'teste1000', '17/12/2015 16', 15000, 0, 'teste lda', 16, 0),
-(52, 'teste2000', 'teste2000', '17/12/2015 16', 1234, 0, 'cenas lds', 16, 0),
-(53, 'enapa2000', 'enapa2000', '17/12/2015 16', 1234, 0, 'cenas lds', 16, 0);
+INSERT INTO `project` (`id_project`, `name`, `description`, `limit_date`, `target_value`, `current_value`, `enterprise`, `id_user`, `accepted`, `post_id`) VALUES
+(43, 'cenas', 'cenas maradas', '15/01/2016 16', 15000, 7, 'cenas lda', 1, 0, ''),
+(44, 'teste', 'teste', '15/01/2016 12', 15000, 0, 'test lda', 1, 0, ''),
+(45, 'cenas2', 'adf', '15/01/2016 16', 15000, 0, 'cenas', 1, 0, ''),
+(46, 'teste2', 'asdaf', '15/01/2016 12', 15000, 0, 'test lad', 1, 0, ''),
+(47, 'teste3', 'sfg', '15/01/2016 12', 15000, 0, 'teste lad', 1, 0, ''),
+(48, 'teste4', 'fad', '16/12/2015 14', 15000, 0, 'test', 1, 0, ''),
+(49, 'teste20', 'dasff', '15/12/2016 12', 12234, 0, 'test la', 1, 0, ''),
+(50, 'cenas1000', 'cenas1000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0, ''),
+(55, 'teste4000', 'teste4000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0, ''),
+(56, 'teste5000', 'teste5000', '15/01/2016 16', 1234, 0, 'cenas lds', 1, 0, ''),
+(61, 'teste project', 'teste project', '17/12/2015 16', 15000, 0, 'cenas lds', 1, 0, '135500781822'),
+(62, 'teste project 2', 'teste project 2', '15/01/2016 16', 1234, 0, 'teste lda', 1, 0, '135500816637');
 
 --
 -- Triggers `project`
@@ -152,9 +155,9 @@ INSERT INTO `project` (`id_project`, `name`, `description`, `limit_date`, `targe
 DELIMITER $$
 CREATE TRIGGER `check_target_value` BEFORE INSERT ON `project`
  FOR EACH ROW BEGIN
-  IF new.target_value < 1 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Target value must be greater or equal than 1';
+	IF new.target_value < 1 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Target value must be greater or equal than 1';
     END IF;
 END
 $$
@@ -162,9 +165,9 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `check_target_value2` BEFORE UPDATE ON `project`
  FOR EACH ROW BEGIN
-  IF new.target_value < 1 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Target value must be greater or equal than 1';
+	IF new.target_value < 1 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Target value must be greater or equal than 1';
     END IF;
 END
 $$
@@ -214,7 +217,7 @@ CREATE TABLE `reward` (
   `description` varchar(200) COLLATE utf8_bin NOT NULL,
   `min_value` double NOT NULL,
   `id_project` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `reward`
@@ -231,9 +234,10 @@ INSERT INTO `reward` (`id_reward`, `description`, `min_value`, `id_project`) VAL
 (52, 'um teste', 5, 48),
 (53, 'um tetse', 5, 49),
 (54, 'cenas rewards', 5, 50),
-(55, 'cenas rewards', 5, 51),
-(56, 'cenas rewards', 5, 52),
-(57, 'cenas rewards', 5, 53);
+(59, 'um teste ', 5, 55),
+(60, 'um teste ', 5, 56),
+(65, 'cenas rewards', 5, 61),
+(66, 'cenas rewards', 5, 62);
 
 --
 -- Triggers `reward`
@@ -241,9 +245,9 @@ INSERT INTO `reward` (`id_reward`, `description`, `min_value`, `id_project`) VAL
 DELIMITER $$
 CREATE TRIGGER `check_min_value` BEFORE INSERT ON `reward`
  FOR EACH ROW BEGIN
-  IF new.min_value <1 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Minimum value of pledge must be greater or equal than 1';
+	IF new.min_value <1 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Minimum value of pledge must be greater or equal than 1';
     END IF;
 END
 $$
@@ -251,9 +255,9 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `check_min_value2` BEFORE UPDATE ON `reward`
  FOR EACH ROW BEGIN
-  IF new.min_value <1 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Minimum value of pledge must be greater or equal than 1';
+	IF new.min_value <1 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Minimum value of pledge must be greater or equal than 1';
     END IF;
 END
 $$
@@ -277,22 +281,21 @@ CREATE TABLE `user` (
   `secret_token` varchar(255) COLLATE utf8_bin NOT NULL,
   `user_token` varchar(255) COLLATE utf8_bin NOT NULL,
   `tumblr_username` varchar(50) COLLATE utf8_bin DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id_user`, `name`, `password`, `bi`, `age`, `email`, `account_balance`, `is_tumblr_account`, `secret_token`, `user_token`, `tumblr_username`) VALUES
-(1, 'joaoprg', '1234', '14354313', 22, 'joao@gmail.com', 9634, 0, '0', '0', NULL),
+(1, 'joaoprg', '1234', '14354313', 22, 'joao@gmail.com', 9634, 0, '0528EKboLVvYDeBT9btIfSvyLkTWxf8SFwZhS0vDyy6ORb1nEZ', 'GNuzZETD6TMRogxrlaohoMMpzQtRTotzKh1ekCEf3oqbQPYDMO', 'joaoprg'),
 (2, 'joao', 's', '1213242323', 22, 'subtil@gmail.com', 10150, 0, '', '0', NULL),
 (3, 'amd', 'amd', '1234', 34, 'amd@amd.com', 100, 0, '', '0', ''),
 (4, 'intel', 'intel', '12345678', 12, 'teste@teste.com', 100, 0, '', '0', ''),
 (5, 'guida', 'maria', '45', 54, 'maria@g.com', 100, 0, '', '0', ''),
 (6, 'ma', 'ma', '13434', 45, 'ma@ma.com', 100, 0, '', '0', ''),
 (7, 'je', 'quinha', '3123245', 67, 'je@sapo.pt', 100, 0, '', '0', ''),
-(8, 'marinho', 'aac', '768', 65, 'marinho@aac.pt', 100, 0, '', '0', ''),
-(16, 'joaoprg', NULL, NULL, NULL, NULL, 100, 1, 'ecXqHGuda61npuUasf8fSD923boOeAvXriMaFL0mf2zFjLbZEs', 'iZPoxH4p6hjL5PMvd9VjUYBIDB4n9VRZms94eQoLrd1d5YpuXM', NULL);
+(8, 'marinho', 'aac', '768', 65, 'marinho@aac.pt', 100, 0, '', '0', '');
 
 --
 -- Triggers `user`
@@ -300,9 +303,9 @@ INSERT INTO `user` (`id_user`, `name`, `password`, `bi`, `age`, `email`, `accoun
 DELIMITER $$
 CREATE TRIGGER `check_balance` BEFORE UPDATE ON `user`
  FOR EACH ROW BEGIN
-  IF new.account_balance <0 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Account balance must be greater or equal than 0';
+	IF new.account_balance <0 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Account balance must be greater or equal than 0';
     END IF;
 END
 $$
@@ -310,9 +313,9 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `check_balance2` BEFORE INSERT ON `user`
  FOR EACH ROW BEGIN
-  IF new.account_balance != 100 THEN 
-      SIGNAL SQLSTATE '45000'
-          SET MESSAGE_TEXT = 'Initial account balance must be 100';
+	IF new.account_balance != 100 THEN
+    	SIGNAL SQLSTATE '45000'
+        	SET MESSAGE_TEXT = 'Initial account balance must be 100';
     END IF;
 END
 $$
@@ -393,7 +396,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `alternative`
 --
 ALTER TABLE `alternative`
-  MODIFY `id_alternative` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
+  MODIFY `id_alternative` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT for table `donation`
 --
@@ -408,7 +411,7 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id_project` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
+  MODIFY `id_project` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=63;
 --
 -- AUTO_INCREMENT for table `project_has_user`
 --
@@ -423,12 +426,12 @@ ALTER TABLE `reply`
 -- AUTO_INCREMENT for table `reward`
 --
 ALTER TABLE `reward`
-  MODIFY `id_reward` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=58;
+  MODIFY `id_reward` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=67;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+  MODIFY `id_user` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
 --
 -- Constraints for dumped tables
 --
