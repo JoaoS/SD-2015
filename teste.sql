@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 19, 2015 at 01:48 PM
+-- Generation Time: Dec 19, 2015 at 02:26 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -128,26 +128,27 @@ CREATE TABLE `project` (
   `enterprise` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `id_user` bigint(20) DEFAULT NULL,
   `accepted` int(11) NOT NULL DEFAULT '0',
-  `post_id` varchar(255) COLLATE utf8_bin DEFAULT NULL
+  `post_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `base_hostname` varchar(255) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `project`
 --
 
-INSERT INTO `project` (`id_project`, `name`, `description`, `limit_date`, `target_value`, `current_value`, `enterprise`, `id_user`, `accepted`, `post_id`) VALUES
-(43, 'cenas', 'cenas maradas', '15/01/2016 16', 15000, 7, 'cenas lda', 1, 0, ''),
-(44, 'teste', 'teste', '15/01/2016 12', 15000, 0, 'test lda', 1, 0, ''),
-(45, 'cenas2', 'adf', '15/01/2016 16', 15000, 0, 'cenas', 1, 0, ''),
-(46, 'teste2', 'asdaf', '15/01/2016 12', 15000, 0, 'test lad', 1, 0, ''),
-(47, 'teste3', 'sfg', '15/01/2016 12', 15000, 0, 'teste lad', 1, 0, ''),
-(48, 'teste4', 'fad', '16/12/2015 14', 15000, 0, 'test', 1, 0, ''),
-(49, 'teste20', 'dasff', '15/12/2016 12', 12234, 0, 'test la', 1, 0, ''),
-(50, 'cenas1000', 'cenas1000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0, ''),
-(55, 'teste4000', 'teste4000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0, ''),
-(56, 'teste5000', 'teste5000', '15/01/2016 16', 1234, 0, 'cenas lds', 1, 0, ''),
-(61, 'teste project', 'teste project', '17/12/2015 16', 15000, 0, 'cenas lds', 1, 0, '135500781822'),
-(62, 'teste project 2', 'teste project 2', '15/01/2016 16', 1234, 0, 'teste lda', 1, 0, '135500816637');
+INSERT INTO `project` (`id_project`, `name`, `description`, `limit_date`, `target_value`, `current_value`, `enterprise`, `id_user`, `accepted`, `post_id`, `base_hostname`) VALUES
+(43, 'cenas', 'cenas maradas', '15/01/2016 16', 15000, 7, 'cenas lda', 1, 0, '', ''),
+(44, 'teste', 'teste', '15/01/2016 12', 15000, 0, 'test lda', 1, 0, '', ''),
+(45, 'cenas2', 'adf', '15/01/2016 16', 15000, 0, 'cenas', 1, 0, '', ''),
+(46, 'teste2', 'asdaf', '15/01/2016 12', 15000, 0, 'test lad', 1, 0, '', ''),
+(47, 'teste3', 'sfg', '15/01/2016 12', 15000, 0, 'teste lad', 1, 0, '', ''),
+(48, 'teste4', 'fad', '16/12/2015 14', 15000, 0, 'test', 1, 0, '', ''),
+(49, 'teste20', 'dasff', '15/12/2016 12', 12234, 0, 'test la', 1, 0, '', ''),
+(50, 'cenas1000', 'cenas1000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0, '', ''),
+(55, 'teste4000', 'teste4000', '17/12/2015 16', 1234, 0, 'cenas lds', 1, 0, '', ''),
+(56, 'teste5000', 'teste5000', '15/01/2016 16', 1234, 0, 'cenas lds', 1, 0, '', ''),
+(61, 'teste project', 'teste project', '17/12/2015 16', 15000, 0, 'cenas lds', 1, 0, '135500781822', ''),
+(62, 'teste project 2', 'teste project 2', '15/01/2016 16', 1234, 0, 'teste lda', 1, 0, '135500816637', '');
 
 --
 -- Triggers `project`

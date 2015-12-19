@@ -316,4 +316,9 @@ public class FundStarterBean {
         return this.server.getPostId(projectName);
     }
 
+    public String getBaseHostName(long idProject) throws RemoteException
+    {
+        return this.server.getBaseHostName(idProject);
+    }
+
 }

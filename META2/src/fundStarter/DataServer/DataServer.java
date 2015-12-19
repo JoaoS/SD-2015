@@ -2472,6 +2472,24 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
+    public String getBaseHostName(long idProject) throws RemoteException
+    {
+        ResultSet rt;
+        PreparedStatement ps;
+        String result = "";
+        String s="SELECT base_hostname FROM PROJECT WHERE id_project = '" + idProject + "'";
+        try {
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                result = rt.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error occurred getting post id";
+        }
+        return result;
+    }
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
