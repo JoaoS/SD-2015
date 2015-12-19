@@ -3,6 +3,7 @@ package fundStarter.DataServer;
 /**
  * Created by joaosubtil on 03/12/15.
  */
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import fundStarter.commons.*;
 import org.apache.struts2.components.Token;
 import org.json.simple.JSONObject;
@@ -896,7 +897,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 }
             }
             // fetch id_user
-            s="SELECT id_user FROM USER WHERE name = '" + username + "' and is_tumblr_account = '" + tumblrUser +  "'";
+            s="SELECT id_user,account_balance FROM USER WHERE name = '" + username + "' and is_tumblr_account = '" + tumblrUser +  "'";
             rt = connection.createStatement().executeQuery(s);
             connection.commit();
             if (rt.next())
@@ -2430,6 +2431,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
 
     public boolean setPostId(String projectName,String postId,String baseHostName) throws RemoteException
     {
+        System.out.println("dados="+projectName+" ; "+postId+" ; "+baseHostName);
         ResultSet rt;
         PreparedStatement ps;
         long idProject=-1;
@@ -2458,7 +2460,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         ResultSet rt;
         PreparedStatement ps;
         String result = "";
-        String s="SELECT post_id FROM PROJECT WHERE id = '" + idProject + "'";
+        String s="SELECT post_id FROM PROJECT WHERE id_project = '" + idProject + "'";
         try {
             rt = connection.createStatement().executeQuery(s);
             if(rt.next())

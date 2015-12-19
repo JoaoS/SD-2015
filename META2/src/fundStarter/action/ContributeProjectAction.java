@@ -63,11 +63,11 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
                 ///tenho de meter like na pagina do projecto do tumbrlrlrlrlrlrlr
                 //sacar id do projecto e a reblog key
                 //url-api.tumblr.com/v2/user/like	, by post
-                //preciso do post-id localmente e depois fazer um pedido para saber a reblog key
 
 
-                String post_id=this.getFundStarterBean().getPostIdTumblr(idProject);
-
+                String post_id=null;
+                post_id=this.getFundStarterBean().getPostIdTumblr(idProject);
+                System.out.println("id="+post_id);
                 //se nao der erro
                 if (!post_id.equals("Error occurred getting post id")){
 
@@ -75,24 +75,24 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
                     /*fazer pedido para saber os dados daquele post no tumbllrlrlrlr*/
 
                     //api.tumblr.com/v2/blog/{base-hostname}/posts[/type]?api_key={key}&[optional-params=]
+                    //get base hostname
+                    String base_hostname=this.getFundStarterBean().getBaseHostName(idProject);
+                    String api_key="54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4";
 
-                    String protected_resource_url = "url-api.tumblr.com/v2/user/like";
+
+                    String protected_resource_url = "api.tumblr.com/v2/blog/"+base_hostname+"/posts[/type]?api_key="+api_key;
                     TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
                     OAuthService service = tumblrBean.getService();
                     OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
 
-                    requestOauth.addBodyParameter("type","text");
-                    requestOauth.addBodyParameter("title","Created project " + projectName);
-                    requestOauth.addBodyParameter("body",description);
-
                     service.signRequest(tumblrBean.getAccessToken(), requestOauth);
                     Response response = requestOauth.send();
-                    System.out.println(response.getBody());
+                    System.out.println("TONY"+response.getBody());
 
                     /*-------------------------------------------------------------*/
 
 
-                    String protected_resource_url = "url-api.tumblr.com/v2/user/like";
+                   /*String protected_resource_url = "url-api.tumblr.com/v2/user/like";
                     TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
                     OAuthService service = tumblrBean.getService();
                     OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
@@ -104,6 +104,7 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
                     service.signRequest(tumblrBean.getAccessToken(), requestOauth);
                     Response response = requestOauth.send();
                     System.out.println(response.getBody());
+                    */
 
                 }
 
