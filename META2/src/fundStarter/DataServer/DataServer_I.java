@@ -53,4 +53,6 @@ public interface DataServer_I extends Remote {
     public ArrayList<String> getAccessToken(String username,int tumblrUser) throws RemoteException;
     public String associateAccount(String username,int tumblrUser,String tumblrUsername,String secret, String userToken) throws RemoteException;
     public String checkAssociated(String tumblrUsername) throws RemoteException;
+    public boolean updateAccessToken(String secret,String userToken,String oldSecret, String oldUserToken) throws RemoteException;
+    public boolean updateAccessToken(String secret,String userToken,String username,int tumblrUser) throws RemoteException;
 }
