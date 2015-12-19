@@ -58,6 +58,7 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
 
 
 
+        /*
             if(session.get("blogUrl") != null)
             {
                 ///tenho de meter like na pagina do projecto do tumbrlrlrlrlrlrlr
@@ -72,15 +73,18 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
                 if (!post_id.equals("Error occurred getting post id")){
 
 
-                    /*fazer pedido para saber os dados daquele post no tumbllrlrlrlr*/
+                    //fazer pedido para saber os dados daquele post no tumbllrlrlrlr
 
                     //api.tumblr.com/v2/blog/{base-hostname}/posts[/type]?api_key={key}&[optional-params=]
                     //get base hostname
                     String base_hostname=this.getFundStarterBean().getBaseHostName(idProject);
                     String api_key="54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4";
 
+                    //published posts
+                    //
+                    String protected_resource_url = "http://api.tumblr.com/v2/blog/"+base_hostname+"/posts?api_key="+api_key+"";
+                    System.out.println(protected_resource_url);
 
-                    String protected_resource_url = "api.tumblr.com/v2/blog/"+base_hostname+"/posts[/type]?api_key="+api_key;
                     TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
                     OAuthService service = tumblrBean.getService();
                     OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
@@ -105,13 +109,14 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
                     Response response = requestOauth.send();
                     System.out.println(response.getBody());
                     */
-
+/*
                 }
+        */
 
 
             }
 
-        }
+
 
         return  SUCCESS;
 

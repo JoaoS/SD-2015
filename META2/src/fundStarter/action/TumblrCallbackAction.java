@@ -60,7 +60,7 @@ public class TumblrCallbackAction extends ActionSupport implements SessionAware 
         this.getFundStarterBean().setUsername(username);
         this.getFundStarterBean().setTumblrUser(1);
         // check if already exists a tumblraccount with that username associated to that fundStarter account
-        if(this.getFundStarterBean().checkAssociated(username).equals("That tumblr account is already associated with another account"))
+        if(this.getFundStarterBean().checkAssociated(username).equals("That tumblr account is already associated with another fundStarter account"))
         {
             session.put("error","That tumblr account is already associated with another fundStarter account");
             return  ERROR;
