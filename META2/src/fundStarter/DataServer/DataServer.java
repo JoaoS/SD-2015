@@ -2287,7 +2287,8 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             {
                 return "Error occurred associating your account";
             }
-            //check if it is already associated
+
+            /*//check if it is already associated
             // fetch id_user
             s="SELECT tumblr_username FROM USER WHERE name = '" + username + "' and is_tumblr_account = '" + tumblrUser +  "'";
             rt = connection.createStatement().executeQuery(s);
@@ -2298,7 +2299,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
                 {
                     return "You have this account associated already";
                 }
-            }
+            }*/
             s = "UPDATE user SET tumblr_username = ?, secret_token = ?, user_token = ?  WHERE id_user = ?";
             ps = connection.prepareStatement(s);
             ps.setString(1, tumblrUsername);
@@ -2317,6 +2318,36 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             }
         }
         return "Account associated with success";
+    }
+
+    public boolean isAssociatedAccount(String username,int tumblrUser) throws RemoteException
+    {
+        ResultSet rt = null;
+        PreparedStatement ps;
+        String result="";
+        try {
+            // fetch id_user
+            String s="SELECT tumblr_username FROM USER WHERE name = '" + username + "' and is_tumblr_account = '" + tumblrUser +  "'";
+            rt = connection.createStatement().executeQuery(s);
+            connection.commit();
+            if (rt.next())
+            {
+                if(rt.getString(1) != null)
+                {
+                    return true;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Exception at checkAssociated");
+            try {
+                connection.rollback();
+                return false;
+            } catch (SQLException e1) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, e1);
+            }
+        }
+        return false;
     }
 
 
@@ -2391,6 +2422,31 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             } catch (SQLException e1) {
                 Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, e1);
             }
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean setPostId(String projectName,String postId) throws RemoteException
+    {
+        ResultSet rt;
+        PreparedStatement ps;
+        long idProject=-1;
+        String s="SELECT ID_PROJECT FROM PROJECT WHERE name = '" + projectName + "'";
+        try {
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                idProject = rt.getLong(1);
+            }
+            s = "UPDATE project SET post_id= ? WHERE id_project = ?";
+            ps = connection.prepareStatement(s);
+            ps.setString(1, postId);
+            ps.setLong(2,idProject);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
         return true;

@@ -48,6 +48,7 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         <action name="login" class="fundStarter.action.LoginAction" method="execute">
             <interceptor-ref name="defaultStack" />
             <result name="success">/WEB-INF/menuIni.jsp</result>
+            <result name="input" type="redirectAction">loginTumblr?login=0</result>
         </action>
         <!--signup -->
         <action name="signUp" class="fundStarter.action.SignUpAction" method="execute">

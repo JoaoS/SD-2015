@@ -11,6 +11,7 @@ import fundStarter.commons.Reward;
 import fundStarter.model.FundStarterBean;
 import fundStarter.model.TumblrBean;
 import org.apache.struts2.interceptor.SessionAware;
+import org.json.JSONObject;
 import sun.invoke.empty.Empty;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -73,6 +74,16 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
                 service.signRequest(tumblrBean.getAccessToken(), requestOauth);
                 Response response = requestOauth.send();
                 System.out.println(response.getBody());
+                //////////////////////////////////////////
+                JSONObject obj = null;
+                try {
+                    obj = new JSONObject(response.getBody());
+                    String postId = obj.getJSONObject("response").get("id").toString();
+                    this.getFundStarterBean().setPostId(projectName,postId);
+                } catch (Exception e) {
+                    System.out.println("Exception with json");
+                    e.printStackTrace();
+                }
             }
             session.put("success",checkCreated);
         }
