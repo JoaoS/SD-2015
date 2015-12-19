@@ -29,6 +29,7 @@ public class AssociateCallbackAction extends ActionSupport implements SessionAwa
     private String code;
     private static final String PROTECTED_RESOURCE_URL = "http://api.tumblr.com/v2/user/info";
     private String tumblrUsername;
+    private String blogUrl;
 
     @Override
     public String execute() throws RemoteException {
@@ -49,6 +50,9 @@ public class AssociateCallbackAction extends ActionSupport implements SessionAwa
         try {
             obj = new JSONObject(response.getBody());
             tumblrUsername = obj.getJSONObject("response").getJSONObject("user").get("name").toString();
+            blogUrl = obj.getJSONObject("response").getJSONObject("user").getJSONArray("blogs").getJSONObject(0).get("url").toString();
+            blogUrl = blogUrl.replace("http://","");
+            blogUrl = blogUrl.replace("/","");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +60,10 @@ public class AssociateCallbackAction extends ActionSupport implements SessionAwa
         String error = this.getFundStarterBean().associateAccount(this.getFundStarterBean().getUsername(),this.getFundStarterBean().getTumblrUser(),tumblrUsername,accessToken.getSecret(),accessToken.getToken());
         if(error.equals("Account associated with success"))
         {
+            session.put("blogUrl",blogUrl);
             session.put("success",error);
+            tumblrBean.setAccessToken(accessToken);
+            this.getFundStarterBean().updateAccessToken(accessToken.getSecret(),accessToken.getToken(),this.getFundStarterBean().getUsername(),this.getFundStarterBean().getTumblrUser());
         }
         else
         {

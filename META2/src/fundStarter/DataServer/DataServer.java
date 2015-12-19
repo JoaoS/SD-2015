@@ -2350,6 +2350,52 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
+    public boolean updateAccessToken(String secret,String userToken,String oldSecret, String oldUserToken) throws RemoteException
+    {
+        PreparedStatement ps;
+        String s = "UPDATE user SET secret_token = ?, user_token = ?  WHERE secret_token = ? and user_token = ?";
+        try {
+            ps = connection.prepareStatement(s);
+            ps.setString(1, secret);
+            ps.setString(2,userToken);
+            ps.setString(3,oldSecret);
+            ps.setString(4,oldUserToken);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, e1);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateAccessToken(String secret,String userToken,String username,int tumblrUser)
+    {
+        PreparedStatement ps;
+        String s = "UPDATE user SET secret_token = ?, user_token = ?  WHERE name = ? and is_tumblr_account = ?";
+        try {
+            ps = connection.prepareStatement(s);
+            ps.setString(1, secret);
+            ps.setString(2,userToken);
+            ps.setString(3,username);
+            ps.setInt(4,tumblrUser);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                Logger.getLogger(DataServer.class.getName()).log(Level.SEVERE, null, e1);
+            }
+            return false;
+        }
+        return true;
+    }
+
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
@@ -2390,7 +2436,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             Properties prop = new Properties();
             InputStream input = null;
             try {
-                input = new FileInputStream("allProp.properties");
+                input = new FileInputStream("new.properties");
                 prop.load(input);
                 rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));
                 remoteName=prop.getProperty("rmiName");

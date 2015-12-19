@@ -290,4 +290,15 @@ public class FundStarterBean {
     {
         return this.server.checkAssociated(tumblerUsername);
     }
+
+    public boolean updateAccessToken(String secret,String userToken,String oldSecret,String oldUserToken) throws RemoteException
+    {
+        return this.server.updateAccessToken(secret,userToken,oldSecret,oldUserToken);
+    }
+
+    public boolean updateAccessToken(String secret,String userToken,String username,int tumblrUser) throws RemoteException
+    {
+        return this.server.updateAccessToken(secret,userToken,username,tumblrUser);
+    }
+
 }

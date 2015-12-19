@@ -74,7 +74,15 @@ public class TumblrCallbackAction extends ActionSupport implements SessionAware 
             session.put("success","Login with tumblr account made with success");
             ArrayList<String> tokens = this.getFundStarterBean().getAccessToken(username,1);
             Token access = new Token(tokens.get(0),tokens.get(1));
-            tumblrBean.setAccessToken(access);
+            if(access != accessToken)
+            {
+                tumblrBean.setAccessToken(accessToken);
+                this.getFundStarterBean().updateAccessToken(accessToken.getSecret(),accessToken.getToken(),access.getSecret(),access.getToken());
+            }
+            else
+            {
+                tumblrBean.setAccessToken(access);
+            }
             return SUCCESS;
         }
         else
