@@ -44,7 +44,7 @@ public class TCPServer {
 
         try {
 
-            input = new FileInputStream("allProp.properties");
+            input = new FileInputStream("new.properties");
             // load a properties file
             prop.load(input);
             // get the property value and print it out

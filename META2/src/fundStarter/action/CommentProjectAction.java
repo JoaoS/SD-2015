@@ -29,7 +29,7 @@ public class CommentProjectAction extends ActionSupport implements SessionAware
         }
 
         //send message and update message history
-
+        System.out.println("user is commenting ="+this.getFundStarterBean().getUsername());
         long idProject=this.getFundStarterBean().getViewDetailsId();
         String contributionMessage="["+this.getFundStarterBean().getUsername()+"] commented your project("+idProject+")";
         // String originUser=this.getFundStarterBean().getUsername();

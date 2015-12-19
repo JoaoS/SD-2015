@@ -10,6 +10,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -25,13 +27,21 @@ public class LoginTumblrAction extends ActionSupport implements SessionAware {
         HttpServletRequest request = ServletActionContext.getRequest();
         String  parameter = request.getParameter("login");
         OAuthService service;
+        String myIP = null;
+        try {
+            myIP = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Meu IP="+myIP);
         if(parameter.equals("1"))
         {
+
             service = new ServiceBuilder()
                     .provider(TumblrApi.class)
                     .apiKey("54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4")
                     .apiSecret("A1ZLlO8VPDHkZizbrJP94aRYrFYnVjoifZX3WnkQ8E001X314k")
-                    .callback("http://localhost:8080/tumblrCallbackAction")
+                    .callback("http://"+myIP+":8080/tumblrCallbackAction")
                     .build();
         }
         else
@@ -40,7 +50,7 @@ public class LoginTumblrAction extends ActionSupport implements SessionAware {
                     .provider(TumblrApi.class)
                     .apiKey("54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4")
                     .apiSecret("A1ZLlO8VPDHkZizbrJP94aRYrFYnVjoifZX3WnkQ8E001X314k")
-                    .callback("http://localhost:8080/associateCallbackAction")
+                    .callback("http://"+myIP+":8080/associateCallbackAction")
                     .build();
         }
         Token requestToken = service.getRequestToken();
