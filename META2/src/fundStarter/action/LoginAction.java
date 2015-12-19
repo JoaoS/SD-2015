@@ -42,7 +42,10 @@ public class LoginAction extends ActionSupport implements SessionAware
                 {
                     return INPUT;
                 }
-                return SUCCESS;
+                else
+                {
+                    return SUCCESS;
+                }
             }
             else
             {

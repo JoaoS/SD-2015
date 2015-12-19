@@ -311,4 +311,9 @@ public class FundStarterBean {
         return this.server.isAssociatedAccount(username,tumblrUser);
     }
 
+    public String getPostId(String projectName) throws RemoteException
+    {
+        return this.server.getPostId(projectName);
+    }
+
 }
