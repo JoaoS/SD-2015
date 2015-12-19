@@ -14,15 +14,12 @@
     <title>FundStarter add Reward</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <link rel='stylesheet' href='../style.css'/>
-    <link rel='stylesheet' href='../bootstrap-social.css'/>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href=".../bootstrap.min.css">
-    <!--font awesome -->
-    <link rel="stylesheet" href=".../font-awesome.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- jQuery library -->
-    <script src=".../jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
-    <script src=".../bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
         var websocket = null;
@@ -132,9 +129,7 @@
         function doSend() {
             var message = JSON.stringify({"from" : "${session.fundStarterBean.username}", "text" : document.getElementById('replyComment').value, "date": getFormattedDate()});
             if (document.getElementById('replyComment').value  != '')
-            {
                 websocket.send(message);
-            }
         }
 
         function getFormattedDate()
@@ -156,6 +151,30 @@
         function writeToCommentsBox(message) {
             var aux = JSON.parse(message.data);
             var commentsBox = document.getElementById('replies-box');
+            /*var commenter = document.createElement('strong');
+             commenter.className = "pull-left primary-font";
+             commenter.style.wordWrap = 'break-word';
+             commenter.innerHTML = jsonObj.from + " Message ID:" + aux.idMessage;
+             commentsBox.appendChild(commenter);
+             var moment =  document.createElement('small');
+             moment.className = "pull-right text-muted";
+             moment.style.wordWrap = 'break-word';
+             var hour  = document.createElement('span');
+             hour.className = "glyphicon glyphicon-time";
+             hour.style.wordWrap = 'break-word';
+             hour.innerHTML = jsonObj.date;
+             moment.appendChild(hour);
+             commentsBox.appendChild(moment);
+             var br = document.createElement('br');
+             br.style.wordWrap = 'break-word';
+             commentsBox.appendChild(br);
+             var comment = document.createElement('li');
+             comment.className = "ui-state-default";
+             comment.id = "replies";
+             comment.style.wordWrap = 'break-word';
+             comment.innerHTML = jsonObj.text;
+             commentsBox.appendChild(comment);
+             commentsBox.scrollTop = commentsBox.scrollHeight;*/
             if(aux.hasOwnProperty("idReply"))
             {
                 var commenter = document.createElement('strong');
@@ -215,8 +234,14 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp"/>
-
+<div class = "header">
+    <div class = "col-md-11">
+        <h1>FundStarter</h1>
+    </div>
+    <div class = "cold-md-1">
+        <a class  ="btn btn-primary" id = "logout-btn" href ="#">Logout</a>
+    </div>
+</div>
 
 <!--Reply to supporter's messages-->
 <div class="container-comments">
@@ -260,8 +285,6 @@
         </div>
     </div>
 </div>
-<!--websocket notifications box-->
-<jsp:include page="websocketbox.jsp"/>
 <div class="footer-reply-messages">
     <div class="container">
         <div class="col-md-2">
@@ -269,8 +292,8 @@
         <div class="col-md-4">
             <h3><strong>Authors</strong></h3>
             <ul class = "list-unstyled">
-                <li>JoÃ£o GonÃ§alves 2012143747</li>
-                <li>JoÃ£o Subtil 2012151975</li>
+                <li>João Gonçalves 2012143747</li>
+                <li>João Subtil 2012151975</li>
             </ul>
         </div>
         <div class="col-md-2">
@@ -278,7 +301,7 @@
         <div class="col-md-4">
             <h3><strong>FundStarter</strong></h3>
             <ul class = "list-unstyled">
-                <li>Sistemas DistribuÃ­dos 2015/2016</li>
+                <li>Sistemas Distribuídos 2015/2016</li>
             </ul>
         </div>
     </div>

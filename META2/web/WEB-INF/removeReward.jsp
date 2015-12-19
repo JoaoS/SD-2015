@@ -14,15 +14,12 @@
     <title>FundStarter remove Reward</title>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <link rel='stylesheet' href='../style.css'/>
-    <link rel='stylesheet' href='../bootstrap-social.css'/>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href=".../bootstrap.min.css">
-    <!--font awesome -->
-    <link rel="stylesheet" href=".../font-awesome.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- jQuery library -->
-    <script src=".../jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
-    <script src=".../bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
 
