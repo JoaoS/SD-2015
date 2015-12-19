@@ -2308,6 +2308,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             ps.setString(3,userToken);
             ps.setLong(4,idUser);
             ps.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Exception at associateAccount");
@@ -2393,6 +2394,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             ps.setString(3,oldSecret);
             ps.setString(4,oldUserToken);
             ps.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -2416,6 +2418,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             ps.setString(3,username);
             ps.setInt(4,tumblrUser);
             ps.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -2442,12 +2445,19 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             {
                 idProject = rt.getLong(1);
             }
-            s = "UPDATE project SET post_id= ? and base_hostname = ? WHERE id_project = ?";
+            s = "UPDATE project SET post_id = ? WHERE id_project = ?";
             ps = connection.prepareStatement(s);
             ps.setString(1, postId);
-            ps.setString(2,baseHostName);
-            ps.setLong(3,idProject);
+            ps.setLong(2,idProject);
             ps.executeUpdate();
+
+            s = "UPDATE project SET base_hostname = ? WHERE id_project = ?";
+            ps = connection.prepareStatement(s);
+            ps.setString(1, baseHostName);
+            ps.setLong(2,idProject);
+            ps.executeUpdate();
+            connection.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
