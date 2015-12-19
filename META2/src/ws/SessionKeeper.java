@@ -17,7 +17,7 @@ public class SessionKeeper {
     private Session session;
     private String username;
     private HttpSession httpSession;
-    FundStarterBean beanS;
+    private FundStarterBean beanS;
 
 
     public SessionKeeper(Session session, String username, HttpSession httpSession, FundStarterBean beanS) {

@@ -2452,12 +2452,12 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return true;
     }
 
-    public String getPostId(String projectName) throws RemoteException
+    public String getPostId(long idProject) throws RemoteException
     {
         ResultSet rt;
         PreparedStatement ps;
         String result = "";
-        String s="SELECT post_id FROM PROJECT WHERE name = '" + projectName + "'";
+        String s="SELECT post_id FROM PROJECT WHERE id = '" + idProject + "'";
         try {
             rt = connection.createStatement().executeQuery(s);
             if(rt.next())
