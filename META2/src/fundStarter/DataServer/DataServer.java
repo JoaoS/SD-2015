@@ -2443,8 +2443,8 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             s = "UPDATE project SET post_id= ? and base_hostname = ? WHERE id_project = ?";
             ps = connection.prepareStatement(s);
             ps.setString(1, postId);
-            ps.setLong(2,idProject);
-            ps.setString(3,baseHostName);
+            ps.setString(2,baseHostName);
+            ps.setLong(3,idProject);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
