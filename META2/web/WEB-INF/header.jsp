@@ -24,7 +24,6 @@
         </div>
     </div>
     <!--
-    todo serÃ¡ necessario adicionar aqui um espaÃ§o para ver as notificaÃ§Ãµes(websockets)???
 
     -->
 </div>
