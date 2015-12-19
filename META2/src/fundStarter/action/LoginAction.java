@@ -30,11 +30,13 @@ public class LoginAction extends ActionSupport implements SessionAware
         {
             this.getFundStarterBean().setUsername(this.username);
             this.getFundStarterBean().setPassword(this.password);
+            this.getFundStarterBean().setTumblrUser(0);
             if(this.getFundStarterBean().checkLogin() > 0)
             {
                 session.put("username", username);
                 session.put("password",password);
                 session.put("loggedin", true);
+                session.put("tumblr",false);
                 return SUCCESS;
             }
             else

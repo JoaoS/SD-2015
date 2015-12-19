@@ -1,10 +1,15 @@
 package fundStarter.action;
 
 
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuthService;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 import fundStarter.model.FundStarterBean;
+import fundStarter.model.TumblrBean;
 import org.apache.struts2.interceptor.SessionAware;
 import sun.invoke.empty.Empty;
 import java.rmi.RemoteException;
@@ -56,6 +61,19 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
         String checkCreated = this.getFundStarterBean().addProject(projectName,description, projectDate,Long.parseLong(targetValue),enterprise,rewards,alternatives);
         if(checkCreated.equals("Project created with success"))
         {
+            if(session.get("blogUrl") != null)
+            {
+                String protected_resource_url = "http://api.tumblr.com/v2/blog/" + session.get("blogUrl") + "/post";
+                TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
+                OAuthService service = tumblrBean.getService();
+                OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
+                requestOauth.addBodyParameter("type","text");
+                requestOauth.addBodyParameter("title","Created project " + projectName);
+                requestOauth.addBodyParameter("body",description);
+                service.signRequest(tumblrBean.getAccessToken(), requestOauth);
+                Response response = requestOauth.send();
+                System.out.println(response.getBody());
+            }
             session.put("success",checkCreated);
         }
         else

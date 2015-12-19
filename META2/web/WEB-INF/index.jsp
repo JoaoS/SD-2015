@@ -44,11 +44,9 @@
                   </div>
                   <s:submit type = "button" class="btn btn-primary btn-lg center-block" id="login-btn"/>
             </s:form>
-            <s:form action="loginTumblr" method = "post" role = "form">
-                <button class="btn btn-lg btn-social btn-tumblr" id = "tumblr-btn">
-                    <span class="fa fa-tumblr"></span> Login with tumblr
-                </button>
-            </s:form>
+            <a class="btn btn-lg btn-social btn-tumblr" id = "tumblr-btn" href = "loginTumblr?login=1">
+                <span class="fa fa-tumblr"></span> Login with tumblr
+            </a>
         </div>
     </div>
     <div class = "supporting-register">

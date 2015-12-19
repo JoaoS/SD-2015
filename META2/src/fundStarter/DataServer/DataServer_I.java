@@ -30,14 +30,27 @@ public interface DataServer_I extends Remote {
     public String replyMessage(long idProject,String username ,long idMessage, String reply) throws RemoteException;
     public boolean checkProjectsDate() throws RemoteException;
     public String cancelProject(long idProject,String username) throws RemoteException;
-    public String getAdminProjectIds(String username) throws RemoteException;
+    public String getAdminProjectIds(String username,int tumblrUser) throws RemoteException;
     public String getAlternativeIdsProject(long idProject) throws RemoteException;
     public ArrayList<String> showCommentsProject2(long idProject,int mode) throws RemoteException;
     public String getMessagesProjectIds(long idProject) throws RemoteException;
     public String getNumberProjects() throws RemoteException;
-    public String addProject2(String username, String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException;
     public String getRewardsProjectIds(long idProject) throws RemoteException;
     public String getProjectAdmin(long idProject) throws RemoteException;
     public long getCurrentValue(long idProject) throws RemoteException;
-
+    public boolean addTumblrUser(String username, String secret, String userToken) throws RemoteException;
+    public long checkAccountBalance(String username,int tumblrUser) throws RemoteException;
+    public String checkRewards(String username,int tumblrUser) throws RemoteException;
+    public String addProject2(String username,int tumblrUser,String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws RemoteException;
+    public String contributeToProject(long idProject,int tumblrUser,String username,float pledgeValue,long alternativeChoosen) throws RemoteException;
+    public String commentProject(long idProject,int tumblrUser,String username,String comment) throws RemoteException;
+    public String showAdminProjects(String username, int tumblrUser) throws RemoteException;
+    public String addReward(long idProject,Reward r,String username,int tumblrUser) throws RemoteException;
+    public String removeReward(long idProject,long idReward,String username,int tumblrUser) throws RemoteException;
+    public String cancelProject(long idProject,String username,int tumblrUser) throws RemoteException;
+    public String replyMessage(long idProject,String username ,long idMessage, String reply,int tumblrUser) throws RemoteException;
+    public boolean checkTumblrAccount(String username) throws  RemoteException;
+    public ArrayList<String> getAccessToken(String username,int tumblrUser) throws RemoteException;
+    public String associateAccount(String username,int tumblrUser,String tumblrUsername,String secret, String userToken) throws RemoteException;
+    public String checkAssociated(String tumblrUsername) throws RemoteException;
 }

@@ -109,6 +109,9 @@
                     <li><a data-toggle="tab" href="#menu6">Administrator menu</a></li>
                 </ul>
             </div>
+            <a class="btn btn-lg btn-social btn-tumblr" id = "tumblr-btn" href = "loginTumblr?login=0">
+                <span class="fa fa-tumblr"></span> Associate with tumblr
+            </a>
         </div>
         <div class="col-md-1">
         </div>

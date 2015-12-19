@@ -1,5 +1,6 @@
 package fundStarter.model;
 
+import com.github.scribejava.core.model.Token;
 import fundStarter.DataServer.*;
 import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
@@ -28,6 +29,7 @@ public class FundStarterBean {
     private long viewDetailsId;
     private long alternativeVotedId;
     private float pledgeValue;
+    private int tumblrUser;
 
     private ArrayList<String> oldWebsocketMessages=new ArrayList<String>();
 
@@ -95,6 +97,14 @@ public class FundStarterBean {
 
     public void setEmail(String email) {this.email = email;}
 
+    public int getTumblrUser() {
+        return tumblrUser;
+    }
+
+    public void setTumblrUser(int tumblrUser) {
+        this.tumblrUser = tumblrUser;
+    }
+
     public String getIdSelected() {
         return idSelected;
     }
@@ -142,12 +152,12 @@ public class FundStarterBean {
 
     public long checkAccountBalance() throws RemoteException
     {
-        return this.server.checkAccountBalance(username);
+        return this.server.checkAccountBalance(username,tumblrUser);
     }
 
     public String checkRewards() throws RemoteException
     {
-        return this.server.checkRewards(username);
+        return this.server.checkRewards(username,tumblrUser);
     }
 
     public String getNumberProjects() throws RemoteException
@@ -159,16 +169,16 @@ public class FundStarterBean {
     public String showAdminProjects() throws RemoteException
     {
         getAdminProjectIds();
-        return this.server.showAdminProjects(username);
+        return this.server.showAdminProjects(username,tumblrUser);
     }
     public String getAdminProjectIds() throws RemoteException
     {
-        return this.server.getAdminProjectIds(username);
+        return this.server.getAdminProjectIds(username,tumblrUser);
     }
 
     public String addRewards(Long id, Reward r, String username)throws RemoteException
     {
-        return  this.server.addReward(id, r,username);
+        return  this.server.addReward(id, r,username,tumblrUser);
     }
 
     public String viewProject() throws RemoteException
@@ -183,11 +193,11 @@ public class FundStarterBean {
 
     public String contributeToProject() throws RemoteException
     {
-        return this.server.contributeToProject(viewDetailsId,username,pledgeValue,alternativeVotedId);
+        return this.server.contributeToProject(viewDetailsId,tumblrUser,username,pledgeValue,alternativeVotedId);
     }
 
     public String addProject(String name, String description, String limitDate, long targetValue, String enterprise, ArrayList<Reward> rewards, ArrayList<Alternative> alternatives) throws  RemoteException {
-        return this.server.addProject2(username, name, description, limitDate, targetValue, enterprise, rewards, alternatives);
+        return this.server.addProject2(username, tumblrUser ,name, description, limitDate, targetValue, enterprise, rewards, alternatives);
 
     }
 
@@ -199,17 +209,17 @@ public class FundStarterBean {
     }
     public String removeRewards(long idProject,long idReward,String username) throws RemoteException
     {
-        return this.server.removeReward(idProject,idReward,username);
+        return this.server.removeReward(idProject,idReward,username,tumblrUser);
     }
 
     public String cancelProject(long idProject) throws RemoteException
     {
-        return this.server.cancelProject(idProject);
+        return this.server.cancelProject(idProject,username,tumblrUser);
     }
 
     public String commentProject(String comment) throws RemoteException
     {
-        return this.server.commentProject(this.viewDetailsId,this.username,comment);
+        return this.server.commentProject(this.viewDetailsId,tumblrUser,this.username,comment);
     }
 
 
@@ -237,7 +247,7 @@ public class FundStarterBean {
     {
         String s[]=this.getIdSelected().split(" ");
         Long l=Long.parseLong(s[2]);
-        return this.server.replyMessage(l,username,messageSelected,reply);
+        return this.server.replyMessage(l,username,messageSelected,reply,tumblrUser);
     }
 
     public String getRewardsProjectIds() throws RemoteException
@@ -254,5 +264,30 @@ public class FundStarterBean {
 
     public  long getProjectValue(long id)throws RemoteException{
         return this.server.getCurrentValue(id);
+    }
+
+    public boolean addTumblrUser(String username, String secret, String userToken) throws RemoteException
+    {
+        return this.server.addTumblrUser(username,secret,userToken);
+    }
+
+    public boolean checkTumblrAccount(String username) throws RemoteException
+    {
+        return this.server.checkTumblrAccount(username);
+    }
+
+    public ArrayList<String> getAccessToken(String username,int tumblrUser) throws RemoteException
+    {
+        return this.server.getAccessToken(username,tumblrUser);
+    }
+
+    public String associateAccount(String username,int tumblrUser,String tumblrUsername,String secret, String userToken) throws RemoteException
+    {
+        return this.server.associateAccount(username,tumblrUser,tumblrUsername,secret,userToken);
+    }
+
+    public String checkAssociated(String tumblerUsername) throws RemoteException
+    {
+        return this.server.checkAssociated(tumblerUsername);
     }
 }

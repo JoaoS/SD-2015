@@ -113,12 +113,20 @@ and should reside on the classpath of the webapp (generally /WEB-INF/classes). -
         <action name="loginTumblr" class="fundStarter.action.LoginTumblrAction" method="execute">
             <interceptor-ref name="defaultStack" />
             <result name="redirect" type = "redirect">${url}</result>
+            <result name="error">/WEB-INF/index.jsp</result>
         </action>
 
         <action name="tumblrCallbackAction" class="fundStarter.action.TumblrCallbackAction" method="execute">
             <interceptor-ref name="defaultStack" />
             <result name="success">/WEB-INF/menuIni.jsp</result>
+            <result name="error">/WEB-INF/error.jsp</result>
         </action>
+
+        <action name="associateCallbackAction" class="fundStarter.action.AssociateCallbackAction" method="execute">
+            <result name="success">/WEB-INF/menuIni.jsp</result>
+            <result name="error">/WEB-INF/error.jsp</result>
+        </action>
+
 
 
     </package>

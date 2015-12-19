@@ -22,14 +22,13 @@ import java.util.Map;
 /**
  * Created by joaogoncalves on 17/12/15.
  */
-public class TumblrCallbackAction extends ActionSupport implements SessionAware {
+public class AssociateCallbackAction extends ActionSupport implements SessionAware {
 
     private static final long serialVersionUID = 4L;
     private Map<String, Object> session;
     private String code;
     private static final String PROTECTED_RESOURCE_URL = "http://api.tumblr.com/v2/user/info";
-    private String username = null;
-    private String blogUrl = null;
+    private String tumblrUsername;
 
     @Override
     public String execute() throws RemoteException {
@@ -49,52 +48,21 @@ public class TumblrCallbackAction extends ActionSupport implements SessionAware 
         JSONObject obj = null;
         try {
             obj = new JSONObject(response.getBody());
-            username = obj.getJSONObject("response").getJSONObject("user").get("name").toString();
-            blogUrl = obj.getJSONObject("response").getJSONObject("user").getJSONArray("blogs").getJSONObject(0).get("url").toString();
-            blogUrl = blogUrl.replace("http://","");
-            blogUrl = blogUrl.replace("/","");
+            tumblrUsername = obj.getJSONObject("response").getJSONObject("user").get("name").toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //---------------------------create user account-------------------------------------
-        this.getFundStarterBean().setUsername(username);
-        this.getFundStarterBean().setTumblrUser(1);
-        // check if already exists a tumblraccount with that username associated to that fundStarter account
-        if(this.getFundStarterBean().checkAssociated(username).equals("That tumblr account is already associated with another account"))
+        //-----------------------associate account---------------------
+        String error = this.getFundStarterBean().associateAccount(this.getFundStarterBean().getUsername(),this.getFundStarterBean().getTumblrUser(),tumblrUsername,accessToken.getSecret(),accessToken.getToken());
+        if(error.equals("Account associated with success"))
         {
-            session.put("error","That tumblr account is already associated with another fundStarter account");
-            return  ERROR;
-        }
-        if(this.getFundStarterBean().checkTumblrAccount(username))
-        {
-            session.put("username", username);
-            session.put("loggedin", true);
-            session.put("tumblr",true);
-            session.put("blogUrl",blogUrl);
-            session.put("success","Login with tumblr account made with success");
-            ArrayList<String> tokens = this.getFundStarterBean().getAccessToken(username,1);
-            Token access = new Token(tokens.get(0),tokens.get(1));
-            tumblrBean.setAccessToken(access);
-            return SUCCESS;
+            session.put("success",error);
         }
         else
         {
-            if(this.getFundStarterBean().addTumblrUser(username,accessToken.getSecret(),accessToken.getToken()))
-            {
-                session.put("username", username);
-                session.put("loggedin", true);
-                session.put("tumblr",true);
-                session.put("blogUrl",blogUrl);
-                session.put("success","Login with tumblr account made with success");
-                tumblrBean.setAccessToken(accessToken);
-                return SUCCESS;
-            }
-            else
-            {
-                session.put("error","Error occurred logging in with your tumblr account.");
-                return  ERROR;
-            }
+            session.put("error",error);
         }
+        return SUCCESS;
     }
 
 
@@ -103,9 +71,6 @@ public class TumblrCallbackAction extends ActionSupport implements SessionAware 
         this.session = session;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
 
     public FundStarterBean getFundStarterBean() {
