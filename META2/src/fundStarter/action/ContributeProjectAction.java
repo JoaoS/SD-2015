@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.FundStarterBean;
 import fundStarter.model.TumblrBean;
 import org.apache.struts2.interceptor.SessionAware;
+import org.json.JSONObject;
 import ws.GenericNotification;
 import sun.invoke.empty.Empty;
 
@@ -64,7 +65,6 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
                 //sacar id do projecto e a reblog key
                 //url-api.tumblr.com/v2/user/like	, by post
 
-
                 String post_id=null;
                 post_id=this.getFundStarterBean().getPostIdTumblr(idProject);
                 System.out.println("id="+post_id);
@@ -76,36 +76,47 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
 
                     //api.tumblr.com/v2/blog/{base-hostname}/posts[/type]?api_key={key}&[optional-params=]
                     //get base hostname
+                    String post_id2=this.getFundStarterBean().getPostIdTumblr(idProject);
                     String base_hostname=this.getFundStarterBean().getBaseHostName(idProject);
                     String api_key="54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4";
 
-
-                    String protected_resource_url = "api.tumblr.com/v2/blog/"+base_hostname+"/posts[/type]?api_key="+api_key;
+                    String protected_resource_url = "http://api.tumblr.com/v2/blog/"+base_hostname+"/posts?api_key="+api_key+"&id="+post_id2;
                     TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
                     OAuthService service = tumblrBean.getService();
                     OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
 
                     service.signRequest(tumblrBean.getAccessToken(), requestOauth);
                     Response response = requestOauth.send();
-                    System.out.println("TONY"+response.getBody());
+                    System.out.println("likes?="+response.getBody());
 
-                    /*-------------------------------------------------------------*/
+                    JSONObject obj = null;
+                    try {
+                        obj = new JSONObject(response.getBody());
+                        String rkey = obj.getJSONObject("response").getJSONArray("posts").getJSONObject(0).get("reblog_key").toString();
+                        System.out.println("reblog key="+rkey);
 
 
-                   /*String protected_resource_url = "url-api.tumblr.com/v2/user/like";
-                    TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
-                    OAuthService service = tumblrBean.getService();
-                    OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
+                        //fazer like no post
+                        String url = "http://api.tumblr.com/v2/user/like";
+                        TumblrBean b2 =  (TumblrBean)session.get("tumblrBean");
+                        OAuthService s2 = b2.getService();
+                        OAuthRequest r2 = new OAuthRequest(Verb.POST, url, s2);
 
-                    requestOauth.addBodyParameter("type","text");
-                    requestOauth.addBodyParameter("title","Created project " + projectName);
-                    requestOauth.addBodyParameter("body",description);
+                        r2.addBodyParameter("id",""+post_id2);
+                        r2.addBodyParameter("reblog_key",rkey);
 
-                    service.signRequest(tumblrBean.getAccessToken(), requestOauth);
-                    Response response = requestOauth.send();
-                    System.out.println(response.getBody());
-                    */
+                        s2.signRequest(b2.getAccessToken(), r2);
+                        Response response2 = r2.send();
 
+                        System.out.println(response2.getBody());
+
+
+
+                    } catch (Exception e) {
+                        System.out.println("Exception with json");
+                        e.printStackTrace();
+                    }
+                    
                 }
 
 
