@@ -107,13 +107,10 @@ public class GenericNotification {
                    onlineUsers.get(i).getSession().getBasicRemote().sendText(message);
                    //guardar no historico
                    onlineUsers.get(i).getBeanS().addOldWebsocketMessages(message);
-
                }
-
 
                 //actualizar os valores em toda a gente
                 onlineUsers.get(i).getSession().getBasicRemote().sendText(updateHtml);
-
             }
         } catch (IOException | IllegalStateException e0) {
             // clean up once the WebSocket connection is closed
@@ -153,52 +150,4 @@ public class GenericNotification {
     }
 
 
-
-
-
 }
-
-
-
-/*
-    * se mandar username é porque é para o historico, senao é para doação e tenho de ver os admins
-    * */
-    /*
-    private static void sendMessage(String text, String toUsername) {
-        // uses *this* object's session to call sendText()
-        int i = 0;
-        try {
-            for (i = 0; i < onlineUsers.size(); i++) {
-
-                //toUsername é usado para mandar o historico de mensagens ao utilizador correspondente
-
-
-                if (onlineUsers.get(i).getUsername().equals(toUsername)) {
-                    onlineUsers.get(i).getSession().getBasicRemote().sendText(text);
-                }
-                if (toUsername==null){
-                    //ver se aquele user é  admin do projecto
-                    SessionKeeper aux = onlineUsers.get(i);
-                    String s = aux.beanS.getAdminProjectIds();
-                    String s2[] = s.split(": ");
-                    String s3[]=s2[1].split(".");
-                    System.out.println("split size="+s2.length);
-
-
-                    System.out.println("notification sent to=" + onlineUsers.get(i).getUsername());
-                    onlineUsers.get(i).getSession().getBasicRemote().sendText(text);
-
-                }
-
-
-            }
-
-        } catch (IOException | IllegalStateException e0) {
-            // clean up once the WebSocket connection is closed
-            try {
-                onlineUsers.get(i).getSession().close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }*/

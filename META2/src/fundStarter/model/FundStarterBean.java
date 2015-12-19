@@ -5,6 +5,7 @@ import fundStarter.DataServer.*;
 import fundStarter.commons.Alternative;
 import fundStarter.commons.Reward;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +15,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.Properties;
-
+import java.io.*;
 
 public class FundStarterBean {
 
@@ -41,7 +42,9 @@ public class FundStarterBean {
         Properties prop = new Properties();
         InputStream input = null;
         try {
-            input = new FileInputStream("allProp.properties");
+
+            //System.out.println(new File("teste").getAbsolutePath());
+            input = new FileInputStream("new.properties");
             prop.load(input);
 
             rmiPort=Integer.parseInt(prop.getProperty("rmiPort"));

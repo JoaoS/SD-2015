@@ -48,9 +48,7 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
 
             //enviar id e valor novo do projecto
             //fazer split na getCurrentValue
-            //mandar o valor actual do projecto em baixo (getCurrentValue no dataserver)
             Long projectValue=this.getFundStarterBean().getProjectValue(idProject);
-
             GenericNotification.donationNotification(contributionMessage,projectAdmin,"UPDT|ID : "+idProject+"|"+projectValue);
 
         }
