@@ -2428,7 +2428,7 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
 
-    public boolean setPostId(String projectName,String postId) throws RemoteException
+    public boolean setPostId(String projectName,String postId,String baseHostName) throws RemoteException
     {
         ResultSet rt;
         PreparedStatement ps;
@@ -2440,10 +2440,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             {
                 idProject = rt.getLong(1);
             }
-            s = "UPDATE project SET post_id= ? WHERE id_project = ?";
+            s = "UPDATE project SET post_id= ? and base_hostname = ? WHERE id_project = ?";
             ps = connection.prepareStatement(s);
             ps.setString(1, postId);
             ps.setLong(2,idProject);
+            ps.setString(3,baseHostName);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2471,6 +2472,24 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
         return result;
     }
 
+    public String getBaseHostName(long idProject) throws RemoteException
+    {
+        ResultSet rt;
+        PreparedStatement ps;
+        String result = "";
+        String s="SELECT base_hostname FROM PROJECT WHERE id_project = '" + idProject + "'";
+        try {
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                result = rt.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error occurred getting post id";
+        }
+        return result;
+    }
 
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {

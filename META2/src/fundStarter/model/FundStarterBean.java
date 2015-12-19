@@ -301,9 +301,9 @@ public class FundStarterBean {
         return this.server.updateAccessToken(secret,userToken,username,tumblrUser);
     }
 
-    public boolean setPostId(String projectName,String postId) throws RemoteException
+    public boolean setPostId(String projectName,String postId,String baseHostName) throws RemoteException
     {
-        return this.server.setPostId(projectName,postId);
+        return this.server.setPostId(projectName,postId,baseHostName);
     }
 
     public boolean isAssociatedAccount(String username,int tumblrUser) throws RemoteException
@@ -315,6 +315,11 @@ public class FundStarterBean {
     public String getPostIdTumblr(long id) throws RemoteException
     {
         return this.server.getPostId(id);
+    }
+
+    public String getBaseHostName(long idProject) throws RemoteException
+    {
+        return this.server.getBaseHostName(idProject);
     }
 
 }

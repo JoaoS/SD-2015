@@ -79,7 +79,7 @@ public class CreateProjectAction extends ActionSupport implements SessionAware
                 try {
                     obj = new JSONObject(response.getBody());
                     String postId = obj.getJSONObject("response").get("id").toString();
-                    this.getFundStarterBean().setPostId(projectName,postId);
+                    this.getFundStarterBean().setPostId(projectName,postId,(String) session.get("blogUrl"));
                 } catch (Exception e) {
                     System.out.println("Exception with json");
                     e.printStackTrace();

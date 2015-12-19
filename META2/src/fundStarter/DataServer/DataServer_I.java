@@ -55,7 +55,8 @@ public interface DataServer_I extends Remote {
     public String checkAssociated(String tumblrUsername) throws RemoteException;
     public boolean updateAccessToken(String secret,String userToken,String oldSecret, String oldUserToken) throws RemoteException;
     public boolean updateAccessToken(String secret,String userToken,String username,int tumblrUser) throws RemoteException;
-    public boolean setPostId(String projectName,String postId) throws RemoteException;
-    public String getPostId(long id) throws RemoteException;
+    public boolean setPostId(String projectName,String postId,String baseHostName) throws RemoteException;
+    public String getPostId(String projectName) throws RemoteException;
     public boolean isAssociatedAccount(String username,int tumblrUser) throws RemoteException;
+    public String getBaseHostName(long idProject) throws RemoteException;
 }
