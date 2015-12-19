@@ -216,7 +216,7 @@
                     <h3>Check Account Balance</h3>
                     <c:set var = "accountBalance" value="${fundStarterBean.checkAccountBalance()}"/>
                     <c:choose>
-                        <c:when test="${accountBalance > 0}">
+                        <c:when test="${accountBalance >= 0}">
                             <p>You have <strong> <c:out value="${accountBalance}"/> </strong>dollars in your  account.</p>
                         </c:when>
                         <c:otherwise>
