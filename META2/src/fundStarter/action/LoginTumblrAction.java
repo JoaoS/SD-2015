@@ -6,8 +6,10 @@ import com.github.scribejava.core.model.Token;
 import com.github.scribejava.core.oauth.OAuthService;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.TumblrBean;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -20,12 +22,27 @@ public class LoginTumblrAction extends ActionSupport implements SessionAware {
 
     @Override
     public String execute() {
-        OAuthService service = new ServiceBuilder()
-                .provider(TumblrApi.class)
-                .apiKey("54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4")
-                .apiSecret("A1ZLlO8VPDHkZizbrJP94aRYrFYnVjoifZX3WnkQ8E001X314k")
-                .callback("http://localhost:8080/tumblrCallbackAction")
-                .build();
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String  parameter = request.getParameter("login");
+        OAuthService service;
+        if(parameter.equals("1"))
+        {
+            service = new ServiceBuilder()
+                    .provider(TumblrApi.class)
+                    .apiKey("54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4")
+                    .apiSecret("A1ZLlO8VPDHkZizbrJP94aRYrFYnVjoifZX3WnkQ8E001X314k")
+                    .callback("http://localhost:8080/tumblrCallbackAction")
+                    .build();
+        }
+        else
+        {
+            service = new ServiceBuilder()
+                    .provider(TumblrApi.class)
+                    .apiKey("54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4")
+                    .apiSecret("A1ZLlO8VPDHkZizbrJP94aRYrFYnVjoifZX3WnkQ8E001X314k")
+                    .callback("http://localhost:8080/associateCallbackAction")
+                    .build();
+        }
         Token requestToken = service.getRequestToken();
         url = service.getAuthorizationUrl(requestToken);
         this.setTumblrBean(new TumblrBean(service));

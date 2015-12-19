@@ -44,7 +44,7 @@ public class Client {
         Properties prop = new Properties();
         InputStream input = null;
         try {
-            input = new FileInputStream("tcpProp.properties");
+            input = new FileInputStream("allProp.properties");
             prop.load(input);
             firstIP=prop.getProperty("firstIP");
             secondIP=prop.getProperty("secondIP");

@@ -1,20 +1,20 @@
 package com.github.scribejava.apis.examples;
 
-import java.util.Scanner;
-import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.apis.TumblrApi;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Token;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.model.Verifier;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.*;
 import com.github.scribejava.core.oauth.OAuthService;
+import org.json.JSONException;
+import org.json.simple.parser.ParseException;
+import java.util.Scanner;
+import org.json.JSONObject;
+
 
 public class TumblrExample {
 
     private static final String PROTECTED_RESOURCE_URL = "http://api.tumblr.com/v2/user/info";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException, JSONException {
         OAuthService service = new ServiceBuilder()
                 .provider(TumblrApi.class)
                 .apiKey("54j8EOb53ihVMtfuSwvkyoY8i7cth91cWoFOugFT1wgyX6x0t4")
@@ -52,9 +52,16 @@ public class TumblrExample {
         OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL, service);
         service.signRequest(accessToken, request);
         Response response = request.send();
+        System.out.println(response.getBody());
         System.out.println("Got it! Lets see what we found...");
         System.out.println();
-        System.out.println(response.getBody());
+        //----------get username------------
+        JSONObject obj = new JSONObject(response.getBody());
+        String blogUrl = obj.getJSONObject("response").getJSONObject("user").getJSONArray("blogs").getJSONObject(0).get("url").toString();
+        System.out.println(blogUrl);
+        blogUrl = blogUrl.replace("http://","");
+        blogUrl = blogUrl.replace("/","");
+        System.out.println(blogUrl);
 
         System.out.println();
         System.out.println("Thats it man! Go and build something awesome with Scribe! :)");
