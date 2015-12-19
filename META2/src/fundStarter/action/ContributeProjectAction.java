@@ -1,8 +1,13 @@
 package fundStarter.action;
 
 
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuthService;
 import com.opensymphony.xwork2.ActionSupport;
 import fundStarter.model.FundStarterBean;
+import fundStarter.model.TumblrBean;
 import org.apache.struts2.interceptor.SessionAware;
 import ws.GenericNotification;
 import sun.invoke.empty.Empty;
@@ -50,6 +55,30 @@ public class ContributeProjectAction extends ActionSupport implements SessionAwa
             //fazer split na getCurrentValue
             Long projectValue=this.getFundStarterBean().getProjectValue(idProject);
             GenericNotification.donationNotification(contributionMessage,projectAdmin,"UPDT|ID : "+idProject+"|"+projectValue);
+
+
+
+            if(session.get("blogUrl") != null)
+            {
+                ///tenho de meter like na pagina do projecto do tumbrlrlrlrlrlrlr
+                //sacar id do projecto e a reblog key
+                //url-api.tumblr.com/v2/user/like	, by post
+                //preciso do post-id localmente e depois fazer um pedido para saber a reblog key
+
+
+                String protected_resource_url = "url-api.tumblr.com/v2/user/like";
+                TumblrBean tumblrBean =  (TumblrBean) session.get("tumblrBean");
+                OAuthService service = tumblrBean.getService();
+                OAuthRequest requestOauth = new OAuthRequest(Verb.POST, protected_resource_url, service);
+
+                requestOauth.addBodyParameter("type","text");
+                requestOauth.addBodyParameter("title","Created project " + projectName);
+                requestOauth.addBodyParameter("body",description);
+
+                service.signRequest(tumblrBean.getAccessToken(), requestOauth);
+                Response response = requestOauth.send();
+                System.out.println(response.getBody());
+            }
 
         }
 
