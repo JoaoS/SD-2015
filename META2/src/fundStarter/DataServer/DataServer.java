@@ -2397,6 +2397,31 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
     }
 
 
+    public boolean setPostId(String projectName,String postId) throws RemoteException
+    {
+        ResultSet rt;
+        PreparedStatement ps;
+        long idProject=-1;
+        String s="SELECT ID_PROJECT FROM PROJECT WHERE name = '" + projectName + "'";
+        try {
+            rt = connection.createStatement().executeQuery(s);
+            if(rt.next())
+            {
+                idProject = rt.getLong(1);
+            }
+            s = "UPDATE project SET post_id= ? WHERE id_project = ?";
+            ps = connection.prepareStatement(s);
+            ps.setString(1, postId);
+            ps.setLong(2,idProject);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
     public void connectDb() throws RemoteException, InstantiationException, IllegalAccessException
     {
         try
