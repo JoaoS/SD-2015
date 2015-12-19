@@ -2365,8 +2365,11 @@ public class DataServer extends UnicastRemoteObject implements DataServer_I
             connection.commit();
             if (rt.next())
             {
+                System.out.println("TUMBLR sended : " + tumblrUsername);
+                System.out.println("TUMBLR USERNAME : " + rt.getString(1));
                 if(rt.getString(1) != null)
                 {
+                    System.out.println("CONA");
                     return "That tumblr account is already associated with another fundStarter account";
                 }
             }

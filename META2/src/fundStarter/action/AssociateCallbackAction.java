@@ -57,6 +57,11 @@ public class AssociateCallbackAction extends ActionSupport implements SessionAwa
             e.printStackTrace();
         }
         //-----------------------associate account---------------------
+        if(this.getFundStarterBean().checkTumblrAccount(tumblrUsername))
+        {
+            session.put("error","Already exists an account with this tumblr account associated");
+            return ERROR;
+        }
         String error = this.getFundStarterBean().associateAccount(this.getFundStarterBean().getUsername(),this.getFundStarterBean().getTumblrUser(),tumblrUsername,accessToken.getSecret(),accessToken.getToken());
         if(error.equals("Account associated with success"))
         {
